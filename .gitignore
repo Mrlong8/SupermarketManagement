@@ -1,0 +1,7 @@
+## Visual Studio temporary files & build outputs
+.vs/
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docstates
