@@ -16,7 +16,8 @@ namespace SupermarketManagement
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            //Application.Run(new Frm_Main());
+            Application.Run(new SupermarketManagement.View.Admin.Frm_Admin());
         }
     }
 }
