@@ -21,7 +21,7 @@ namespace SupermarketManagement.Views.Account
 
         private void IndexControl_Load(object sender, EventArgs e)
         {
-            string str = "SELECT * FROM NhanVien";
+            string str = "SELECT * FROM TaiKhoan";
             dgvListAccount.DataSource = _db.GetListData(str);
         }
     }
