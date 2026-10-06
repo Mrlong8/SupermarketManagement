@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SupermarketManagement.Controllers.Repositories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,16 @@ namespace SupermarketManagement.Views.Account
 {
     public partial class IndexControl : UserControl
     {
+        DbConection _db = new DbConection();
         public IndexControl()
         {
             InitializeComponent();
+        }
+
+        private void IndexControl_Load(object sender, EventArgs e)
+        {
+            string str = "SELECT * FROM NhanVien";
+            dgvListAccount.DataSource = _db.GetListData(str);
         }
     }
 }
