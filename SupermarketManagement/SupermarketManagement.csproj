@@ -71,6 +71,12 @@
     <Compile Include="Views\Admin\Product\IndexProduct.Designer.cs">
       <DependentUpon>IndexProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Admin\Product\ProductItemControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Product\ProductItemControl.Designer.cs">
+      <DependentUpon>ProductItemControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Auth\LoginForm.cs" />
     <Compile Include="Views\Auth\DashboardForm.cs" />
     <Compile Include="Program.cs" />
@@ -93,9 +99,6 @@
     <Compile Include="Views\Cashier\POSForm.Designer.cs">
       <DependentUpon>POSForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Frm_Main.resx">
-      <DependentUpon>Frm_Main.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -109,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\Product\IndexProduct.resx">
       <DependentUpon>IndexProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Product\ProductItemControl.resx">
+      <DependentUpon>ProductItemControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Auth\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
@@ -136,12 +142,19 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Icon\analytics.png" />
     <Content Include="Resources\Icon\box.png" />
+    <Content Include="Resources\Icon\invoice.png" />
     <Content Include="Resources\Icon\logout.png" />
     <Content Include="Resources\Icon\delete.png" />
     <Content Include="Resources\Icon\minus-sign.png" />
+    <Content Include="Resources\Icon\profile.png" />
+    <Content Include="Resources\Icon\customer.png" />
     <Content Include="Resources\Icon\stop.png" />
     <Content Include="Resources\Icon\user.png" />
+    <Content Include="Resources\Product\b7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

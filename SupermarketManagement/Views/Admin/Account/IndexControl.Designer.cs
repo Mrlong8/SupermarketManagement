@@ -37,12 +37,13 @@
             this.dgvListAccount.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvListAccount.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvListAccount.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvListAccount.Location = new System.Drawing.Point(70, 71);
+            this.dgvListAccount.Location = new System.Drawing.Point(57, 70);
             this.dgvListAccount.Name = "dgvListAccount";
             this.dgvListAccount.RowHeadersWidth = 51;
             this.dgvListAccount.RowTemplate.Height = 24;
-            this.dgvListAccount.Size = new System.Drawing.Size(950, 350);
+            this.dgvListAccount.Size = new System.Drawing.Size(967, 197);
             this.dgvListAccount.TabIndex = 0;
             // 
             // IndexControl
