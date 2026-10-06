@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SupermarketManagement.View.Account
+namespace SupermarketManagement.Views.Admin.Product
 {
-    public partial class IndexControl : UserControl
+    public partial class IndexProduct : Form
     {
-        public IndexControl()
+        public IndexProduct()
         {
             InitializeComponent();
         }
