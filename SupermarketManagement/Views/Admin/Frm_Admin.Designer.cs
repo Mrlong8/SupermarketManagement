@@ -29,16 +29,18 @@
         private void InitializeComponent()
         {
             this.pnlSideBar = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.btnLogout = new System.Windows.Forms.Button();
-            this.btnManagerProduct = new System.Windows.Forms.Button();
-            this.btnManageUser = new System.Windows.Forms.Button();
-            this.btnAccount = new System.Windows.Forms.Button();
             this.pnlMainAdmin = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnThongKe = new System.Windows.Forms.Button();
+            this.btnManagerCustom = new System.Windows.Forms.Button();
+            this.btnLogout = new System.Windows.Forms.Button();
+            this.btnManagerProduct = new System.Windows.Forms.Button();
+            this.btnManageUser = new System.Windows.Forms.Button();
+            this.btnAccount = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.pnlSideBar.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlHeader.SuspendLayout();
@@ -48,7 +50,9 @@
             // pnlSideBar
             // 
             this.pnlSideBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(52)))), ((int)(((byte)(77)))));
-            this.pnlSideBar.Controls.Add(this.button2);
+            this.pnlSideBar.Controls.Add(this.button1);
+            this.pnlSideBar.Controls.Add(this.btnThongKe);
+            this.pnlSideBar.Controls.Add(this.btnManagerCustom);
             this.pnlSideBar.Controls.Add(this.btnLogout);
             this.pnlSideBar.Controls.Add(this.btnManagerProduct);
             this.pnlSideBar.Controls.Add(this.btnManageUser);
@@ -57,26 +61,110 @@
             this.pnlSideBar.Location = new System.Drawing.Point(0, 0);
             this.pnlSideBar.Margin = new System.Windows.Forms.Padding(0);
             this.pnlSideBar.Name = "pnlSideBar";
-            this.pnlSideBar.Size = new System.Drawing.Size(290, 747);
+            this.pnlSideBar.Size = new System.Drawing.Size(290, 767);
             this.pnlSideBar.TabIndex = 1;
             // 
-            // button2
+            // pnlMainAdmin
             // 
-            this.button2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button2.Image = global::SupermarketManagement.Properties.Resources.box3;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(0, 221);
-            this.button2.Name = "button2";
-            this.button2.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.button2.Size = new System.Drawing.Size(290, 55);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "   Thống Kê";
-            this.button2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.button2.UseVisualStyleBackColor = true;
+            this.pnlMainAdmin.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pnlMainAdmin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMainAdmin.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.pnlMainAdmin.Location = new System.Drawing.Point(0, 60);
+            this.pnlMainAdmin.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlMainAdmin.Name = "pnlMainAdmin";
+            this.pnlMainAdmin.Size = new System.Drawing.Size(1291, 707);
+            this.pnlMainAdmin.TabIndex = 2;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.pnlMainAdmin, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pnlHeader, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(290, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1291, 767);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.pnlHeader.Controls.Add(this.label1);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1291, 60);
+            this.pnlHeader.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(1291, 60);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "ADMIN DASHBOARD";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 290F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.pnlSideBar, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1581, 767);
+            this.tableLayoutPanel2.TabIndex = 5;
+            // 
+            // btnThongKe
+            // 
+            this.btnThongKe.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnThongKe.FlatAppearance.BorderSize = 0;
+            this.btnThongKe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnThongKe.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnThongKe.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnThongKe.Image = global::SupermarketManagement.Properties.Resources.analytics;
+            this.btnThongKe.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnThongKe.Location = new System.Drawing.Point(0, 276);
+            this.btnThongKe.Name = "btnThongKe";
+            this.btnThongKe.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnThongKe.Size = new System.Drawing.Size(290, 55);
+            this.btnThongKe.TabIndex = 7;
+            this.btnThongKe.Text = "   Thống kê doanh số";
+            this.btnThongKe.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnThongKe.UseVisualStyleBackColor = true;
+            // 
+            // btnManagerCustom
+            // 
+            this.btnManagerCustom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnManagerCustom.FlatAppearance.BorderSize = 0;
+            this.btnManagerCustom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManagerCustom.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnManagerCustom.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnManagerCustom.Image = global::SupermarketManagement.Properties.Resources.customer;
+            this.btnManagerCustom.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnManagerCustom.Location = new System.Drawing.Point(0, 221);
+            this.btnManagerCustom.Name = "btnManagerCustom";
+            this.btnManagerCustom.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnManagerCustom.Size = new System.Drawing.Size(290, 55);
+            this.btnManagerCustom.TabIndex = 6;
+            this.btnManagerCustom.Text = "   Quản Lý Khách Hàng";
+            this.btnManagerCustom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnManagerCustom.UseVisualStyleBackColor = true;
             // 
             // btnLogout
             // 
@@ -85,13 +173,14 @@
             this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogout.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnLogout.Image = global::SupermarketManagement.Properties.Resources.logout1;
             this.btnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLogout.Location = new System.Drawing.Point(0, 697);
+            this.btnLogout.Location = new System.Drawing.Point(0, 717);
             this.btnLogout.Name = "btnLogout";
             this.btnLogout.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.btnLogout.Size = new System.Drawing.Size(290, 50);
             this.btnLogout.TabIndex = 5;
-            this.btnLogout.Text = "   Đăng Xuất";
+            this.btnLogout.Text = "        Đăng Xuất";
             this.btnLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLogout.UseVisualStyleBackColor = true;
             // 
@@ -141,7 +230,7 @@
             this.btnAccount.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAccount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAccount.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnAccount.Image = global::SupermarketManagement.Properties.Resources.box3;
+            this.btnAccount.Image = global::SupermarketManagement.Properties.Resources.profile;
             this.btnAccount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAccount.Location = new System.Drawing.Point(0, 0);
             this.btnAccount.Name = "btnAccount";
@@ -152,77 +241,29 @@
             this.btnAccount.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAccount.UseVisualStyleBackColor = false;
             // 
-            // pnlMainAdmin
+            // button1
             // 
-            this.pnlMainAdmin.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pnlMainAdmin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMainAdmin.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.pnlMainAdmin.Location = new System.Drawing.Point(0, 60);
-            this.pnlMainAdmin.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlMainAdmin.Name = "pnlMainAdmin";
-            this.pnlMainAdmin.Size = new System.Drawing.Size(1153, 687);
-            this.pnlMainAdmin.TabIndex = 2;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.pnlMainAdmin, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.pnlHeader, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(290, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1153, 747);
-            this.tableLayoutPanel1.TabIndex = 3;
-            // 
-            // pnlHeader
-            // 
-            this.pnlHeader.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.pnlHeader.Controls.Add(this.label1);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1153, 60);
-            this.pnlHeader.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1153, 60);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "ADMIN DASHBOARD";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 290F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.pnlSideBar, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1443, 747);
-            this.tableLayoutPanel2.TabIndex = 5;
+            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.button1.Image = global::SupermarketManagement.Properties.Resources.invoice;
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.Location = new System.Drawing.Point(0, 331);
+            this.button1.Name = "button1";
+            this.button1.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.button1.Size = new System.Drawing.Size(290, 55);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "   Lịch Sử Mua Hàng";
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // Frm_Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1443, 747);
+            this.ClientSize = new System.Drawing.Size(1581, 767);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Name = "Frm_Admin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -246,6 +287,8 @@
         private System.Windows.Forms.Button btnAccount;
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnManagerCustom;
+        private System.Windows.Forms.Button btnThongKe;
+        private System.Windows.Forms.Button button1;
     }
 }
