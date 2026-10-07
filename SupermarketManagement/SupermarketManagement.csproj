@@ -51,13 +51,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Models\Entities\PhienDangNhap.cs" />
     <Compile Include="Models\Repositories\DbConection.cs" />
+    <Compile Include="Models\Repositories\TaiKhoanRepository.cs" />
+    <Compile Include="Utils\SecurityHelper.cs" />
+    <Compile Include="Utils\UserSession.cs" />
     <Compile Include="Views\Admin\Account\IndexControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Views\Admin\Account\IndexControl.Designer.cs">
       <DependentUpon>IndexControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\DashboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\DashboardForm.Designer.cs">
+      <DependentUpon>DashboardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Admin\Frm_Admin.cs">
       <SubType>Form</SubType>
@@ -77,8 +87,6 @@
     <Compile Include="Views\Admin\Product\ProductItemControl.Designer.cs">
       <DependentUpon>ProductItemControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Auth\LoginForm.cs" />
-    <Compile Include="Views\Auth\DashboardForm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -87,6 +95,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utils\ThemeColor.cs" />
+    <Compile Include="Views\Auth\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Auth\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cashier\InvoiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,9 +130,6 @@
     <EmbeddedResource Include="Views\Admin\Product\ProductItemControl.resx">
       <DependentUpon>ProductItemControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Auth\LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\InvoiceForm.resx">
       <DependentUpon>InvoiceForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,9 +149,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Resources\Icon\analytics.png" />
     <Content Include="Resources\Icon\box.png" />
