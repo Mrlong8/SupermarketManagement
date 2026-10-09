@@ -52,12 +52,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Entities\PhienDangNhap.cs" />
+    <Compile Include="Models\Repositories\ChucVuRepository.cs" />
     <Compile Include="Models\Repositories\DbConection.cs" />
-    <Compile Include="Views\Admin\Account\IndexControl.cs">
+    <Compile Include="Models\Repositories\NhanVienRepository.cs" />
+    <Compile Include="Views\Admin\NhanVien\IndexNhanVien.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Admin\Account\IndexControl.Designer.cs">
-      <DependentUpon>IndexControl.cs</DependentUpon>
+    <Compile Include="Views\Admin\NhanVien\IndexNhanVien.Designer.cs">
+      <DependentUpon>IndexNhanVien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\ChucVu\IndexChucVu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\ChucVu\IndexChucVu.Designer.cs">
+      <DependentUpon>IndexChucVu.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Admin\Frm_Admin.cs">
       <SubType>Form</SubType>
@@ -104,8 +112,11 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Admin\Account\IndexControl.resx">
-      <DependentUpon>IndexControl.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Admin\NhanVien\IndexNhanVien.resx">
+      <DependentUpon>IndexNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\ChucVu\IndexChucVu.resx">
+      <DependentUpon>IndexChucVu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\Frm_Admin.resx">
       <DependentUpon>Frm_Admin.cs</DependentUpon>

@@ -37,6 +37,7 @@ namespace SupermarketManagement.Controllers.Repositories
             }
         }
 
+        // phuiong thức lấy dữ liệu từ cơ sở dữ liệu SQL Server và trả về một DataTable
         public DataTable GetListData(string str)
         {
             DataTable tblData = new DataTable();
@@ -46,7 +47,15 @@ namespace SupermarketManagement.Controllers.Repositories
             CloseConnection();
             return tblData;
         }
+        // phương thức thực thi câu lệnh SQL dang INSERT, UPDATE, DELETE
 
+        public void DataChange(string sql)
+        {
+            OpenConnection();
+            SqlCommand sqlCommand = new SqlCommand(sql, sqlConnection);
+            sqlCommand.ExecuteNonQuery();
+            CloseConnection();
+        }
 
 
         //public static class DBHelper

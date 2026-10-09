@@ -113,18 +113,12 @@ namespace SupermarketManagement.Views.Admin
             childForm.BringToFront();
             childForm.Show();
         }
-
-        private void btnManageUser_Click(object sender, EventArgs e)
+        private void btnManageStaff_Click(object sender, EventArgs e)
         {
-
-            IndexControl ucIndex = new IndexControl();
+            IndexNhanVien ucIndex = new IndexNhanVien();
             ShowControl(ucIndex, sender);
         }
 
-        private void pnlSideBar_Paint(object sender, PaintEventArgs e)
-        {
-           
-        }
         private void btnManagerProduct_Click(object sender, EventArgs e)
         {
             ActivateButton(sender);
@@ -133,10 +127,6 @@ namespace SupermarketManagement.Views.Admin
 
         
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //ActivateButton(sender);
-
-        }
+    
     }
 }
