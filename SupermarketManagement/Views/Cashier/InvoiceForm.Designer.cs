@@ -38,8 +38,8 @@
             this.txtTongTien = new System.Windows.Forms.TextBox();
             this.txtNhanVien = new System.Windows.Forms.TextBox();
             this.txtKhachHang = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.txtMaHD = new System.Windows.Forms.TextBox();
+            this.txtMaKH = new System.Windows.Forms.TextBox();
             this.dgvInvoiceDetails = new System.Windows.Forms.DataGridView();
             this.colSTT = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMaSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,7 +61,6 @@
             this.lblTieuDe.Size = new System.Drawing.Size(171, 20);
             this.lblTieuDe.TabIndex = 0;
             this.lblTieuDe.Text = "HÓA ĐƠN BÁN HÀNG";
-            this.lblTieuDe.Click += new System.EventHandler(this.label1_Click);
             // 
             // lblMaHD
             // 
@@ -138,19 +137,19 @@
             this.txtKhachHang.Size = new System.Drawing.Size(206, 26);
             this.txtKhachHang.TabIndex = 10;
             // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(167, 73);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(120, 26);
-            this.textBox4.TabIndex = 11;
-            // 
             // txtMaHD
             // 
-            this.txtMaHD.Location = new System.Drawing.Point(167, 136);
+            this.txtMaHD.Location = new System.Drawing.Point(167, 73);
             this.txtMaHD.Name = "txtMaHD";
-            this.txtMaHD.Size = new System.Drawing.Size(170, 26);
-            this.txtMaHD.TabIndex = 13;
+            this.txtMaHD.Size = new System.Drawing.Size(195, 26);
+            this.txtMaHD.TabIndex = 11;
+            // 
+            // txtMaKH
+            // 
+            this.txtMaKH.Location = new System.Drawing.Point(167, 136);
+            this.txtMaKH.Name = "txtMaKH";
+            this.txtMaKH.Size = new System.Drawing.Size(195, 26);
+            this.txtMaKH.TabIndex = 13;
             // 
             // dgvInvoiceDetails
             // 
@@ -230,6 +229,7 @@
             this.btnThoat.TabIndex = 17;
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
             // 
             // dtpNgayMua
             // 
@@ -247,8 +247,8 @@
             this.Controls.Add(this.btnThoat);
             this.Controls.Add(this.btnInHD);
             this.Controls.Add(this.dgvInvoiceDetails);
+            this.Controls.Add(this.txtMaKH);
             this.Controls.Add(this.txtMaHD);
-            this.Controls.Add(this.textBox4);
             this.Controls.Add(this.txtKhachHang);
             this.Controls.Add(this.txtNhanVien);
             this.Controls.Add(this.txtTongTien);
@@ -279,8 +279,8 @@
         private System.Windows.Forms.TextBox txtTongTien;
         private System.Windows.Forms.TextBox txtNhanVien;
         private System.Windows.Forms.TextBox txtKhachHang;
-        private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox txtMaHD;
+        private System.Windows.Forms.TextBox txtMaKH;
         private System.Windows.Forms.DataGridView dgvInvoiceDetails;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSTT;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaSP;
