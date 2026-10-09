@@ -54,6 +54,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Models\Entities\PhienDangNhap.cs" />
     <Compile Include="Models\Repositories\DbConection.cs" />
+    <Compile Include="Models\Repositories\HoaDonRepository.cs" />
     <Compile Include="Models\Repositories\TaiKhoanRepository.cs" />
     <Compile Include="Utils\SecurityHelper.cs" />
     <Compile Include="Utils\UserSession.cs" />
