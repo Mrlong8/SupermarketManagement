@@ -79,7 +79,6 @@ namespace SupermarketManagement.Views.Cashier
                     {
                         var ws = workbook.Worksheets.Add("HoaDon");
 
- 
                         // 1. TIÊU ĐỀ HÓA ĐƠN
                         ws.Cell("A1").Value = "HÓA ĐƠN BÁN HÀNG";
                         ws.Range("A1:F1").Merge();
@@ -93,14 +92,20 @@ namespace SupermarketManagement.Views.Cashier
 
                         ws.Row(1).Height = 30;
 
-           
+
                         // 2. THÔNG TIN HÓA ĐƠN
+                      
                         ws.Cell("A3").Value = "Mã hóa đơn:";
+                        ws.Range("B3:C3").Merge();
                         ws.Cell("B3").Value = txtMaHD.Text;
+                     
 
                         ws.Cell("D3").Value = "Ngày mua:";
                         ws.Cell("E3").Value = dtpNgayMua.Value;
                         ws.Cell("E3").Style.DateFormat.Format = "dd/MM/yyyy";
+                        // Căn trái ngày mua
+                        ws.Cell("E3").Style.Alignment.Horizontal =
+                            XLAlignmentHorizontalValues.Left;
 
                         ws.Cell("A4").Value = "Mã khách hàng:";
                         ws.Cell("B4").Value = txtMaKH.Text;
@@ -111,7 +116,7 @@ namespace SupermarketManagement.Views.Cashier
                         ws.Cell("A5").Value = "Nhân viên:";
                         ws.Cell("B5").Value = txtNhanVien.Text;
 
-       
+
                         // 3. TIÊU ĐỀ BẢNG SẢN PHẨM
                         string[] headers =
                         {
@@ -179,6 +184,9 @@ namespace SupermarketManagement.Views.Cashier
                                     cell.Value = Convert.ToString(value);
                                 }
                             }
+                            // Căn phải cột Mã SP và Tên sản phẩm
+                            ws.Range(row, 2, row, 3).Style.Alignment.Horizontal =
+                                XLAlignmentHorizontalValues.Right;
 
                             row++;
                         }
@@ -206,6 +214,10 @@ namespace SupermarketManagement.Views.Cashier
 
                                 // Căn phải các cột số
                                 ws.Range(8, 4, lastDataRow, 6)
+                                  .Style.Alignment.Horizontal =
+                                    XLAlignmentHorizontalValues.Right;
+                                // Căn phải Mã SP và Tên sản phẩm
+                                ws.Range(8, 2, lastDataRow, 3)
                                   .Style.Alignment.Horizontal =
                                     XLAlignmentHorizontalValues.Right;
                             }
@@ -236,12 +248,13 @@ namespace SupermarketManagement.Views.Cashier
                         // 7. CĂN CHỈNH CỘT
                         ws.Columns(1, 6).AdjustToContents();
 
-                        ws.Column(1).Width = 8;
-                        ws.Column(2).Width = 15;
+                        ws.Column(1).Width = 16;
+                        ws.Column(2).Width = 22;
                         ws.Column(3).Width = 28;
-                        ws.Column(4).Width = 12;
+                        ws.Column(4).Width = 15;
                         ws.Column(5).Width = 18;
                         ws.Column(6).Width = 20;
+                        
 
                         // Lặp tiêu đề khi in nhiều trang
                         ws.PageSetup.SetRowsToRepeatAtTop("1:7");

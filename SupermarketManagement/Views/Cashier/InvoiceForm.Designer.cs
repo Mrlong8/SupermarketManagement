@@ -214,23 +214,21 @@
             // 
             // btnxuatExecl
             // 
-            this.btnxuatExecl.Location = new System.Drawing.Point(299, 591);
+            this.btnxuatExecl.Location = new System.Drawing.Point(281, 581);
             this.btnxuatExecl.Name = "btnxuatExecl";
             this.btnxuatExecl.Size = new System.Drawing.Size(130, 48);
             this.btnxuatExecl.TabIndex = 16;
             this.btnxuatExecl.Text = "Xuất ra Execl";
             this.btnxuatExecl.UseVisualStyleBackColor = true;
-            this.btnxuatExecl.Click += btnxuatExecl_Click;
             // 
             // btnThoat
             // 
-            this.btnThoat.Location = new System.Drawing.Point(585, 591);
+            this.btnThoat.Location = new System.Drawing.Point(587, 581);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(130, 48);
             this.btnThoat.TabIndex = 17;
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
-            this.btnThoat.Click += btnThoat_Click;
             // 
             // dtpNgayMua
             // 

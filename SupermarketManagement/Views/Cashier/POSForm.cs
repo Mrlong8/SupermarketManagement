@@ -20,8 +20,8 @@ namespace SupermarketManagement
         private readonly HoaDonRepository hoaDonRepository = new HoaDonRepository();
         public POSForm()
         {
-           
-          
+
+
             InitializeComponent();
             // Cấu hình bảng chi tiết hóa đơn
             dgvChiTietHoaDon.SelectionMode =
@@ -38,7 +38,8 @@ namespace SupermarketManagement
 
 
         // Thêm sản phẩm vào hóa đơn
-        private void btnThemSP_Click(object sender, EventArgs e)        {
+        private void btnThemSP_Click(object sender, EventArgs e)
+        {
             string maSP = txtMaSP.Text.Trim();
             string tenSP = txtTenSP.Text.Trim();
 
@@ -286,12 +287,10 @@ namespace SupermarketManagement
 
             try
             {
-            //chưa có mã khách hàng thật nên để là null
+                //chưa có mã khách hàng thật nên để là null
                 string maKH = string.IsNullOrWhiteSpace(txtMaKH.Text)
                     ? null
                     : txtMaKH.Text.Trim();
-                MessageBox.Show(
-                      "MaKH = " + (maKH == null ? "NULL" : "[" + maKH + "]"));
                 hoaDonRepository.LuuHoaDon(
                     txtMaHD.Text.Trim(),
                     tongTien,
@@ -302,7 +301,7 @@ namespace SupermarketManagement
             );
 
 
-               
+
 
                 MessageBox.Show(
                     "Lưu hóa đơn vào SQL Server thành công!");
@@ -323,7 +322,7 @@ namespace SupermarketManagement
                     "Không thể lưu hóa đơn:\n" + ex.Message);
             }
         }
-        private DataTable LayChiTietHoaDon()    
+        private DataTable LayChiTietHoaDon()
         {
             DataTable dt = new DataTable();
 
