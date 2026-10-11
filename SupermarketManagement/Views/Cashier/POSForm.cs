@@ -19,7 +19,9 @@ namespace SupermarketManagement
 
         private readonly HoaDonRepository hoaDonRepository = new HoaDonRepository();
         public POSForm()
-    {
+        {
+           
+          
             InitializeComponent();
             // Cấu hình bảng chi tiết hóa đơn
             dgvChiTietHoaDon.SelectionMode =
@@ -32,10 +34,10 @@ namespace SupermarketManagement
 
             TaoMaHoaDonMoi();
             CapNhatTongTien();
-    }
+        }
 
 
-    // Thêm sản phẩm vào hóa đơn
+        // Thêm sản phẩm vào hóa đơn
         private void btnThemSP_Click(object sender, EventArgs e)        {
             string maSP = txtMaSP.Text.Trim();
             string tenSP = txtTenSP.Text.Trim();
@@ -54,11 +56,11 @@ namespace SupermarketManagement
                 return;
             }
 
-            if (!int.TryParse(txtSoLuonh.Text.Trim(), out int soLuong)
+            if (!int.TryParse(txtSoLuong.Text.Trim(), out int soLuong)
                 || soLuong <= 0)
             {
                 MessageBox.Show("Số lượng phải là số nguyên lớn hơn 0.");
-                txtSoLuonh.Focus();
+                txtSoLuong.Focus();
                 return;
             }
 
@@ -129,7 +131,7 @@ namespace SupermarketManagement
                 return;
             }
 
-            if (!int.TryParse(txtSoLuonh.Text.Trim(), out int soLuong)
+            if (!int.TryParse(txtSoLuong.Text.Trim(), out int soLuong)
                 || soLuong <= 0)
             {
                 MessageBox.Show("Số lượng không hợp lệ.");
@@ -161,7 +163,7 @@ namespace SupermarketManagement
 
             txtMaSP.Text = Convert.ToString(row.Cells["colMaSP"].Value);
             txtTenSP.Text = Convert.ToString(row.Cells["colTenSP"].Value);
-            txtSoLuonh.Text =
+            txtSoLuong.Text =
                 Convert.ToString(row.Cells["colSoLuong"].Value);
             txtDonGia.Text =
                 Convert.ToString(row.Cells["colDonGia"].Value);
@@ -382,7 +384,7 @@ namespace SupermarketManagement
             txtMaSP.Clear();
             txtTenSP.Clear();
             txtDonGia.Clear();
-            txtSoLuonh.Clear();
+            txtSoLuong.Clear();
         }
 
         // Xuất hóa đơn và mở form hóa đơn
@@ -566,7 +568,11 @@ namespace SupermarketManagement
             txtSDT.Text = kh.SDT;
             txtEmail.Text = kh.Email;
         }
-        
+
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 
 }
