@@ -23,8 +23,8 @@ namespace SupermarketManagement
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new POSForm()); // nếu muons chạy form khác thì đổi tên form ở đây của Long Hiện tại là Admin mọi người có thể comment và tuyệt đói không xóa của người khác nhé
-            //Application.Run(new Frm_Admin()); test ở đây
+            //Application.Run(new POSForm()); // nếu muons chạy form khác thì đổi tên form ở đây của Long Hiện tại là Admin mọi người có thể comment và tuyệt đói không xóa của người khác nhé
+            Application.Run(new Frm_Admin()); //test ở đây
 
             // ================= CỦA NAM: Đăng nhập -> Form tổng -> Đăng xuất =================
             // Cách test: comment dòng Application.Run(new Frm_Admin()) của Long Hiện ở trên,

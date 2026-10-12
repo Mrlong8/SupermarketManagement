@@ -1,5 +1,6 @@
 ﻿using SupermarketManagement.Controllers.Repositories;
 using SupermarketManagement.Models.Repositories;
+using SupermarketManagement.Views.Admin.Account;
 using SupermarketManagement.Views.Admin.ChucVu;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace SupermarketManagement.Views.Account
         DbConection _db = new DbConection();
         private NhanVienRepository _repo = new NhanVienRepository();
         private ChucVuRepository _repoCV = new ChucVuRepository();
+
+        private bool isLoading = true;
         public IndexNhanVien()
         {
             InitializeComponent();
@@ -27,15 +30,19 @@ namespace SupermarketManagement.Views.Account
 
         private void IndexControl_Load(object sender, EventArgs e)
         {
+            isLoading = true;
             GetDataNhanVien();
             getChucVu();
             getChucVuTimKiem();
+            isLoading = false;
         }
         // lấy danh sách nhân viên từ cơ sở dữ liệu và hiển thị trong DataGridView
         public void GetDataNhanVien()
         {
            
             dgvListAccount.DataSource = _repo.GetAll();
+            Onbtn();
+
         }
 
         // lấy mã chức vụ
@@ -55,6 +62,11 @@ namespace SupermarketManagement.Views.Account
             DataTable dt = _repoCV.GetAll();
             if (dt != null && dt.Rows.Count > 0)
             {
+                DataRow dr = dt.NewRow();
+                dr["MaCV"] = "Tất cả";
+                dr["TenChucVu"] = "--- Tất cả chức vụ ---";
+                dt.Rows.InsertAt(dr, 0); // Thêm vào dòng đầu tiên
+
                 cbChucVu.DataSource = dt;
                 cbChucVu.DisplayMember = "TenChucVu";
                 cbChucVu.ValueMember = "MaCV";
@@ -69,6 +81,7 @@ namespace SupermarketManagement.Views.Account
             rdbNu.Checked = false;
             dtpNgaySinh.Value = DateTime.Now;
             txtDiaChi.Clear();
+            txtLuongCB.Clear();
             cbMaCV.SelectedIndex = -1;
             txtEmail.Clear();
             txtMaNV.Enabled = true;
@@ -151,7 +164,7 @@ namespace SupermarketManagement.Views.Account
 
 
         // thêm nhân viên mới
-        private void btnThem_Click(object sender, EventArgs e)
+        private void btnLuu_Click(object sender, EventArgs e)
         {
             if (!ValidateForm(isEdit: false)) return;
 
@@ -221,7 +234,6 @@ namespace SupermarketManagement.Views.Account
             }
         }
 
-
         // Click trên dvg
         private void dgvListAccount_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -239,12 +251,122 @@ namespace SupermarketManagement.Views.Account
                 rdbNam.Checked = (gioiTinh == "Nam");
                 rdbNu.Checked = (gioiTinh == "Nữ" || gioiTinh == "Nu");
                 txtMaNV.Enabled = false;
+                Onbtn();
+
+            }
+        }
+        
+        private void btnThemMoi_Click(object sender, EventArgs e)
+        {
+            ClearData();
+            txtMaNV.Text = _repo.RenderMaNhanVien();
+            txtMaNV.Enabled = false;
+            txtHoTenNV.Focus();
+            Offbtn();
+        }
+
+        //private void IndexNhanVien_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if (e.KeyCode == Keys.Enter && !(this.ActiveControl is Button))
+        //    {
+        //        this.SelectNextControl(this.ActiveControl, true, true, true, true);
+        //        e.SuppressKeyPress = true;
+        //    }
+        //}
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                // 1. Lấy điều khiển đang active
+                Control currentControl = this.ActiveControl;
+
+                // 2. Nếu đang đứng ở Button thì cho phép Enter để bấm Button bình thường
+                if (currentControl is Button)
+                {
+                    return base.ProcessCmdKey(ref msg, keyData);
+                }
+
+                // 3. Nếu đang ở các ô nhập liệu (TextBox, ComboBox, DateTimePicker...)
+                // Chuyển focus sang ô tiếp theo
+                this.SelectNextControl(currentControl, true, true, true, true);
+
+                return true; // Ngăn phím Enter kích hoạt Button mặc định và chặn tiếng "bíp"
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void Offbtn()
+        {
+            btnEditAccount.Enabled = false;
+            btnEdit.Enabled = false;
+            btnXoa.Enabled = false;
+        }
+        private void Onbtn()
+        {
+            btnEditAccount.Enabled = true;
+            btnEdit.Enabled = true;
+            btnXoa.Enabled = true;
+        }
+
+        private void btnEditAccount_Click(object sender, EventArgs e)
+        {
+
+            string SelectedmaNV = txtMaNV.Text;
+
+
+            if (string.IsNullOrEmpty(SelectedmaNV))
+            {
+                MessageBox.Show("Vui Lòng chọn thông tin nhân viên trong danh sách để xem tài khoản",
+                           "Cảnh báo", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                return;
+            }
+
+            IndexAccount frm = new IndexAccount(SelectedmaNV);
+            frm.ShowDialog();
+        }
+
+
+        private void btnTimKiemUser_Click(object sender, EventArgs e)
+        {
+            if (isLoading) return;
+            string keyword = txtTimKiem.Text.Trim();
+
+            DataTable dt = _repo.Search(keyword);
+            dgvListAccount.DataSource = dt;
+
+            if (dt == null || dt.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Không tìm thấy nhân viên nào phù hợp!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
         }
 
-        private void btnThoat_Click(object sender, EventArgs e)
+        private void cbChucVu_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
+            if (isLoading) return;
+            // Chưa có dữ liệu hoặc chưa chọn chức vụ thì không lọc
+            if (cbChucVu.SelectedValue == null)
+                return;
+
+            string maCV = cbChucVu.SelectedValue.ToString();
+
+            DataTable dt = _repo.FilterByChucVu(maCV);
+            dgvListAccount.DataSource = dt;
+        }
+
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            GetDataNhanVien();
+            getChucVu();
+            getChucVuTimKiem();
+            ClearData();
         }
     }
 }
