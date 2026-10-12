@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace SupermarketManagement.Models.Repositories
 
         public DataTable GetAll()
         {
-            string sql = "SELECT * FROM NhanVien";
+            string sql = "SELECT * FROM NhanVien nv JOIN ChucVu cv ON nv.MaCV = cv.MaCV";
             return _db.GetListData(sql);
         }
 
@@ -46,5 +47,55 @@ namespace SupermarketManagement.Models.Repositories
             string sql = $"DELETE FROM NhanVien WHERE MaNV = '{maNV}'";
             _db.DataChange(sql);
         }
+
+        public string RenderMaNhanVien()
+        {
+            string ngay = DateTime.Now.ToString("yyyyMMdd");
+            string tiento = "NV" + ngay;
+
+            string sql = $"select count(*) From NhanVien Where MaNV Like '{tiento}%'";
+            DataTable dt = _db.GetListData(sql);
+            int soLuong = Convert.ToInt32(dt.Rows[0][0]);
+
+            int sttMoi = soLuong + 1;
+
+            return tiento + sttMoi.ToString("D3");// hiện đủ 3 chữ số vd 3 -> 003
+
+        }
+
+        // 1. Tìm kiếm nhân viên theo Mã, Tên hoặc Email
+        public DataTable Search(string keyword)
+        {
+            string sql = "SELECT * FROM NhanVien nv " +
+                         "JOIN ChucVu cv ON nv.MaCV = cv.MaCV " +
+                         "WHERE 1 = 1 ";
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                string safeKeyword = keyword.Replace("'", "''");
+
+                sql += $"AND (nv.MaNV LIKE N'%{safeKeyword}%' " +
+                       $"OR nv.HoTen LIKE N'%{safeKeyword}%' " +
+                       $"OR nv.Email LIKE N'%{safeKeyword}%') ";
+            }
+
+            return _db.GetListData(sql);
+        }
+
+        // 2. Lọc nhân viên theo Chức vụ
+        public DataTable FilterByChucVu(string maCV)
+        {
+            string sql = "SELECT * FROM NhanVien nv " +
+                         "JOIN ChucVu cv ON nv.MaCV = cv.MaCV ";
+
+            if (!string.IsNullOrWhiteSpace(maCV) && maCV != "Tất cả")
+            {
+                string safeMaCV = maCV.Replace("'", "''");
+                sql += $"WHERE nv.MaCV = '{safeMaCV}' ";
+            }
+
+            return _db.GetListData(sql);
+        }
+
     }
 }

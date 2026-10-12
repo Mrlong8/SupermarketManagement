@@ -17,11 +17,16 @@ namespace SupermarketManagement.Views.Admin.ChucVu
         private void CreateChucVu_Load(object sender, EventArgs e)
         {
             GetDataChucVu();
+            ClearData();
+            txtMaCV.Enabled = false;
+            txtMaCV.Text = _repo.RendermaCV();
         }
 
         public void GetDataChucVu()
         {
             dgvListChucVu.DataSource = _repo.GetAll();
+            txtMaCV.Text = _repo.RendermaCV();
+
         }
 
         public void ClearData()
@@ -31,7 +36,8 @@ namespace SupermarketManagement.Views.Admin.ChucVu
             txtHeSoLuong.Clear();
             rdbFullTime.Checked = false;
             rdbPartTime.Checked = false;
-            txtMaCV.Enabled = true; 
+            txtMaCV.Enabled = true;
+          
         }
 
         // Hàm helper gom nhóm dữ liệu đầu vào từ Form

@@ -36,10 +36,49 @@
     <StartupObject>SupermarketManagement.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
+      <HintPath>..\packages\BouncyCastle.Cryptography.2.6.2\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=8.7.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.8.7.1\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=8.6.2.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.8.6.2\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.6, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.6\lib\net461\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System">
       <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Xml, Version=8.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Xml.8.0.4\lib\net462\System.Security.Cryptography.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,15 +94,49 @@
     <Compile Include="Models\Entities\PhienDangNhap.cs" />
     <Compile Include="Models\Repositories\ChucVuRepository.cs" />
     <Compile Include="Models\Repositories\DbConection.cs" />
+    <Compile Include="Models\Repositories\KhachHangRepository.cs" />
+    <Compile Include="Models\Repositories\LichSuMuaRepository.cs" />
+    <Compile Include="Models\Repositories\LichSuNhapRepository.cs" />
     <Compile Include="Models\Repositories\NhanVienRepository.cs" />
+    <Compile Include="Models\Repositories\SanPhamRepositoryV2.cs" />
+    <Compile Include="Models\Repositories\ThongKeRepository.cs" />
+    <Compile Include="Views\Admin\Account\IndexAccount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Account\IndexAccount.Designer.cs">
+      <DependentUpon>IndexAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\HoaDon\FrmHoaDonPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\HoaDon\FrmHoaDonPrint.Designer.cs">
+      <DependentUpon>FrmHoaDonPrint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\KhachHang\IndexKhachHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\KhachHang\IndexKhachHang.Designer.cs">
+      <DependentUpon>IndexKhachHang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuBan\IndexLichSuBan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuBan\IndexLichSuBan.Designer.cs">
+      <DependentUpon>IndexLichSuBan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuNhap\IndexLichSuNhap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuNhap\IndexLichSuNhap.Designer.cs">
+      <DependentUpon>IndexLichSuNhap.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Admin\NhanVien\IndexNhanVien.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Models\Repositories\HoaDonRepository.cs" />
     <Compile Include="Models\Repositories\TaiKhoanRepository.cs" />
     <Compile Include="Utils\SecurityHelper.cs" />
     <Compile Include="Utils\UserSession.cs" />
-    <Compile Include="Views\Admin\Account\IndexControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Views\Admin\NhanVien\IndexNhanVien.Designer.cs">
       <DependentUpon>IndexNhanVien.cs</DependentUpon>
     </Compile>
@@ -85,6 +158,12 @@
     <Compile Include="Views\Admin\Frm_Admin.Designer.cs">
       <DependentUpon>Frm_Admin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Admin\PhieuNhapHang\IndexPhieuNhapHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\PhieuNhapHang\IndexPhieuNhapHang.Designer.cs">
+      <DependentUpon>IndexPhieuNhapHang.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Admin\Product\IndexProduct.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +184,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utils\ThemeColor.cs" />
+    <Compile Include="Views\Admin\ThongKe\IndexThongKe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\ThongKe\IndexThongKe.Designer.cs">
+      <DependentUpon>IndexThongKe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Auth\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +213,21 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Account\IndexAccount.resx">
+      <DependentUpon>IndexAccount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\HoaDon\FrmHoaDonPrint.resx">
+      <DependentUpon>FrmHoaDonPrint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\KhachHang\IndexKhachHang.resx">
+      <DependentUpon>IndexKhachHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\LichSuBan\IndexLichSuBan.resx">
+      <DependentUpon>IndexLichSuBan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\LichSuNhap\IndexLichSuNhap.resx">
+      <DependentUpon>IndexLichSuNhap.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\NhanVien\IndexNhanVien.resx">
       <DependentUpon>IndexNhanVien.cs</DependentUpon>
     </EmbeddedResource>
@@ -137,11 +237,17 @@
     <EmbeddedResource Include="Views\Admin\Frm_Admin.resx">
       <DependentUpon>Frm_Admin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\PhieuNhapHang\IndexPhieuNhapHang.resx">
+      <DependentUpon>IndexPhieuNhapHang.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\Product\IndexProduct.resx">
       <DependentUpon>IndexProduct.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\Product\ProductItemControl.resx">
       <DependentUpon>ProductItemControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\ThongKe\IndexThongKe.resx">
+      <DependentUpon>IndexThongKe.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\InvoiceForm.resx">
       <DependentUpon>InvoiceForm.cs</DependentUpon>
@@ -149,9 +255,10 @@
     <EmbeddedResource Include="Views\Cashier\POSForm.resx">
       <DependentUpon>POSForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Settings.Designer.cs</SubType>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -164,11 +271,16 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Resources\Avata\avata1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Icon\analytics.png" />
+    <Content Include="Resources\Icon\bill.png" />
     <Content Include="Resources\Icon\box.png" />
     <Content Include="Resources\Icon\invoice.png" />
     <Content Include="Resources\Icon\logout.png" />
     <Content Include="Resources\Icon\delete.png" />
+    <Content Include="Resources\Icon\loupe.png" />
     <Content Include="Resources\Icon\minus-sign.png" />
     <Content Include="Resources\Icon\profile.png" />
     <Content Include="Resources\Icon\customer.png" />

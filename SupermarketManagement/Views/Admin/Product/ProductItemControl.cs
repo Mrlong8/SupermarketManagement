@@ -17,11 +17,12 @@ namespace SupermarketManagement.Views.Admin.Product
             InitializeComponent();
         }
 
-        public void SetData(string TenSP, string GiaSP,string SoLuong,string UrlImage)
+        public void SetData(string TenSP, string GiaNhap,string GiaBan,string SoLuong,string UrlImage)
         {
             lblTenSP.Text = TenSP;
-            lblGiaSP.Text = GiaSP;
-            lblSoLuong.Text = SoLuong;
+            lblGiaNhap.Text = "Giá Nhập: " + GiaNhap;
+            lblGiaBan.Text = "Giá Bán: " + GiaBan;
+            lblSoLuong.Text = "Số Lượng: " + SoLuong;
             if (!string.IsNullOrEmpty(UrlImage))
             {
                 // Chuyển / thành \ để phù hợp với đường dẫn Windows

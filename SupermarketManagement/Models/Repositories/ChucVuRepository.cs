@@ -39,5 +39,18 @@ namespace SupermarketManagement.Controllers.Repositories
             string sql = $"DELETE FROM ChucVu WHERE MaCV = '{maCV}'";
             _db.DataChange(sql);
         }
+
+        public string RendermaCV()
+        {
+            string ngay = DateTime.Now.ToString("yyyyMMdd");
+            string tiento = "CV" + ngay;
+
+            string sql = $"select Count(*) from ChucVu Where MaCV like '{tiento}%'";
+            DataTable tb = _db.GetListData(sql);
+            int soluong = Convert.ToInt32(tb.Rows[0][0]);
+
+            int stt = soluong + 1;
+            return tiento + stt.ToString("D3");
+        }
     }
 }

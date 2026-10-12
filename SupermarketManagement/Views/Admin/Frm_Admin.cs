@@ -1,6 +1,11 @@
 ﻿using SupermarketManagement.Utils;
 using SupermarketManagement.Views.Account;
+using SupermarketManagement.Views.Admin.KhachHang;
+using SupermarketManagement.Views.Admin.LichSuBan;
+
+using SupermarketManagement.Views.Admin.LichSuNhap;
 using SupermarketManagement.Views.Admin.Product;
+using SupermarketManagement.Views.Admin.ThongKe;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -125,8 +130,34 @@ namespace SupermarketManagement.Views.Admin
             ShowChildForm(new IndexProduct(), sender);
         }
 
-        
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
+            //ShowChildForm(new INde);
+        }
 
-    
+        private void btnManagerCustom_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexKhachHang(), sender);
+            //ShowControl(new IndexKhachHang(), sender);
+
+        }
+
+        private void btnThongKe_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexThongKe(), sender);
+
+        }
+
+        private void btnMuaHang_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexLichSuBan(), sender);
+
+        }
+
+        private void btnNhapHang_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexLichSuNhap(), sender);
+
+        }
     }
 }
