@@ -47,7 +47,7 @@
             this.colSoLuong = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDonGia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colThanhTien = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnInHD = new System.Windows.Forms.Button();
+            this.btnxuatExecl = new System.Windows.Forms.Button();
             this.btnThoat = new System.Windows.Forms.Button();
             this.dtpNgayMua = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInvoiceDetails)).BeginInit();
@@ -212,24 +212,23 @@
             this.colThanhTien.Name = "colThanhTien";
             this.colThanhTien.Width = 150;
             // 
-            // btnInHD
+            // btnxuatExecl
             // 
-            this.btnInHD.Location = new System.Drawing.Point(299, 591);
-            this.btnInHD.Name = "btnInHD";
-            this.btnInHD.Size = new System.Drawing.Size(130, 48);
-            this.btnInHD.TabIndex = 16;
-            this.btnInHD.Text = "In hóa đơn";
-            this.btnInHD.UseVisualStyleBackColor = true;
+            this.btnxuatExecl.Location = new System.Drawing.Point(281, 581);
+            this.btnxuatExecl.Name = "btnxuatExecl";
+            this.btnxuatExecl.Size = new System.Drawing.Size(130, 48);
+            this.btnxuatExecl.TabIndex = 16;
+            this.btnxuatExecl.Text = "Xuất ra Execl";
+            this.btnxuatExecl.UseVisualStyleBackColor = true;
             // 
             // btnThoat
             // 
-            this.btnThoat.Location = new System.Drawing.Point(585, 591);
+            this.btnThoat.Location = new System.Drawing.Point(587, 581);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(130, 48);
             this.btnThoat.TabIndex = 17;
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
-            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
             // 
             // dtpNgayMua
             // 
@@ -245,7 +244,7 @@
             this.ClientSize = new System.Drawing.Size(987, 641);
             this.Controls.Add(this.dtpNgayMua);
             this.Controls.Add(this.btnThoat);
-            this.Controls.Add(this.btnInHD);
+            this.Controls.Add(this.btnxuatExecl);
             this.Controls.Add(this.dgvInvoiceDetails);
             this.Controls.Add(this.txtMaKH);
             this.Controls.Add(this.txtMaHD);
@@ -288,7 +287,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colSoLuong;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDonGia;
         private System.Windows.Forms.DataGridViewTextBoxColumn colThanhTien;
-        private System.Windows.Forms.Button btnInHD;
+        private System.Windows.Forms.Button btnxuatExecl;
         private System.Windows.Forms.Button btnThoat;
         private System.Windows.Forms.DateTimePicker dtpNgayMua;
     }
