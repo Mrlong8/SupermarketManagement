@@ -33,6 +33,7 @@
             this.btnTimKiem = new System.Windows.Forms.Button();
             this.cbDanhMuc = new System.Windows.Forms.ComboBox();
             this.btnThemSanPham = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // flpListProduct
@@ -70,6 +71,7 @@
             this.btnTimKiem.TabIndex = 3;
             this.btnTimKiem.Text = "Tìm Kiếm";
             this.btnTimKiem.UseVisualStyleBackColor = false;
+            this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
             // 
             // cbDanhMuc
             // 
@@ -80,6 +82,7 @@
             this.cbDanhMuc.Name = "cbDanhMuc";
             this.cbDanhMuc.Size = new System.Drawing.Size(200, 29);
             this.cbDanhMuc.TabIndex = 4;
+            this.cbDanhMuc.SelectedIndexChanged += new System.EventHandler(this.cbDanhMuc_SelectedIndexChanged);
             // 
             // btnThemSanPham
             // 
@@ -91,10 +94,26 @@
             this.btnThemSanPham.ForeColor = System.Drawing.Color.White;
             this.btnThemSanPham.Location = new System.Drawing.Point(35, 510);
             this.btnThemSanPham.Name = "btnThemSanPham";
-            this.btnThemSanPham.Size = new System.Drawing.Size(140, 38);
+            this.btnThemSanPham.Size = new System.Drawing.Size(185, 38);
             this.btnThemSanPham.TabIndex = 5;
             this.btnThemSanPham.Text = "+ Thêm Sản Phẩm";
             this.btnThemSanPham.UseVisualStyleBackColor = false;
+            // 
+            // btnReset
+            // 
+            this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnReset.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnReset.FlatAppearance.BorderSize = 0;
+            this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReset.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.ForeColor = System.Drawing.Color.White;
+            this.btnReset.Location = new System.Drawing.Point(267, 510);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(140, 38);
+            this.btnReset.TabIndex = 6;
+            this.btnReset.Text = "Làm mới";
+            this.btnReset.UseVisualStyleBackColor = false;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // IndexProduct
             // 
@@ -102,6 +121,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1333, 570);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.btnThemSanPham);
             this.Controls.Add(this.cbDanhMuc);
             this.Controls.Add(this.btnTimKiem);
@@ -123,5 +143,6 @@
         private System.Windows.Forms.Button btnTimKiem;
         private System.Windows.Forms.ComboBox cbDanhMuc;
         private System.Windows.Forms.Button btnThemSanPham;
+        private System.Windows.Forms.Button btnReset;
     }
 }
