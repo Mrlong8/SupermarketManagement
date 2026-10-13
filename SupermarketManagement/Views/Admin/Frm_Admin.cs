@@ -2,7 +2,7 @@
 using SupermarketManagement.Views.Account;
 using SupermarketManagement.Views.Admin.KhachHang;
 using SupermarketManagement.Views.Admin.LichSuBan;
-
+using SupermarketManagement.Views.Admin.QuanLyKhoHang;
 using SupermarketManagement.Views.Admin.LichSuNhap;
 using SupermarketManagement.Views.Admin.Product;
 using SupermarketManagement.Views.Admin.ThongKe;
@@ -159,5 +159,7 @@ namespace SupermarketManagement.Views.Admin
             ShowChildForm(new IndexLichSuNhap(), sender);
 
         }
+
+       
     }
 }
