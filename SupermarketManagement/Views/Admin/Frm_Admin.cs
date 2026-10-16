@@ -1,4 +1,4 @@
-﻿using SupermarketManagement.Utils;
+using SupermarketManagement.Utils;
 using SupermarketManagement.Views.Account;
 using SupermarketManagement.Views.Admin.KhachHang;
 using SupermarketManagement.Views.Admin.LichSuBan;
@@ -160,6 +160,14 @@ namespace SupermarketManagement.Views.Admin
 
         }
 
-       
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexQuanLyKhoHang(), sender);
+        }
+
+        private void btnBanHang_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new POSForm(), sender);
+;        }
     }
 }
