@@ -1,6 +1,11 @@
-﻿using SupermarketManagement.Utils;
+using SupermarketManagement.Utils;
 using SupermarketManagement.Views.Account;
+using SupermarketManagement.Views.Admin.KhachHang;
+using SupermarketManagement.Views.Admin.LichSuBan;
+using SupermarketManagement.Views.Admin.QuanLyKhoHang;
+using SupermarketManagement.Views.Admin.LichSuNhap;
 using SupermarketManagement.Views.Admin.Product;
+using SupermarketManagement.Views.Admin.ThongKe;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -113,29 +118,27 @@ namespace SupermarketManagement.Views.Admin
             childForm.BringToFront();
             childForm.Show();
         }
-
-        private void btnManageUser_Click(object sender, EventArgs e)
+        private void btnManageStaff_Click(object sender, EventArgs e)
         {
-
-            IndexControl ucIndex = new IndexControl();
+            IndexNhanVien ucIndex = new IndexNhanVien();
             ShowControl(ucIndex, sender);
         }
 
-        private void pnlSideBar_Paint(object sender, PaintEventArgs e)
-        {
-           
-        }
         private void btnManagerProduct_Click(object sender, EventArgs e)
         {
             ActivateButton(sender);
             ShowChildForm(new IndexProduct(), sender);
         }
 
-        
-
-        private void button1_Click(object sender, EventArgs e)
+        private void btnProfile_Click(object sender, EventArgs e)
         {
-            //ActivateButton(sender);
+            //ShowChildForm(new INde);
+        }
+
+        private void btnManagerCustom_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexKhachHang(), sender);
+            //ShowControl(new IndexKhachHang(), sender);
 
         }
 

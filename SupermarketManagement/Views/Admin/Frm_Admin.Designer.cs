@@ -1,4 +1,4 @@
-﻿namespace SupermarketManagement.Views.Admin
+namespace SupermarketManagement.Views.Admin
 {
     partial class Frm_Admin
     {
@@ -50,13 +50,16 @@
             // pnlSideBar
             // 
             this.pnlSideBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(52)))), ((int)(((byte)(77)))));
+            this.pnlSideBar.Controls.Add(this.btnBanHang);
             this.pnlSideBar.Controls.Add(this.button1);
+            this.pnlSideBar.Controls.Add(this.btnNhapHang);
+            this.pnlSideBar.Controls.Add(this.btnMuaHang);
             this.pnlSideBar.Controls.Add(this.btnThongKe);
             this.pnlSideBar.Controls.Add(this.btnManagerCustom);
             this.pnlSideBar.Controls.Add(this.btnLogout);
             this.pnlSideBar.Controls.Add(this.btnManagerProduct);
-            this.pnlSideBar.Controls.Add(this.btnManageUser);
-            this.pnlSideBar.Controls.Add(this.btnAccount);
+            this.pnlSideBar.Controls.Add(this.btnManageStaff);
+            this.pnlSideBar.Controls.Add(this.btnProfile);
             this.pnlSideBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlSideBar.Location = new System.Drawing.Point(0, 0);
             this.pnlSideBar.Margin = new System.Windows.Forms.Padding(0);
@@ -99,6 +102,7 @@
             this.btnThongKe.Text = "   Thống kê doanh số";
             this.btnThongKe.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnThongKe.UseVisualStyleBackColor = true;
+            this.btnThongKe.Click += new System.EventHandler(this.btnThongKe_Click);
             // 
             // btnManagerCustom
             // 
@@ -117,6 +121,7 @@
             this.btnManagerCustom.Text = "   Quản Lý Khách Hàng";
             this.btnManagerCustom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnManagerCustom.UseVisualStyleBackColor = true;
+            this.btnManagerCustom.Click += new System.EventHandler(this.btnManagerCustom_Click);
             // 
             // btnLogout
             // 
@@ -156,43 +161,46 @@
             this.btnManagerProduct.UseVisualStyleBackColor = true;
             this.btnManagerProduct.Click += new System.EventHandler(this.btnManagerProduct_Click);
             // 
-            // btnManageUser
+            // btnManageStaff
             // 
-            this.btnManageUser.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnManageUser.FlatAppearance.BorderSize = 0;
-            this.btnManageUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnManageUser.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnManageUser.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnManageUser.Image = global::SupermarketManagement.Properties.Resources.user;
-            this.btnManageUser.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnManageUser.Location = new System.Drawing.Point(0, 111);
-            this.btnManageUser.Name = "btnManageUser";
-            this.btnManageUser.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.btnManageUser.Size = new System.Drawing.Size(290, 55);
-            this.btnManageUser.TabIndex = 2;
-            this.btnManageUser.Text = "   Quản Lý Người Dùng";
-            this.btnManageUser.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnManageUser.UseVisualStyleBackColor = true;
-            this.btnManageUser.Click += new System.EventHandler(this.btnManageUser_Click);
+            // pnlMainAdmin
             // 
-            // btnAccount
+            this.btnManageStaff.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnManageStaff.FlatAppearance.BorderSize = 0;
+            this.btnManageStaff.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnManageStaff.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnManageStaff.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnManageStaff.Image = global::SupermarketManagement.Properties.Resources.user;
+            this.btnManageStaff.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnManageStaff.Location = new System.Drawing.Point(0, 111);
+            this.btnManageStaff.Name = "btnManageStaff";
+            this.btnManageStaff.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnManageStaff.Size = new System.Drawing.Size(290, 55);
+            this.btnManageStaff.TabIndex = 2;
+            this.btnManageStaff.Text = "   Quản Lý Nhân Viên";
+            this.btnManageStaff.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnManageStaff.UseVisualStyleBackColor = true;
+            this.btnManageStaff.Click += new System.EventHandler(this.btnManageStaff_Click);
             // 
-            this.btnAccount.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(59)))));
-            this.btnAccount.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAccount.FlatAppearance.BorderSize = 0;
-            this.btnAccount.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAccount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAccount.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnAccount.Image = global::SupermarketManagement.Properties.Resources.profile;
-            this.btnAccount.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAccount.Location = new System.Drawing.Point(0, 0);
-            this.btnAccount.Name = "btnAccount";
-            this.btnAccount.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.btnAccount.Size = new System.Drawing.Size(290, 111);
-            this.btnAccount.TabIndex = 1;
-            this.btnAccount.Text = "   User Profile";
-            this.btnAccount.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAccount.UseVisualStyleBackColor = false;
+            // btnProfile
+            // 
+            this.btnProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(59)))));
+            this.btnProfile.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnProfile.FlatAppearance.BorderSize = 0;
+            this.btnProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProfile.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProfile.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnProfile.Image = global::SupermarketManagement.Properties.Resources.profile;
+            this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnProfile.Location = new System.Drawing.Point(0, 0);
+            this.btnProfile.Name = "btnProfile";
+            this.btnProfile.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnProfile.Size = new System.Drawing.Size(290, 111);
+            this.btnProfile.TabIndex = 1;
+            this.btnProfile.Text = "   User Profile";
+            this.btnProfile.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnProfile.UseVisualStyleBackColor = false;
+            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
             // pnlMainAdmin
             // 
@@ -260,6 +268,25 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1581, 767);
             this.tableLayoutPanel2.TabIndex = 5;
             // 
+            // btnBanHang
+            // 
+            this.btnBanHang.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnBanHang.FlatAppearance.BorderSize = 0;
+            this.btnBanHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBanHang.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBanHang.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnBanHang.Image = global::SupermarketManagement.Properties.Resources.box3;
+            this.btnBanHang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBanHang.Location = new System.Drawing.Point(0, 496);
+            this.btnBanHang.Name = "btnBanHang";
+            this.btnBanHang.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnBanHang.Size = new System.Drawing.Size(290, 55);
+            this.btnBanHang.TabIndex = 11;
+            this.btnBanHang.Text = "Bán Hàng";
+            this.btnBanHang.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnBanHang.UseVisualStyleBackColor = true;
+            this.btnBanHang.Click += new System.EventHandler(this.btnBanHang_Click);
+            // 
             // Frm_Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -279,17 +306,20 @@
 
         #endregion
         private System.Windows.Forms.Panel pnlSideBar;
-        private System.Windows.Forms.Button btnManageUser;
+        private System.Windows.Forms.Button btnManageStaff;
         private System.Windows.Forms.Button btnManagerProduct;
         private System.Windows.Forms.Panel pnlMainAdmin;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button btnLogout;
-        private System.Windows.Forms.Button btnAccount;
+        private System.Windows.Forms.Button btnProfile;
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnManagerCustom;
         private System.Windows.Forms.Button btnThongKe;
+        private System.Windows.Forms.Button btnMuaHang;
+        private System.Windows.Forms.Button btnNhapHang;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBanHang;
     }
 }

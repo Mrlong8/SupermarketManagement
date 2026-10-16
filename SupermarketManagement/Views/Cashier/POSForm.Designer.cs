@@ -33,7 +33,7 @@
             this.btnThemSP = new System.Windows.Forms.Button();
             this.btnSuaSP = new System.Windows.Forms.Button();
             this.btnTimKiemSP = new System.Windows.Forms.Button();
-            this.txtSoLuonh = new System.Windows.Forms.TextBox();
+            this.txtSoLuong = new System.Windows.Forms.TextBox();
             this.txtDonGia = new System.Windows.Forms.TextBox();
             this.txtTenSP = new System.Windows.Forms.TextBox();
             this.lblSoLuong = new System.Windows.Forms.Label();
@@ -92,7 +92,7 @@
             this.grpSanPham.Controls.Add(this.btnThemSP);
             this.grpSanPham.Controls.Add(this.btnSuaSP);
             this.grpSanPham.Controls.Add(this.btnTimKiemSP);
-            this.grpSanPham.Controls.Add(this.txtSoLuonh);
+            this.grpSanPham.Controls.Add(this.txtSoLuong);
             this.grpSanPham.Controls.Add(this.txtDonGia);
             this.grpSanPham.Controls.Add(this.txtTenSP);
             this.grpSanPham.Controls.Add(this.lblSoLuong);
@@ -118,6 +118,7 @@
             this.btnThemSP.TabIndex = 7;
             this.btnThemSP.Text = "Thêm sản phẩm";
             this.btnThemSP.UseVisualStyleBackColor = true;
+            this.btnThemSP.Click += new System.EventHandler(this.btnThemSP_Click);
             // 
             // btnSuaSP
             // 
@@ -128,6 +129,7 @@
             this.btnSuaSP.TabIndex = 8;
             this.btnSuaSP.Text = "Sửa sản phẩm";
             this.btnSuaSP.UseVisualStyleBackColor = true;
+            this.btnSuaSP.Click += new System.EventHandler(this.btnSuaSP_Click);
             // 
             // btnTimKiemSP
             // 
@@ -138,8 +140,9 @@
             this.btnTimKiemSP.TabIndex = 15;
             this.btnTimKiemSP.Text = "Tìm kiếm";
             this.btnTimKiemSP.UseVisualStyleBackColor = true;
+            this.btnTimKiemSP.Click += new System.EventHandler(this.btnTimKiemSP_Click);
             // 
-            // txtSoLuonh
+            // txtSoLuong
             // 
             this.txtSoLuonh.Location = new System.Drawing.Point(116, 124);
             this.txtSoLuonh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -264,6 +267,7 @@
             this.btnTimKiemKH.TabIndex = 16;
             this.btnTimKiemKH.Text = "Tìm kiếm";
             this.btnTimKiemKH.UseVisualStyleBackColor = true;
+            this.btnTimKiemKH.Click += new System.EventHandler(this.btnTimKiemKH_Click);
             // 
             // btnXoaKH
             // 
@@ -274,6 +278,7 @@
             this.btnXoaKH.TabIndex = 13;
             this.btnXoaKH.Text = "Xóa khách hàng";
             this.btnXoaKH.UseVisualStyleBackColor = true;
+            this.btnXoaKH.Click += new System.EventHandler(this.btnXoaKH_Click);
             // 
             // txtTenKH
             // 
@@ -300,6 +305,7 @@
             this.btnSuaKH.TabIndex = 12;
             this.btnSuaKH.Text = "Sửa khách hàng";
             this.btnSuaKH.UseVisualStyleBackColor = true;
+            this.btnSuaKH.Click += new System.EventHandler(this.btnSuaKH_Click);
             // 
             // lblEmain
             // 
@@ -328,6 +334,7 @@
             this.btnThemKH.TabIndex = 11;
             this.btnThemKH.Text = "Thêm khách hàng";
             this.btnThemKH.UseVisualStyleBackColor = true;
+            this.btnThemKH.Click += new System.EventHandler(this.btnThemKH_Click);
             // 
             // lblTenKH
             // 
@@ -357,7 +364,6 @@
             this.dgvChiTietHoaDon.RowTemplate.Height = 28;
             this.dgvChiTietHoaDon.Size = new System.Drawing.Size(823, 120);
             this.dgvChiTietHoaDon.TabIndex = 9;
-            this.dgvChiTietHoaDon.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChiTietHoaDon_CellContentClick);
             // 
             // colMaSP
             // 
@@ -408,6 +414,7 @@
             this.btnXoaSPKhoiHD.TabIndex = 10;
             this.btnXoaSPKhoiHD.Text = "Xóa sản phẩm";
             this.btnXoaSPKhoiHD.UseVisualStyleBackColor = true;
+            this.btnXoaSPKhoiHD.Click += new System.EventHandler(this.btnXoaSPKhoiHD_Click);
             // 
             // label1
             // 
@@ -417,7 +424,6 @@
             this.label1.Size = new System.Drawing.Size(126, 16);
             this.label1.TabIndex = 11;
             this.label1.Text = "CHI TIẾT HÓA ĐƠN";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // grpHoaDon
             // 
@@ -449,6 +455,16 @@
             this.btnDangXuat.UseVisualStyleBackColor = true;
             this.btnDangXuat.Click += new System.EventHandler(this.btnDangXuat_Click);
             // 
+            // btnThoat
+            // 
+            this.btnThoat.Location = new System.Drawing.Point(988, 107);
+            this.btnThoat.Name = "btnThoat";
+            this.btnThoat.Size = new System.Drawing.Size(130, 60);
+            this.btnThoat.TabIndex = 13;
+            this.btnThoat.Text = "Thoát";
+            this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
+            // 
             // btnTaoHoaDon
             // 
             this.btnTaoHoaDon.Location = new System.Drawing.Point(154, 73);
@@ -458,6 +474,7 @@
             this.btnTaoHoaDon.TabIndex = 13;
             this.btnTaoHoaDon.Text = "Tạo hóa đơn";
             this.btnTaoHoaDon.UseVisualStyleBackColor = true;
+            this.btnTaoHoaDon.Click += new System.EventHandler(this.btnTaoHoaDon_Click);
             // 
             // btnXuatHoaDon
             // 
@@ -468,6 +485,7 @@
             this.btnXuatHoaDon.TabIndex = 14;
             this.btnXuatHoaDon.Text = "Xuất hóa đơn";
             this.btnXuatHoaDon.UseVisualStyleBackColor = true;
+            this.btnXuatHoaDon.Click += new System.EventHandler(this.btnXuatHoaDon_Click);
             // 
             // txtMaHD
             // 
@@ -545,6 +563,9 @@
 
         }
 
+
+
+
         #endregion
 
         private System.Windows.Forms.Label lblTieuDe;
@@ -557,7 +578,7 @@
         private System.Windows.Forms.Label lblMaKH;
         private System.Windows.Forms.TextBox txtTenSP;
         private System.Windows.Forms.TextBox txtDonGia;
-        private System.Windows.Forms.TextBox txtSoLuonh;
+        private System.Windows.Forms.TextBox txtSoLuong;
         private System.Windows.Forms.Button btnSuaSP;
         private System.Windows.Forms.Button btnThemSP;
         private System.Windows.Forms.GroupBox grpKhachHang;

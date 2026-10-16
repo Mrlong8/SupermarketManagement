@@ -25,6 +25,8 @@ namespace SupermarketManagement
             // [Của Long Hiện] chạy thẳng form Admin để test. Muốn test form riêng: bỏ comment dòng này và comment đoạn của Nam bên dưới
             //Application.Run(new Frm_Admin()); // nếu muons chạy form khác thì đổi tên form ở đây của Long Hiện tại là Admin mọi người có thể comment và tuyệt đói không xóa của người khác nhé
             //Application.Run(new Frm_Admin()); test ở đây
+            //Application.Run(new POSForm()); // nếu muons chạy form khác thì đổi tên form ở đây của Long Hiện tại là Admin mọi người có thể comment và tuyệt đói không xóa của người khác nhé
+            Application.Run(new Frm_Admin()); //test ở đây
 
             // ================= CỦA NAM: Đăng nhập -> kiểm tra Role -> vào form của Role đó -> Đăng xuất quay lại Đăng nhập =================
             while (true)

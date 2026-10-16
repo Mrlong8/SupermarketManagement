@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+          Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED60E394-5B3B-4BF5-ADF9-06D27DC2E704}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>SupermarketManagement</RootNamespace>
+    <AssemblyName>SupermarketManagement</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <StartupObject>SupermarketManagement.Program</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <!-- References -->
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+
+  <!-- Source code -->
+  <ItemGroup>
+
+    <!-- Main form -->
+    <Compile Include="Frm_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm_Main.Designer.cs">
+      <DependentUpon>Frm_Main.cs</DependentUpon>
+    </Compile>
+
+    <!-- Application -->
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+
+    <!-- Generated resources and settings -->
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+
+    <!-- Authentication -->
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Models\Entities\PhienDangNhap.cs" />
+    <Compile Include="Views\Auth\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Auth\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+
+    <!-- Repositories -->
+    
+    <Compile Include="Models\Repositories\NhanVienRepository.cs" />
+    <Compile Include="Models\Repositories\HoaDonRepository.cs" />
+    <Compile Include="Models\Repositories\TaiKhoanRepository.cs" />
+    <Compile Include="Utils\SecurityHelper.cs" />
+    <Compile Include="Utils\UserSession.cs" />
+    <Compile Include="Views\Admin\NhanVien\IndexNhanVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Account\IndexControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+
+    <!-- Utilities -->
+    <Compile Include="Utils\ThemeColor.cs" />
+    <Compile Include="Utils\SecurityHelper.cs" />
+    <Compile Include="Utils\UserSession.cs" />
+
+    <!-- Employee management -->
+    <Compile Include="Views\Admin\NhanVien\IndexNhanVien.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\NhanVien\IndexNhanVien.Designer.cs">
+      <DependentUpon>IndexNhanVien.cs</DependentUpon>
+    </Compile>
+
+    <!-- Position management -->
+    <Compile Include="Views\Admin\ChucVu\IndexChucVu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\ChucVu\IndexChucVu.Designer.cs">
+      <DependentUpon>IndexChucVu.cs</DependentUpon>
+    </Compile>
+
+    <!-- Account management -->
+    <Compile Include="Views\Admin\Account\IndexControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Account\IndexControl.Designer.cs">
+      <DependentUpon>IndexControl.cs</DependentUpon>
+    </Compile>
+
+    <!-- Admin -->
+    <Compile Include="Views\Admin\Frm_Admin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Frm_Admin.Designer.cs">
+      <DependentUpon>Frm_Admin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\DashboardForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\DashboardForm.Designer.cs">
+      <DependentUpon>DashboardForm.cs</DependentUpon>
+    </Compile>
+
+    <!-- Product management -->
+    <Compile Include="Views\Admin\Product\IndexProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Product\IndexProduct.Designer.cs">
+      <DependentUpon>IndexProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\Product\ProductItemControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Product\ProductItemControl.Designer.cs">
+      <DependentUpon>ProductItemControl.cs</DependentUpon>
+    </Compile>
+
+    <!-- Cashier / POS -->
+    <Compile Include="Views\Cashier\POSForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Cashier\POSForm.Designer.cs">
+      <DependentUpon>POSForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cashier\InvoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Cashier\InvoiceForm.Designer.cs">
+      <DependentUpon>InvoiceForm.cs</DependentUpon>
+    </Compile>
+
+    <!-- Legacy files using View instead of Views -->
+    <Compile Include="View\Account\IndexControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="View\Account\IndexControl.Designer.cs">
+      <DependentUpon>IndexControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Admin\Frm_Admin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Admin\Frm_Admin.Designer.cs">
+      <DependentUpon>Frm_Admin.cs</DependentUpon>
+    </Compile>
+
+  </ItemGroup>
+
+  <!-- Embedded resources -->
+  <ItemGroup>
+    <EmbeddedResource Include="Frm_Main.resx">
+      <DependentUpon>Frm_Main.cs</DependentUpon>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="View\Account\IndexControl.resx">
+      <DependentUpon>IndexControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Admin\Frm_Admin.resx">
+      <DependentUpon>Frm_Admin.cs</DependentUpon>
+    </EmbeddedResource>
+
+    <EmbeddedResource Include="Views\Admin\NhanVien\IndexNhanVien.resx">
+      <DependentUpon>IndexNhanVien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\ChucVu\IndexChucVu.resx">
+      <DependentUpon>IndexChucVu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Account\IndexControl.resx">
+      <DependentUpon>IndexControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Frm_Admin.resx">
+      <DependentUpon>Frm_Admin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Product\IndexProduct.resx">
+      <DependentUpon>IndexProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Product\ProductItemControl.resx">
+      <DependentUpon>ProductItemControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Cashier\POSForm.resx">
+      <DependentUpon>POSForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Cashier\InvoiceForm.resx">
+      <DependentUpon>InvoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+
+  </ItemGroup>
+
+  <!-- Settings and configuration -->
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+  </ItemGroup>
+
+  <!-- Resource files -->
+  <ItemGroup>
+    <Content Include="Resources\Icon\analytics.png" />
+    <Content Include="Resources\Icon\box.png" />
+    <Content Include="Resources\Icon\invoice.png" />
+    <Content Include="Resources\Icon\logout.png" />
+    <Content Include="Resources\Icon\delete.png" />
+    <Content Include="Resources\Icon\minus-sign.png" />
+    <Content Include="Resources\Icon\profile.png" />
+    <Content Include="Resources\Icon\customer.png" />
+    <Content Include="Resources\Icon\stop.png" />
+    <Content Include="Resources\Icon\user.png" />
+    <Content Include="Resources\Product\b7.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+</Project>
