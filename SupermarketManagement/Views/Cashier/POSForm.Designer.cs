@@ -72,10 +72,17 @@
             this.lblTongTien = new System.Windows.Forms.Label();
             this.lblMaHD = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.dgvDSSP = new System.Windows.Forms.DataGridView();
+            this.colMaSP_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colTenSP_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSoLuongTon_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDonGiaBan_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label2 = new System.Windows.Forms.Label();
             this.grpSanPham.SuspendLayout();
             this.grpKhachHang.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvChiTietHoaDon)).BeginInit();
             this.grpHoaDon.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDSSP)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTieuDe
@@ -329,7 +336,12 @@
             // dgvChiTietHoaDon
             // 
             this.dgvChiTietHoaDon.AllowUserToAddRows = false;
+            this.dgvChiTietHoaDon.AllowUserToDeleteRows = false;
+            this.dgvChiTietHoaDon.AllowUserToResizeColumns = false;
+            this.dgvChiTietHoaDon.AllowUserToResizeRows = false;
+            this.dgvChiTietHoaDon.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvChiTietHoaDon.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.dgvChiTietHoaDon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dgvChiTietHoaDon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvChiTietHoaDon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colMaSP,
@@ -337,57 +349,62 @@
             this.colSoLuong,
             this.colDonGia,
             this.colThanhTien});
-            this.dgvChiTietHoaDon.Location = new System.Drawing.Point(12, 347);
+            this.dgvChiTietHoaDon.GridColor = System.Drawing.Color.Silver;
+            this.dgvChiTietHoaDon.Location = new System.Drawing.Point(12, 607);
+            this.dgvChiTietHoaDon.MultiSelect = false;
             this.dgvChiTietHoaDon.Name = "dgvChiTietHoaDon";
             this.dgvChiTietHoaDon.ReadOnly = true;
+            this.dgvChiTietHoaDon.RowHeadersVisible = false;
             this.dgvChiTietHoaDon.RowHeadersWidth = 62;
             this.dgvChiTietHoaDon.RowTemplate.Height = 28;
+            this.dgvChiTietHoaDon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvChiTietHoaDon.Size = new System.Drawing.Size(1183, 181);
             this.dgvChiTietHoaDon.TabIndex = 9;
+            this.dgvChiTietHoaDon.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvChiTietHoaDon_CellClick);
             // 
             // colMaSP
             // 
+            this.colMaSP.DataPropertyName = "MaSP";
             this.colMaSP.HeaderText = "Mã SP";
             this.colMaSP.MinimumWidth = 8;
             this.colMaSP.Name = "colMaSP";
             this.colMaSP.ReadOnly = true;
-            this.colMaSP.Width = 150;
             // 
             // colTenSP
             // 
+            this.colTenSP.DataPropertyName = "TenSanPham";
             this.colTenSP.HeaderText = "Tên sản phẩm";
             this.colTenSP.MinimumWidth = 8;
             this.colTenSP.Name = "colTenSP";
             this.colTenSP.ReadOnly = true;
-            this.colTenSP.Width = 150;
             // 
             // colSoLuong
             // 
+            this.colSoLuong.DataPropertyName = "SoLuong";
             this.colSoLuong.HeaderText = "Số lượng";
             this.colSoLuong.MinimumWidth = 8;
             this.colSoLuong.Name = "colSoLuong";
             this.colSoLuong.ReadOnly = true;
-            this.colSoLuong.Width = 150;
             // 
             // colDonGia
             // 
+            this.colDonGia.DataPropertyName = "DonGia";
             this.colDonGia.HeaderText = "Đơn giá";
             this.colDonGia.MinimumWidth = 8;
             this.colDonGia.Name = "colDonGia";
             this.colDonGia.ReadOnly = true;
-            this.colDonGia.Width = 150;
             // 
             // colThanhTien
             // 
+            this.colThanhTien.DataPropertyName = "ThanhTien";
             this.colThanhTien.HeaderText = "Thành tiền";
             this.colThanhTien.MinimumWidth = 8;
             this.colThanhTien.Name = "colThanhTien";
             this.colThanhTien.ReadOnly = true;
-            this.colThanhTien.Width = 150;
             // 
             // btnXoaSPKhoiHD
             // 
-            this.btnXoaSPKhoiHD.Location = new System.Drawing.Point(1060, 536);
+            this.btnXoaSPKhoiHD.Location = new System.Drawing.Point(1060, 810);
             this.btnXoaSPKhoiHD.Name = "btnXoaSPKhoiHD";
             this.btnXoaSPKhoiHD.Size = new System.Drawing.Size(135, 60);
             this.btnXoaSPKhoiHD.TabIndex = 10;
@@ -398,7 +415,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(510, 324);
+            this.label1.Location = new System.Drawing.Point(510, 574);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(153, 20);
             this.label1.TabIndex = 11;
@@ -414,7 +431,7 @@
             this.grpHoaDon.Controls.Add(this.txtTongTien);
             this.grpHoaDon.Controls.Add(this.lblTongTien);
             this.grpHoaDon.Controls.Add(this.lblMaHD);
-            this.grpHoaDon.Location = new System.Drawing.Point(12, 602);
+            this.grpHoaDon.Location = new System.Drawing.Point(12, 888);
             this.grpHoaDon.Name = "grpHoaDon";
             this.grpHoaDon.Size = new System.Drawing.Size(1183, 221);
             this.grpHoaDon.TabIndex = 12;
@@ -497,11 +514,80 @@
             this.lblMaHD.TabIndex = 14;
             this.lblMaHD.Text = "Mã HD";
             // 
+            // dgvDSSP
+            // 
+            this.dgvDSSP.AllowUserToAddRows = false;
+            this.dgvDSSP.AllowUserToDeleteRows = false;
+            this.dgvDSSP.AllowUserToResizeColumns = false;
+            this.dgvDSSP.AllowUserToResizeRows = false;
+            this.dgvDSSP.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvDSSP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDSSP.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colMaSP_DSSP,
+            this.colTenSP_DSSP,
+            this.colSoLuongTon_DSSP,
+            this.colDonGiaBan_DSSP});
+            this.dgvDSSP.Location = new System.Drawing.Point(12, 363);
+            this.dgvDSSP.MultiSelect = false;
+            this.dgvDSSP.Name = "dgvDSSP";
+            this.dgvDSSP.ReadOnly = true;
+            this.dgvDSSP.RowHeadersVisible = false;
+            this.dgvDSSP.RowHeadersWidth = 62;
+            this.dgvDSSP.RowTemplate.Height = 28;
+            this.dgvDSSP.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDSSP.Size = new System.Drawing.Size(1183, 190);
+            this.dgvDSSP.TabIndex = 13;
+            this.dgvDSSP.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDSSP_CellDoubleClick);
+            // 
+            // colMaSP_DSSP
+            // 
+            this.colMaSP_DSSP.DataPropertyName = "MaSP";
+            this.colMaSP_DSSP.HeaderText = "Mã SP";
+            this.colMaSP_DSSP.MinimumWidth = 8;
+            this.colMaSP_DSSP.Name = "colMaSP_DSSP";
+            this.colMaSP_DSSP.ReadOnly = true;
+            // 
+            // colTenSP_DSSP
+            // 
+            this.colTenSP_DSSP.DataPropertyName = "TenSanPham";
+            this.colTenSP_DSSP.HeaderText = "Tên sản phẩm";
+            this.colTenSP_DSSP.MinimumWidth = 8;
+            this.colTenSP_DSSP.Name = "colTenSP_DSSP";
+            this.colTenSP_DSSP.ReadOnly = true;
+            // 
+            // colSoLuongTon_DSSP
+            // 
+            this.colSoLuongTon_DSSP.DataPropertyName = "SoLuong";
+            this.colSoLuongTon_DSSP.HeaderText = "Số lượng";
+            this.colSoLuongTon_DSSP.MinimumWidth = 8;
+            this.colSoLuongTon_DSSP.Name = "colSoLuongTon_DSSP";
+            this.colSoLuongTon_DSSP.ReadOnly = true;
+            // 
+            // colDonGiaBan_DSSP
+            // 
+            this.colDonGiaBan_DSSP.DataPropertyName = "DonGiaBan";
+            this.colDonGiaBan_DSSP.HeaderText = "Đơn giá bán";
+            this.colDonGiaBan_DSSP.MinimumWidth = 8;
+            this.colDonGiaBan_DSSP.Name = "colDonGiaBan_DSSP";
+            this.colDonGiaBan_DSSP.ReadOnly = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(510, 328);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(160, 20);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Danh sách sản phẩm";
+            // 
             // POSForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1223, 844);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1223, 1144);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.dgvDSSP);
             this.Controls.Add(this.grpHoaDon);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnXoaSPKhoiHD);
@@ -510,6 +596,7 @@
             this.Controls.Add(this.grpSanPham);
             this.Controls.Add(this.lblTieuDe);
             this.Name = "POSForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "QUẢN LÝ BÁN HÀNG";
             this.grpSanPham.ResumeLayout(false);
             this.grpSanPham.PerformLayout();
@@ -518,6 +605,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvChiTietHoaDon)).EndInit();
             this.grpHoaDon.ResumeLayout(false);
             this.grpHoaDon.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDSSP)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -553,11 +641,6 @@
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.TextBox txtSDT;
         private System.Windows.Forms.DataGridView dgvChiTietHoaDon;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMaSP;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTenSP;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSoLuong;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDonGia;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colThanhTien;
         private System.Windows.Forms.Button btnXoaSPKhoiHD;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox grpHoaDon;
@@ -572,5 +655,16 @@
         private System.Windows.Forms.Button btnTimKiemKH;
         private System.Windows.Forms.Button btnLamMoi;
         private System.Windows.Forms.Button btnThoat;
+        private System.Windows.Forms.DataGridView dgvDSSP;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaSP_DSSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTenSP_DSSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSoLuongTon_DSSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDonGiaBan_DSSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTenSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSoLuong;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDonGia;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colThanhTien;
     }
 }

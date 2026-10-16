@@ -7,7 +7,7 @@ namespace SupermarketManagement.Models.Repositories
     internal class HoaDonRepository
     {
         private readonly string connectionString =
-           @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True";
+           @"Data Source=localhost;Initial Catalog=SupermarketManagement_New;Integrated Security=True";
 
         /// <summary>
         /// Lưu hóa đơn và các sản phẩm thuộc hóa đơn vào database.
@@ -76,6 +76,26 @@ namespace SupermarketManagement.Models.Repositories
                         foreach (DataRow row in chiTiet.Rows)
                         {
                             string maSP = Convert.ToString(row["MaSP"]);
+                            string sqlKiemTra = @"
+                                SELECT COUNT(*)
+                                FROM dbo.SanPham
+                                WHERE MaSP = @MaSP";
+
+                            using (SqlCommand cmdKiemTra =
+                                new SqlCommand(sqlKiemTra, conn, transaction))
+                            {
+                                cmdKiemTra.Parameters.Add("@MaSP", SqlDbType.VarChar, 20)
+                                    .Value = maSP.Trim();
+
+                                int tonTai = Convert.ToInt32(cmdKiemTra.ExecuteScalar());
+
+                                if (tonTai == 0)
+                                {
+                                    throw new Exception(
+                                        "Mã sản phẩm '" + maSP +
+                                        "' không tồn tại trong bảng SanPham.");
+                                }
+                            }
 
                             int soLuongBan = Convert.ToInt32(row["SoLuongBan"]);
 

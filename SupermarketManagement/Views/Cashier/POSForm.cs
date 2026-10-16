@@ -1,15 +1,19 @@
-﻿using System;
-using System.Globalization;
+﻿using SupermarketManagement.Controllers.Repositories;
+using SupermarketManagement.Models.Repositories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SupermarketManagement.Models.Repositories;
+using SupermarketManagement.Utils;
 
 namespace SupermarketManagement
 {
@@ -18,16 +22,34 @@ namespace SupermarketManagement
         private int soHoaDon = 1;
 
         private readonly HoaDonRepository hoaDonRepository = new HoaDonRepository();
+        private readonly SanPhamRepositoryV2 sanPhamRepository = new SanPhamRepositoryV2();
         public POSForm()
         {
 
 
             InitializeComponent();
             // Cấu hình bảng chi tiết hóa đơn
+            dgvChiTietHoaDon.ReadOnly = true;
+            dgvChiTietHoaDon.MultiSelect = false;
             dgvChiTietHoaDon.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
-            dgvChiTietHoaDon.MultiSelect = false;
+
             dgvChiTietHoaDon.AllowUserToAddRows = false;
+            dgvChiTietHoaDon.AllowUserToDeleteRows = false;
+            dgvChiTietHoaDon.RowHeadersVisible = false;
+
+            dgvChiTietHoaDon.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvChiTietHoaDon.BackgroundColor = Color.White;
+            dgvChiTietHoaDon.GridColor = Color.Silver;
+
+            dgvDSSP.ReadOnly = true;
+            dgvDSSP.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+            dgvDSSP.MultiSelect = false;
+            dgvDSSP.AllowUserToAddRows = false;
+            TaiDanhSachSanPham();
 
             txtMaHD.ReadOnly = true;
             txtTongTien.ReadOnly = true;
@@ -153,10 +175,70 @@ namespace SupermarketManagement
             MessageBox.Show("Đã sửa sản phẩm trong hóa đơn.");
         }
 
-        // Chọn sản phẩm trong bảng để đưa thông tin lên các ô nhập
-        private void dgvChiTietHoaDon_CellContentClick(
-            object sender, DataGridViewCellEventArgs e)
+        private void TaiDanhSachSanPham()
         {
+            try
+            {
+                DataTable dt = sanPhamRepository.GetListSanPham();
+
+                dgvDSSP.AutoGenerateColumns = false;
+                dgvDSSP.DataSource = dt;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi tải sản phẩm: " + ex.Message,"Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error
+                );
+            }
+        }
+        private void dgvDSSP_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Bỏ qua nếu nhấn vào tiêu đề cột
+            if (e.RowIndex < 0)
+                return;
+
+            // Lấy dòng sản phẩm được chọn
+            DataGridViewRow row = dgvDSSP.Rows[e.RowIndex];
+
+            string maSP = row.Cells["colMaSP_DSSP"].Value?.ToString();
+            string tenSP = row.Cells["colTenSP_DSSP"].Value?.ToString();
+            decimal donGia = Convert.ToDecimal(
+                row.Cells["colDonGiaBan_DSSP"].Value);
+
+            // Kiểm tra sản phẩm đã có trong hóa đơn chưa
+            foreach (DataGridViewRow dong in dgvChiTietHoaDon.Rows)
+            {
+                if (dong.IsNewRow)
+                    continue;
+
+                if (dong.Cells["colMaSP"].Value?.ToString() == maSP)
+                {
+                    int soLuong = Convert.ToInt32(
+                        dong.Cells["colSoLuong"].Value);
+
+                    dong.Cells["colSoLuong"].Value = soLuong + 1;
+                    dong.Cells["colThanhTien"].Value = (soLuong + 1) * donGia;
+
+                    CapNhatTongTien();
+                    return;
+                }
+            }
+
+            // Nếu chưa có, thêm sản phẩm vào hóa đơn
+            dgvChiTietHoaDon.Rows.Add(
+                maSP,
+                tenSP,
+                1,
+                donGia,
+                donGia
+            );
+
+            CapNhatTongTien();
+        }
+        // Chọn sản phẩm khi nhấn vào bất kỳ ô nào trong hàng
+        private void dgvChiTietHoaDon_CellClick( object sender, DataGridViewCellEventArgs e)
+        {
+
             if (e.RowIndex < 0)
                 return;
 
@@ -164,11 +246,10 @@ namespace SupermarketManagement
 
             txtMaSP.Text = Convert.ToString(row.Cells["colMaSP"].Value);
             txtTenSP.Text = Convert.ToString(row.Cells["colTenSP"].Value);
-            txtSoLuong.Text =
-                Convert.ToString(row.Cells["colSoLuong"].Value);
-            txtDonGia.Text =
-                Convert.ToString(row.Cells["colDonGia"].Value);
+            txtSoLuong.Text = Convert.ToString(row.Cells["colSoLuong"].Value);
+            txtDonGia.Text = Convert.ToString(row.Cells["colDonGia"].Value);
         }
+
 
         // Tìm sản phẩm trong các dòng đã thêm vào hóa đơn
         private void btnTimKiemSP_Click(object sender, EventArgs e)
@@ -201,7 +282,7 @@ namespace SupermarketManagement
                     dgvChiTietHoaDon.CurrentCell =
                         row.Cells["colMaSP"];
 
-                    dgvChiTietHoaDon_CellContentClick(
+                    dgvChiTietHoaDon_CellClick(
                         dgvChiTietHoaDon,
                         new DataGridViewCellEventArgs(
                             0, row.Index));
@@ -257,8 +338,10 @@ namespace SupermarketManagement
 
         // Tạo mã hóa đơn mới
 
+
         private void btnTaoHoaDon_Click(object sender, EventArgs e)
         {
+            // 1. Kiểm tra hóa đơn có sản phẩm chưa
             if (dgvChiTietHoaDon.Rows.Count == 0 ||
                 (dgvChiTietHoaDon.Rows.Count == 1 &&
                  dgvChiTietHoaDon.Rows[0].IsNewRow))
@@ -267,47 +350,64 @@ namespace SupermarketManagement
                 return;
             }
 
+            // 2. Kiểm tra mã hóa đơn
             if (string.IsNullOrWhiteSpace(txtMaHD.Text))
             {
                 MessageBox.Show("Mã hóa đơn đang trống.");
                 return;
             }
 
-            decimal tongTien = 0;
-
-            foreach (DataGridViewRow row in dgvChiTietHoaDon.Rows)
+            // 3. Lấy mã nhân viên đang đăng nhập
+            if (UserSession.MaNV <= 0)
             {
-                if (row.IsNewRow) continue;
-
-                decimal thanhTien = Convert.ToDecimal(
-                    row.Cells["colThanhTien"].Value);
-
-                tongTien += thanhTien;
+                MessageBox.Show("Không xác định được nhân viên đang đăng nhập.");
+                return;
             }
+
+            string maNV = UserSession.MaNV.ToString();
+
+            // 4. Lấy mã khách hàng
+            string maKH = string.IsNullOrWhiteSpace(txtMaKH.Text)
+                ? null
+                : txtMaKH.Text.Trim();
 
             try
             {
-                //chưa có mã khách hàng thật nên để là null
-                string maKH = string.IsNullOrWhiteSpace(txtMaKH.Text)
-                    ? null
-                    : txtMaKH.Text.Trim();
+                // 5. Tính tổng tiền
+                decimal tongTien = 0;
+
+                foreach (DataGridViewRow row in dgvChiTietHoaDon.Rows)
+                {
+                    if (row.IsNewRow)
+                        continue;
+
+                    if (row.Cells["colThanhTien"].Value == null)
+                        continue;
+
+                    tongTien += Convert.ToDecimal(
+                        row.Cells["colThanhTien"].Value);
+                }
+
+                // 6. Lấy chi tiết hóa đơn
+                DataTable dtChiTiet = LayChiTietHoaDon();
+                MessageBox.Show(
+                    "MaNV đăng nhập = " + UserSession.MaNV);
+                // 7. Lưu hóa đơn và chi tiết hóa đơn
                 hoaDonRepository.LuuHoaDon(
                     txtMaHD.Text.Trim(),
                     tongTien,
                     DateTime.Now,
                     maKH,
-                    null,
-                    LayChiTietHoaDon()
-            );
-
-
-
+                    maNV,
+                    dtChiTiet
+                );
 
                 MessageBox.Show(
-                    "Lưu hóa đơn vào SQL Server thành công!");
+                    "Lưu hóa đơn và chi tiết hóa đơn thành công!");
 
-                // Xóa dữ liệu sau khi lưu thành công
+                // 8. Xóa dữ liệu đang lập sau khi lưu thành công
                 dgvChiTietHoaDon.Rows.Clear();
+
                 txtMaKH.Clear();
                 txtTenKH.Clear();
                 txtSDT.Clear();
@@ -322,6 +422,7 @@ namespace SupermarketManagement
                     "Không thể lưu hóa đơn:\n" + ex.Message);
             }
         }
+
         private DataTable LayChiTietHoaDon()
         {
             DataTable dt = new DataTable();
@@ -423,8 +524,41 @@ namespace SupermarketManagement
             public string Email { get; set; }
         }
 
-        private readonly List<KhachHang> danhSachKH =
-            new List<KhachHang>();
+        private readonly List<KhachHang> danhSachKH = new List<KhachHang>();
+
+        private bool KiemTraThongTinKhachHang(
+             string maKH, string tenKH, string sdt, string email)
+        {
+            if (maKH == "" || tenKH == "" || sdt == "" || email == "")
+            {
+                MessageBox.Show(
+                    "Vui lòng nhập đầy đủ mã khách hàng, họ tên, số điện thoại và email.");
+                return false;
+            }
+
+            if (!Regex.IsMatch(sdt, @"^[0-9]{10}$") || sdt == "0000000000")
+            {
+                MessageBox.Show("Số điện thoại phải gồm 10 chữ số và không được là toàn số 0.");
+                txtSDT.Focus();
+                return false;
+            }
+
+            try
+            {
+                MailAddress diaChi = new MailAddress(email);
+
+                if (diaChi.Address != email)
+                    throw new FormatException();
+            }
+            catch
+            {
+                MessageBox.Show("Email không đúng định dạng. Ví dụ: abc@gmail.com");
+                txtEmail.Focus();
+                return false;
+            }
+
+            return true;
+        }
 
         private void btnThemKH_Click(object sender, EventArgs e)
         {
@@ -433,35 +567,74 @@ namespace SupermarketManagement
             string sdt = txtSDT.Text.Trim();
             string email = txtEmail.Text.Trim();
 
-            if (maKH == "" || tenKH == "")
-            {
-                MessageBox.Show("Vui lòng nhập mã và họ tên khách hàng.");
+            if (!KiemTraThongTinKhachHang(maKH, tenKH, sdt, email))
                 return;
-            }
 
-            if (danhSachKH.Any(kh => kh.MaKH.Equals(
-                maKH, StringComparison.OrdinalIgnoreCase)))
+            try
             {
-                MessageBox.Show("Mã khách hàng đã tồn tại.");
-                return;
+                DbConection db = new DbConection();
+
+                // Kiểm tra mã khách hàng trùng trong database
+                DataTable dt = db.GetTable(
+                    "SELECT MaKH FROM dbo.KhachHang WHERE MaKH = @MaKH",
+                    new SqlParameter("@MaKH", maKH));
+
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("Mã khách hàng đã tồn tại.");
+                    return;
+                }
+
+                // Kiểm tra số điện thoại trùng
+                dt = db.GetTable(
+                    "SELECT MaKH FROM dbo.KhachHang WHERE SoDienThoai = @SDT",
+                    new SqlParameter("@SDT", sdt));
+
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("Số điện thoại đã được đăng ký.");
+                    return;
+                }
+
+                // Kiểm tra email trùng
+                dt = db.GetTable(
+                    "SELECT MaKH FROM dbo.KhachHang WHERE Email = @Email",
+                    new SqlParameter("@Email", email));
+
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("Email đã được đăng ký.");
+                    return;
+                }
+
+                string sql = @"
+            INSERT INTO dbo.KhachHang
+                (MaKH, HoTen, SoDienThoai, Email, NgayDangKy, DiemTichLuy)
+            VALUES
+                (@MaKH, @HoTen, @SDT, @Email, GETDATE(), 0)";
+
+                int soDong = db.ExecuteNonQuery(
+                    sql,
+                    new SqlParameter("@MaKH", maKH),
+                    new SqlParameter("@HoTen", tenKH),
+                    new SqlParameter("@SDT", sdt),
+                    new SqlParameter("@Email", email));
+
+                if (soDong > 0)
+                {
+                    MessageBox.Show("Thêm khách hàng vào database thành công.");
+                }
+                else
+                {
+                    MessageBox.Show("Không thêm được khách hàng.");
+                }
             }
-
-            if (sdt != "" && danhSachKH.Any(kh => kh.SDT == sdt))
+            catch (Exception ex)
             {
-                MessageBox.Show("Số điện thoại đã được đăng ký.");
-                return;
+                MessageBox.Show("Lỗi khi thêm khách hàng:\n" + ex.Message);
             }
-
-            danhSachKH.Add(new KhachHang
-            {
-                MaKH = maKH,
-                TenKH = tenKH,
-                SDT = sdt,
-                Email = email
-            });
-
-            MessageBox.Show("Thêm khách hàng thành công.");
         }
+
 
         private void btnSuaKH_Click(object sender, EventArgs e)
         {
@@ -470,35 +643,75 @@ namespace SupermarketManagement
             string sdt = txtSDT.Text.Trim();
             string email = txtEmail.Text.Trim();
 
-            KhachHang kh = danhSachKH.FirstOrDefault(
-                x => x.MaKH.Equals(
-                    maKH, StringComparison.OrdinalIgnoreCase));
-
-            if (kh == null)
-            {
-                MessageBox.Show("Không tìm thấy khách hàng cần sửa.");
+            if (!KiemTraThongTinKhachHang(maKH, tenKH, sdt, email))
                 return;
-            }
 
-            if (tenKH == "")
+            try
             {
-                MessageBox.Show("Vui lòng nhập họ tên khách hàng.");
-                return;
-            }
+                DbConection db = new DbConection();
 
-            if (sdt != "" && danhSachKH.Any(x =>
-                x.SDT == sdt && x != kh))
+                // Kiểm tra khách hàng có tồn tại
+                DataTable dt = db.GetTable(
+                    "SELECT MaKH FROM dbo.KhachHang WHERE MaKH = @MaKH",
+                    new SqlParameter("@MaKH", maKH));
+
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không tìm thấy khách hàng cần sửa.");
+                    return;
+                }
+
+                // Kiểm tra số điện thoại có thuộc khách hàng khác không
+                dt = db.GetTable(
+                    @"SELECT MaKH FROM dbo.KhachHang
+              WHERE SoDienThoai = @SDT AND MaKH <> @MaKH",
+                    new SqlParameter("@SDT", sdt),
+                    new SqlParameter("@MaKH", maKH));
+
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("Số điện thoại đã được khách hàng khác đăng ký.");
+                    return;
+                }
+
+                // Kiểm tra email có thuộc khách hàng khác không
+                dt = db.GetTable(
+                    @"SELECT MaKH FROM dbo.KhachHang
+              WHERE Email = @Email AND MaKH <> @MaKH",
+                    new SqlParameter("@Email", email),
+                    new SqlParameter("@MaKH", maKH));
+
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("Email đã được khách hàng khác đăng ký.");
+                    return;
+                }
+
+                string sql = @"
+            UPDATE dbo.KhachHang
+            SET HoTen = @HoTen,
+                SoDienThoai = @SDT,
+                Email = @Email
+            WHERE MaKH = @MaKH";
+
+                int soDong = db.ExecuteNonQuery(
+                    sql,
+                    new SqlParameter("@HoTen", tenKH),
+                    new SqlParameter("@SDT", sdt),
+                    new SqlParameter("@Email", email),
+                    new SqlParameter("@MaKH", maKH));
+
+                MessageBox.Show(soDong > 0
+                    ? "Sửa khách hàng thành công."
+                    : "Không có dữ liệu được cập nhật.");
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show("Số điện thoại đã được khách hàng khác sử dụng.");
-                return;
+                MessageBox.Show("Lỗi khi sửa khách hàng:\n" + ex.Message);
             }
-
-            kh.TenKH = tenKH;
-            kh.SDT = sdt;
-            kh.Email = email;
-
-            MessageBox.Show("Cập nhật khách hàng thành công.");
         }
+
+
 
         private void btnXoaKH_Click(object sender, EventArgs e)
         {
@@ -507,21 +720,12 @@ namespace SupermarketManagement
             if (maKH == "")
             {
                 MessageBox.Show("Vui lòng nhập mã khách hàng cần xóa.");
-                return;
-            }
-
-            KhachHang kh = danhSachKH.FirstOrDefault(
-                x => x.MaKH.Equals(
-                    maKH, StringComparison.OrdinalIgnoreCase));
-
-            if (kh == null)
-            {
-                MessageBox.Show("Không tìm thấy khách hàng cần xóa.");
+                txtMaKH.Focus();
                 return;
             }
 
             DialogResult ketQua = MessageBox.Show(
-                "Bạn có chắc muốn xóa khách hàng " + kh.TenKH + "?",
+                "Bạn có chắc chắn muốn xóa khách hàng " + maKH + "?",
                 "Xác nhận xóa",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -529,15 +733,35 @@ namespace SupermarketManagement
             if (ketQua != DialogResult.Yes)
                 return;
 
-            danhSachKH.Remove(kh);
+            try
+            {
+                DbConection db = new DbConection();
 
-            txtMaKH.Clear();
-            txtTenKH.Clear();
-            txtSDT.Clear();
-            txtEmail.Clear();
+                int soDong = db.ExecuteNonQuery(
+                    "DELETE FROM dbo.KhachHang WHERE MaKH = @MaKH",
+                    new SqlParameter("@MaKH", maKH));
 
-            MessageBox.Show("Đã xóa khách hàng.");
+                if (soDong > 0)
+                {
+                    MessageBox.Show("Xóa khách hàng thành công.");
+                    txtMaKH.Clear();
+                    txtTenKH.Clear();
+                    txtSDT.Clear();
+                    txtEmail.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Không tìm thấy khách hàng cần xóa.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Không thể xóa khách hàng. Có thể khách hàng đã có hóa đơn liên quan.\n"
+                    + ex.Message);
+            }
         }
+
 
         private void btnTimKiemKH_Click(object sender, EventArgs e)
         {
@@ -551,27 +775,59 @@ namespace SupermarketManagement
                 return;
             }
 
-            KhachHang kh = danhSachKH.FirstOrDefault(x =>
-                (maKH != "" && x.MaKH.Equals(
-                    maKH, StringComparison.OrdinalIgnoreCase))
-                || (sdt != "" && x.SDT == sdt));
-
-            if (kh == null)
+            try
             {
-                MessageBox.Show("Không tìm thấy khách hàng.");
-                return;
-            }
+                DbConection db = new DbConection();
 
-            txtMaKH.Text = kh.MaKH;
-            txtTenKH.Text = kh.TenKH;
-            txtSDT.Text = kh.SDT;
-            txtEmail.Text = kh.Email;
+                string sql = @"
+            SELECT MaKH, HoTen, SoDienThoai, Email
+            FROM dbo.KhachHang
+            WHERE MaKH = @MaKH OR SoDienThoai = @SDT";
+
+                DataTable dt = db.GetTable(
+                    sql,
+                    new SqlParameter("@MaKH",
+                        string.IsNullOrWhiteSpace(maKH)
+                            ? (object)DBNull.Value : maKH),
+                    new SqlParameter("@SDT",
+                        string.IsNullOrWhiteSpace(sdt)
+                            ? (object)DBNull.Value : sdt)
+                );
+
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không tìm thấy khách hàng trong database.");
+                    return;
+                }
+
+                DataRow row = dt.Rows[0];
+
+                txtMaKH.Text = Convert.ToString(row["MaKH"]);
+                txtTenKH.Text = Convert.ToString(row["HoTen"]);
+                txtSDT.Text = Convert.ToString(row["SoDienThoai"]);
+                txtEmail.Text = Convert.ToString(row["Email"]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Lỗi tìm kiếm khách hàng:\n" + ex.Message);
+            }
         }
+
 
         private void btnThoat_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (MessageBox.Show(
+        "Bạn có chắc chắn muốn thoát không?",
+        "Xác nhận thoát",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                this.Close();
+            }
         }
+
+      
     }
 
 }

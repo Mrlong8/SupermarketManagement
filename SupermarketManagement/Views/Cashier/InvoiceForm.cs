@@ -54,12 +54,11 @@ namespace SupermarketManagement.Views.Cashier
             }
         }
 
-        private void btnThoat_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+       
 
-        private void btnxuatExecl_Click(object sender, EventArgs e)
+    
+
+        private void btnxuatExecl_Click_1(object sender, EventArgs e)
         {
             using (SaveFileDialog saveDialog = new SaveFileDialog())
             {
@@ -94,11 +93,11 @@ namespace SupermarketManagement.Views.Cashier
 
 
                         // 2. THÔNG TIN HÓA ĐƠN
-                      
+
                         ws.Cell("A3").Value = "Mã hóa đơn:";
                         ws.Range("B3:C3").Merge();
                         ws.Cell("B3").Value = txtMaHD.Text;
-                     
+
 
                         ws.Cell("D3").Value = "Ngày mua:";
                         ws.Cell("E3").Value = dtpNgayMua.Value;
@@ -254,7 +253,7 @@ namespace SupermarketManagement.Views.Cashier
                         ws.Column(4).Width = 15;
                         ws.Column(5).Width = 18;
                         ws.Column(6).Width = 20;
-                        
+
 
                         // Lặp tiêu đề khi in nhiều trang
                         ws.PageSetup.SetRowsToRepeatAtTop("1:7");
@@ -281,7 +280,19 @@ namespace SupermarketManagement.Views.Cashier
                         MessageBoxIcon.Error);
                 }
             }
+
         }
 
+        private void btnThoat_Click_1(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(
+        "Bạn có chắc chắn muốn thoát không?",
+        "Xác nhận thoát",
+        MessageBoxButtons.YesNo,
+        MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
     }
 }
