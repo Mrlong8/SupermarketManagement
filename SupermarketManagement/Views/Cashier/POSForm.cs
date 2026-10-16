@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SupermarketManagement.Utils;
 
 namespace SupermarketManagement
 {
@@ -30,6 +31,25 @@ namespace SupermarketManagement
         private void btnLamMoi_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void grpHoaDon_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDangXuat_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                UserSession.DangXuat(this);
+            }
         }
     }
 }

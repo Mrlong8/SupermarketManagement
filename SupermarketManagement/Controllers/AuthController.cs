@@ -19,10 +19,14 @@ namespace SupermarketManagement.Controllers
             DataRow r = dt.Rows[0];
             UserSession.MaTK = Convert.ToInt32(r["MaTK"]);
             UserSession.UserName = r["UserName"].ToString();
-            UserSession.Role = r["Role"].ToString();
+            UserSession.Role = r["Role"].ToString().Trim();
             UserSession.MaNV = r["MaNV"] == DBNull.Value ? 0 : Convert.ToInt32(r["MaNV"]);
-            UserSession.HoTen = r["HoTen"] == DBNull.Value ? userName : r["HoTen"].ToString();
-            UserSession.ChucVu = r["TenChucVu"] == DBNull.Value ? "" : r["TenChucVu"].ToString();
+            UserSession.UrlImage = dt.Columns.Contains("UrlImage") && r["UrlImage"] != DBNull.Value
+                                   ? r["UrlImage"].ToString() : "";
+
+            // Chưa JOIN bảng NhanVien (chưa biết tên cột) nên tạm dùng UserName và Role để hiển thị
+            UserSession.HoTen = UserSession.UserName;
+            UserSession.ChucVu = UserSession.Role;
             return true;
         }
     }

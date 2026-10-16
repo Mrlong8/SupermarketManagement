@@ -138,5 +138,14 @@ namespace SupermarketManagement.Views.Admin
             //ActivateButton(sender);
 
         }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                UserSession.DangXuat(this);
+            }
+        }
     }
 }
