@@ -8,8 +8,6 @@ namespace SupermarketManagement.Views.Admin
     // File này chỉ chứa code SỰ KIỆN. Giao diện nằm ở DashboardForm.Designer.cs (chỉnh bằng kéo thả)
     public partial class DashboardForm : Form
     {
-        public bool DangXuat = false;   // true: quay lại màn hình đăng nhập (Program.cs đọc biến này)
-
         public DashboardForm()
         {
             InitializeComponent();
@@ -21,8 +19,8 @@ namespace SupermarketManagement.Views.Admin
                 UserSession.HoTen, UserSession.ChucVu, UserSession.Role);
 
             // Phân quyền: nhân viên thường không thấy Nhân sự và Nhập hàng
-            mnuNhanSu.Visible = UserSession.LaAdmin;
-            mnuNhapHang.Visible = UserSession.LaAdmin;
+            mnuNhanSu.Visible = UserSession.LaAdmin;                              // chỉ Admin
+            mnuNhapHang.Visible = UserSession.LaAdmin || UserSession.LaManager;   // Admin + Manager
 
             timer1.Start();
         }
@@ -86,8 +84,7 @@ namespace SupermarketManagement.Views.Admin
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (kq == DialogResult.Yes)
             {
-                DangXuat = true;
-                Close();    // Program.cs sẽ mở lại LoginForm
+                UserSession.DangXuat(this);    // Program.cs sẽ mở lại LoginForm
             }
         }
 
@@ -98,7 +95,7 @@ namespace SupermarketManagement.Views.Admin
 
         private void DashboardForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!DangXuat && e.CloseReason == CloseReason.UserClosing)
+            if (!UserSession.YeuCauDangXuat && e.CloseReason == CloseReason.UserClosing)
             {
                 DialogResult kq = MessageBox.Show("Bạn có chắc muốn thoát chương trình?", "Thoát",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
