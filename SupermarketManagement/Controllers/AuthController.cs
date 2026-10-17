@@ -19,10 +19,29 @@ namespace SupermarketManagement.Controllers
             DataRow r = dt.Rows[0];
             UserSession.MaTK = Convert.ToInt32(r["MaTK"]);
             UserSession.UserName = r["UserName"].ToString();
-            UserSession.Role = r["Role"].ToString();
+            UserSession.Role = r["Role"].ToString().Trim();
             UserSession.MaNV = r["MaNV"] == DBNull.Value ? 0 : Convert.ToInt32(r["MaNV"]);
-            UserSession.HoTen = r["HoTen"] == DBNull.Value ? userName : r["HoTen"].ToString();
-            UserSession.ChucVu = r["TenChucVu"] == DBNull.Value ? "" : r["TenChucVu"].ToString();
+            UserSession.UrlImage = dt.Columns.Contains("UrlImage") && r["UrlImage"] != DBNull.Value
+                                   ? r["UrlImage"].ToString() : "";
+
+            // Mặc định hiển thị UserName và Role; nếu lấy được họ tên + chức vụ thật thì thay vào
+            UserSession.HoTen = UserSession.UserName;
+            UserSession.ChucVu = UserSession.Role;
+            try
+            {
+                DataTable info = repo.GetHoTenChucVu(UserSession.MaNV);
+                if (info.Rows.Count > 0)
+                {
+                    if (info.Rows[0]["HoTen"] != DBNull.Value)
+                        UserSession.HoTen = info.Rows[0]["HoTen"].ToString();
+                    if (info.Rows[0]["TenChucVu"] != DBNull.Value)
+                        UserSession.ChucVu = info.Rows[0]["TenChucVu"].ToString();
+                }
+            }
+            catch
+            {
+                // Tên cột/bảng NhanVien, ChucVu khác -> bỏ qua, vẫn đăng nhập bình thường
+            }
             return true;
         }
     }
