@@ -141,6 +141,7 @@
             // 
             this.txtMaHD.Location = new System.Drawing.Point(167, 73);
             this.txtMaHD.Name = "txtMaHD";
+            this.txtMaHD.ReadOnly = true;
             this.txtMaHD.Size = new System.Drawing.Size(195, 26);
             this.txtMaHD.TabIndex = 11;
             // 
@@ -220,6 +221,7 @@
             this.btnxuatExecl.TabIndex = 16;
             this.btnxuatExecl.Text = "Xuất ra Execl";
             this.btnxuatExecl.UseVisualStyleBackColor = true;
+            this.btnxuatExecl.Click += new System.EventHandler(this.btnxuatExecl_Click_1);
             // 
             // btnThoat
             // 
@@ -229,9 +231,11 @@
             this.btnThoat.TabIndex = 17;
             this.btnThoat.Text = "Thoát";
             this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click_1);
             // 
             // dtpNgayMua
             // 
+            this.dtpNgayMua.Enabled = false;
             this.dtpNgayMua.Location = new System.Drawing.Point(745, 68);
             this.dtpNgayMua.Name = "dtpNgayMua";
             this.dtpNgayMua.Size = new System.Drawing.Size(200, 26);
