@@ -1157,13 +1157,10 @@ namespace SupermarketManagement
 
         private void btnThoat_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(
-        "Bạn có chắc chắn muốn thoát không?",
-        "Xác nhận thoát",
-        MessageBoxButtons.YesNo,
-        MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
+        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                this.Close();
+                UserSession.DangXuat(this);
             }
         }
 

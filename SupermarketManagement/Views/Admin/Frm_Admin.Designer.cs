@@ -29,6 +29,7 @@ namespace SupermarketManagement.Views.Admin
         private void InitializeComponent()
         {
             this.pnlSideBar = new System.Windows.Forms.Panel();
+            this.btnBanHang = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnNhapHang = new System.Windows.Forms.Button();
             this.btnMuaHang = new System.Windows.Forms.Button();
@@ -43,7 +44,6 @@ namespace SupermarketManagement.Views.Admin
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnBanHang = new System.Windows.Forms.Button();
             this.pnlSideBar.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlHeader.SuspendLayout();
@@ -69,6 +69,25 @@ namespace SupermarketManagement.Views.Admin
             this.pnlSideBar.Name = "pnlSideBar";
             this.pnlSideBar.Size = new System.Drawing.Size(290, 767);
             this.pnlSideBar.TabIndex = 1;
+            // 
+            // btnBanHang
+            // 
+            this.btnBanHang.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnBanHang.FlatAppearance.BorderSize = 0;
+            this.btnBanHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBanHang.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBanHang.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnBanHang.Image = global::SupermarketManagement.Properties.Resources.box3;
+            this.btnBanHang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnBanHang.Location = new System.Drawing.Point(0, 496);
+            this.btnBanHang.Name = "btnBanHang";
+            this.btnBanHang.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnBanHang.Size = new System.Drawing.Size(290, 55);
+            this.btnBanHang.TabIndex = 11;
+            this.btnBanHang.Text = "Bán Hàng";
+            this.btnBanHang.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnBanHang.UseVisualStyleBackColor = true;
+            this.btnBanHang.Click += new System.EventHandler(this.btnBanHang_Click);
             // 
             // button1
             // 
@@ -182,6 +201,7 @@ namespace SupermarketManagement.Views.Admin
             this.btnLogout.Text = "        Đăng Xuất";
             this.btnLogout.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // btnManagerProduct
             // 
@@ -236,7 +256,7 @@ namespace SupermarketManagement.Views.Admin
             this.btnProfile.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.btnProfile.Size = new System.Drawing.Size(290, 111);
             this.btnProfile.TabIndex = 1;
-            this.btnProfile.Text = "   User Profile";
+            this.btnProfile.Text = "   Admin Profile";
             this.btnProfile.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnProfile.UseVisualStyleBackColor = false;
             this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
@@ -306,25 +326,6 @@ namespace SupermarketManagement.Views.Admin
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1581, 767);
             this.tableLayoutPanel2.TabIndex = 5;
-            // 
-            // btnBanHang
-            // 
-            this.btnBanHang.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnBanHang.FlatAppearance.BorderSize = 0;
-            this.btnBanHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBanHang.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBanHang.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnBanHang.Image = global::SupermarketManagement.Properties.Resources.box3;
-            this.btnBanHang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBanHang.Location = new System.Drawing.Point(0, 496);
-            this.btnBanHang.Name = "btnBanHang";
-            this.btnBanHang.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.btnBanHang.Size = new System.Drawing.Size(290, 55);
-            this.btnBanHang.TabIndex = 11;
-            this.btnBanHang.Text = "Bán Hàng";
-            this.btnBanHang.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnBanHang.UseVisualStyleBackColor = true;
-            this.btnBanHang.Click += new System.EventHandler(this.btnBanHang_Click);
             // 
             // Frm_Admin
             // 

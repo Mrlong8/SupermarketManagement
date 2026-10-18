@@ -1,14 +1,15 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using SupermarketManagement.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ClosedXML.Excel;
-using System.Globalization;
 namespace SupermarketManagement.Views.Cashier
 {
     public partial class InvoiceForm : Form
@@ -327,13 +328,10 @@ namespace SupermarketManagement.Views.Cashier
 
         private void btnThoat_Click_1(object sender, EventArgs e)
         {
-            if (MessageBox.Show(
-        "Bạn có chắc chắn muốn thoát không?",
-        "Xác nhận thoát",
-        MessageBoxButtons.YesNo,
-        MessageBoxIcon.Question) == DialogResult.Yes)
+            if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
+        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                this.Close();
+                UserSession.DangXuat(this);
             }
         }
     }
