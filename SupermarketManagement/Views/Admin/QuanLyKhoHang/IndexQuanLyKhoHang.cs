@@ -15,44 +15,42 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             InitializeComponent();
         }
 
-        // Sự kiện khi mở Form lên
         private void IndexQuanLyKhoHang_Load(object sender, EventArgs e)
         {
-            if (cboTrangThaiHD.Items.Count > 0)
-            {
-                cboTrangThaiHD.SelectedIndex = 0;
-            }
+
+            grpDanhMuc.Visible = false;
+            //đki sự kiện lọc danh mục
+            cboDanhMucHH.SelectedIndexChanged += cboDanhMucHH_SelectedIndexChanged;
 
             LoadComboBoxData();
             LoadDanhSachDanhMuc();
             LoadDanhSachHangHoa();
             LoadDanhSachHoaDonNhap();
+            LamMoiFormHoaDon();
+            LamMoiFormHangHoa();
+
+            LoadComboBoxMatHang();
         }
 
-        // Nạp dữ liệu vào các ComboBox
         private void LoadComboBoxData()
         {
             try
             {
-                // 1. ComboBox Nhà Cung Cấp
                 DataTable dtNCC = _controller.LoadNhaCungCap();
                 cboNhaCungCap.DataSource = dtNCC;
                 cboNhaCungCap.DisplayMember = "TenNCC";
                 cboNhaCungCap.ValueMember = "MaNCC";
 
-                // 2. ComboBox Nhân Viên (Người Nhập)
                 DataTable dtNV = _controller.LoadNhanVien();
                 cboNguoiNhap.DataSource = dtNV;
                 cboNguoiNhap.DisplayMember = "HoTen";
                 cboNguoiNhap.ValueMember = "MaNV";
 
-                // Nếu đã đăng nhập, tự động chọn nhân viên đang đăng nhập
                 if (PhienDangNhap.MaNV > 0)
                 {
                     cboNguoiNhap.SelectedValue = PhienDangNhap.MaNV;
                 }
 
-                // 3. ComboBox Danh Mục (ở phần Hàng Hóa)
                 CapNhatComboBoxDanhMuc();
             }
             catch (Exception ex)
@@ -61,23 +59,49 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             }
         }
 
+
         private void CapNhatComboBoxDanhMuc()
         {
             DataTable dtDM = _controller.LoadDanhMuc();
-            cboDanhMucHH.DataSource = dtDM;
+
+            DataRow row = dtDM.NewRow();
+            row["MaDM"] = 0;
+            row["TenDanhMuc"] = "Tất cả";
+            dtDM.Rows.InsertAt(row, 0);
+
+            // Tạm thời tắt sự kiện để tránh kích hoạt nhầm
+            cboDanhMucHH.SelectedIndexChanged -= cboDanhMucHH_SelectedIndexChanged;
+
+            // QUAN TRỌNG: Phải gán DisplayMember và ValueMember TRƯỚC khi gán DataSource
             cboDanhMucHH.DisplayMember = "TenDanhMuc";
             cboDanhMucHH.ValueMember = "MaDM";
+            cboDanhMucHH.DataSource = dtDM;
+
+            // Bật lại sự kiện
+            cboDanhMucHH.SelectedIndexChanged += cboDanhMucHH_SelectedIndexChanged;
         }
 
-        // =========================================================================
-        // KHU VỰC 1: XỬ LÝ QUẢN LÝ HÓA ĐƠN NHẬP (PHIẾU NHẬP HÀNG)
-        // =========================================================================
+        //khu xử lý phiếu nhập hàng
 
         private void LoadDanhSachHoaDonNhap()
         {
             try
             {
                 dgvHoaDonNhap.DataSource = _controller.LoadPhieuNhapHang();
+                if (dgvHoaDonNhap.Columns.Count > 0)
+                {
+
+                    dgvHoaDonNhap.Columns["MaPNH"].HeaderText = "Mã Phiếu";
+                    dgvHoaDonNhap.Columns["NgayNhap"].HeaderText = "Ngày Nhập";
+                    dgvHoaDonNhap.Columns["TenNCC"].HeaderText = "Nhà Cung Cấp";
+                    dgvHoaDonNhap.Columns["NguoiNhap"].HeaderText = "Người Nhập";
+
+                    dgvHoaDonNhap.Columns["TongTien"].HeaderText = "Tổng Tiền";
+                    dgvHoaDonNhap.Columns["TongTien"].DefaultCellStyle.Format = "N0";
+
+                    dgvHoaDonNhap.Columns["MaNCC"].Visible = false;
+                    dgvHoaDonNhap.Columns["MaNV"].Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -113,15 +137,29 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void btnThemHD_Click(object sender, EventArgs e)
         {
-            int maNV = cboNguoiNhap.SelectedValue != null ? Convert.ToInt32(cboNguoiNhap.SelectedValue) : 1;
+
+            string maPNH = txtMaHoaDon.Text.Trim();
+            DateTime ngayNhap = dtpNgayNhap.Value;
             int maNCC = cboNhaCungCap.SelectedValue != null ? Convert.ToInt32(cboNhaCungCap.SelectedValue) : 1;
+            int maNV = PhienDangNhap.MaNV > 0 ? PhienDangNhap.MaNV : 1;
+
+            string maSP = cboMatHang.SelectedValue != null ? cboMatHang.SelectedValue.ToString() : "";
+            string soLuong = txtSoLuongNhap.Text;
+            string tongTien = txtTongTienHD.Text;
 
             string thongBao;
-            if (_controller.ThemPhieuNhap(txtMaHoaDon.Text, dtpNgayNhap.Value, maNV, maNCC, out thongBao))
+
+            if (_controller.ThemHoaDonMoi(maPNH, ngayNhap, maNCC, maNV, maSP, soLuong, tongTien, out thongBao))
             {
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
                 LoadDanhSachHoaDonNhap();
+
+                LoadDanhSachHangHoa();
+
                 LamMoiFormHoaDon();
+                txtSoLuongNhap.Clear();
             }
             else
             {
@@ -173,7 +211,6 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void btnLuuHD_Click(object sender, EventArgs e)
         {
-            // Nút Lưu hỗ trợ lưu nhanh (nếu mã đã tồn tại trong bảng thì cập nhật, chưa có thì thêm mới)
             bool daTonTai = false;
             foreach (DataGridViewRow row in dgvHoaDonNhap.Rows)
             {
@@ -204,21 +241,34 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void LamMoiFormHoaDon()
         {
-            txtMaHoaDon.Clear();
+            txtMaHoaDon.Text = _controller.TaoMaPhieuNhapMoi();
             txtTongTienHD.Text = "0";
             dtpNgayNhap.Value = DateTime.Now;
-            txtMaHoaDon.Focus();
         }
-
-        // =========================================================================
-        // KHU VỰC 2: XỬ LÝ QUẢN LÝ HÀNG HÓA (SẢN PHẨM)
-        // =========================================================================
+        // khu xử lý kho hàng hóa
 
         private void LoadDanhSachHangHoa()
         {
             try
             {
                 dgvHangHoa.DataSource = _controller.LoadSanPham();
+                if (dgvHangHoa.Columns.Count > 0)
+                {
+                    dgvHangHoa.Columns["MaSP"].HeaderText = "Mã SP";
+                    dgvHangHoa.Columns["MaSP"].Width = 60;
+                    dgvHangHoa.Columns["TenSanPham"].HeaderText = "Tên Hàng Hóa";
+                    dgvHangHoa.Columns["TenDanhMuc"].HeaderText = "Danh Mục";
+                    dgvHangHoa.Columns["SoLuong"].HeaderText = "Số Lượng";
+
+                    dgvHangHoa.Columns["DonGiaNhap"].HeaderText = "Giá Nhập";
+                    dgvHangHoa.Columns["DonGiaNhap"].DefaultCellStyle.Format = "N0";
+                    dgvHangHoa.Columns["DonGiaBan"].HeaderText = "Giá Bán";
+                    dgvHangHoa.Columns["DonGiaBan"].DefaultCellStyle.Format = "N0";
+
+                    dgvHangHoa.Columns["MaDM"].Visible = false;
+                    dgvHangHoa.Columns["TrongLuong"].Visible = false;
+                    dgvHangHoa.Columns["MoTa"].Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -248,11 +298,17 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void btnThemHH_Click(object sender, EventArgs e)
         {
-            int maDM = cboDanhMucHH.SelectedValue != null ? Convert.ToInt32(cboDanhMucHH.SelectedValue) : 1;
+            int maDM = cboDanhMucHH.SelectedValue != null ? Convert.ToInt32(cboDanhMucHH.SelectedValue) : 0;
+            if (maDM == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một Danh mục cụ thể (không chọn 'Tất cả') trước khi Thêm!", "Nhắc nhở", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             int maNV = PhienDangNhap.MaNV > 0 ? PhienDangNhap.MaNV : 1;
 
             string thongBao;
-            if (_controller.ThemSanPham(txtTenHangHoa.Text, txtSoLuong.Text, txtTrongLuong.Text, txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, maNV, out thongBao))
+            if (_controller.ThemSanPham(txtMaHangHoa.Text, txtTenHangHoa.Text, txtSoLuong.Text, txtTrongLuong.Text, txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, maNV, out thongBao))
             {
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachHangHoa();
@@ -312,7 +368,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void LamMoiFormHangHoa()
         {
-            txtMaHangHoa.Clear();
+            txtMaHangHoa.Text = _controller.TaoMaSanPhamMoi();
             txtTenHangHoa.Clear();
             txtSoLuong.Clear();
             txtTrongLuong.Clear();
@@ -321,15 +377,20 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             txtMoTaHH.Clear();
         }
 
-        // =========================================================================
-        // KHU VỰC 3: XỬ LÝ QUẢN LÝ DANH MỤC
-        // =========================================================================
+        // khu vực xử lý quản lý danh mục
 
         private void LoadDanhSachDanhMuc()
         {
             try
             {
                 dgvDanhMuc.DataSource = _controller.LoadDanhMuc();
+
+                if (dgvDanhMuc.Columns.Count > 0)
+                {
+                    dgvDanhMuc.Columns["MaDM"].HeaderText = "Mã DM";
+                    dgvDanhMuc.Columns["MaDM"].Width = 60;
+                    dgvDanhMuc.Columns["TenDanhMuc"].HeaderText = "Tên Danh Mục";
+                }
             }
             catch (Exception ex)
             {
@@ -350,7 +411,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         private void btnThemDM_Click(object sender, EventArgs e)
         {
             string thongBao;
-            if (_controller.ThemDanhMuc(txtTenDanhMuc.Text, out thongBao))
+            if (_controller.ThemDanhMuc(txtMaDanhMuc.Text, txtTenDanhMuc.Text, out thongBao))
             {
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachDanhMuc();
@@ -406,9 +467,119 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void LamMoiFormDanhMuc()
         {
-            txtMaDanhMuc.Clear();
+            txtMaDanhMuc.Text = _controller.TaoMaDanhMucMoi();
             txtTenDanhMuc.Clear();
             txtMoTaDM.Clear();
         }
+
+        private void grpDanhMuc_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboDanhMucHH_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dtSP = dgvHangHoa.DataSource as DataTable;
+                if (dtSP == null) return;
+
+                if (cboDanhMucHH.SelectedValue != null)
+                {
+                    string giaTri = cboDanhMucHH.SelectedValue.ToString();
+                    if (cboDanhMucHH.SelectedValue is DataRowView rowView)
+                    {
+                        giaTri = rowView["MaDM"].ToString();
+                    }
+
+                    if (int.TryParse(giaTri, out int maDM))
+                    {
+                        if (maDM == 0)
+                        {
+                            dtSP.DefaultView.RowFilter = "";
+                        }
+                        else
+                        {
+                            dtSP.DefaultView.RowFilter = $"MaDM = {maDM}";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi lọc danh mục: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnMoQLDM_Click(object sender, EventArgs e)
+        {
+            Form frmDM = new Form();
+            frmDM.Text = "Quản Lý Danh Mục";
+            frmDM.Size = new System.Drawing.Size(350, 500);
+            frmDM.StartPosition = FormStartPosition.CenterParent;
+            frmDM.MaximizeBox = false;
+            frmDM.MinimizeBox = false;
+
+            grpDanhMuc.Location = new System.Drawing.Point(5, 5);
+            grpDanhMuc.Visible = true;
+            frmDM.Controls.Add(grpDanhMuc);
+
+            frmDM.FormClosing += (s, ev) =>
+            {
+                this.Controls.Add(grpDanhMuc);
+                grpDanhMuc.Visible = false;
+            };
+            LamMoiFormDanhMuc();
+            frmDM.ShowDialog();
+        }
+
+        private void LoadComboBoxMatHang()
+        {
+            try
+            {
+                DataTable dtSP = _controller.LoadSanPham();
+                cboMatHang.SelectedIndexChanged -= cboMatHang_SelectedIndexChanged;
+
+                cboMatHang.DataSource = dtSP;
+                cboMatHang.DisplayMember = "TenSanPham";
+                cboMatHang.ValueMember = "MaSP";
+
+                cboMatHang.SelectedIndexChanged += cboMatHang_SelectedIndexChanged;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải danh sách mặt hàng: " + ex.Message);
+            }
+        }
+
+        private void TinhTongTienPhieuNhap()
+        {
+            if (int.TryParse(txtSoLuongNhap.Text, out int soLuong) && soLuong > 0)
+            {
+                DataRowView rowView = cboMatHang.SelectedItem as DataRowView;
+                if (rowView != null)
+                {
+                    if (decimal.TryParse(rowView["DonGiaNhap"].ToString(), out decimal donGiaNhap))
+                    {
+                        decimal tongTien = soLuong * donGiaNhap;
+                        txtTongTienHD.Text = tongTien.ToString("N0");
+                        return;
+                    }
+                }
+            }
+            txtTongTienHD.Text = "0";
+        }
+
+        private void cboMatHang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TinhTongTienPhieuNhap();
+        }
+
+        private void txtSoLuongNhap_TextChanged(object sender, EventArgs e)
+        {
+            TinhTongTienPhieuNhap();
+        }
+
+       
     }
 }

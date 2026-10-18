@@ -16,10 +16,15 @@ namespace SupermarketManagement.Controllers.Repositories
 
         // khai báo biết chuỗi kết nối đến cơ sở dữ liệu SQL Server
         //private static  string str = @"Data Source=localhost;Initial Catalog=SupermarketManagement_New;Integrated Security=True";
+<<<<<<< Updated upstream
         private static  string str = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True";
+=======
+        //private static  string str = @"Data Source=localhost;Initial Catalog=mauCsdlfinal;Integrated Security=True";
+>>>>>>> Stashed changes
         // csdl của ai thì đổi địa chỉ ở đây  nhớ copy ra òng khác và conment lại dòng này để tránh xung đột nhé
         SqlConnection sqlConnection = null;
-
+        //của Duy
+        private static string str = @"Data Source=localhost;Initial Catalog=SupermarketManagement;Integrated Security=True";
 
         // phương thưc mở kết nối đến cơ sở dữ liệu SQL Server
         void OpenConnection()

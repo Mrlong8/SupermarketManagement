@@ -8,16 +8,14 @@ namespace SupermarketManagement.Controllers
     {
         private KhoHangRepository _repo = new KhoHangRepository();
 
-        // =================================================================
-        // PHẦN 1: QUẢN LÝ DANH MỤC
-        // =================================================================
+        //phần danh mục
 
         public DataTable LoadDanhMuc()
         {
             return _repo.GetDanhMuc();
         }
 
-        public bool ThemDanhMuc(string tenDanhMuc, out string thongBao)
+        public bool ThemDanhMuc(string maDM, string tenDanhMuc, out string thongBao)
         {
             if (string.IsNullOrWhiteSpace(tenDanhMuc))
             {
@@ -27,7 +25,7 @@ namespace SupermarketManagement.Controllers
 
             try
             {
-                _repo.ThemDanhMuc(tenDanhMuc.Trim());
+                _repo.ThemDanhMuc(maDM.Trim(), tenDanhMuc.Trim());
                 thongBao = "Thêm danh mục thành công!";
                 return true;
             }
@@ -85,9 +83,7 @@ namespace SupermarketManagement.Controllers
             }
         }
 
-        // =================================================================
-        // PHẦN 2: QUẢN LÝ HÀNG HÓA (SẢN PHẨM)
-        // =================================================================
+        // phần hàng hóa sản phẩm
 
         public DataTable LoadSanPham()
         {
@@ -103,8 +99,14 @@ namespace SupermarketManagement.Controllers
             return _repo.TimKiemSanPham(tuKhoa);
         }
 
-        public bool ThemSanPham(string tenSP, string soLuongStr, string trongLuongStr, string giaNhapStr, string giaBanStr, string moTa, int maDM, int maNV, out string thongBao)
+        public bool ThemSanPham(string maSPStr, string tenSP, string soLuongStr, string trongLuongStr, string giaNhapStr, string giaBanStr, string moTa, int maDM, int maNV, out string thongBao)
         {
+            if (!int.TryParse(maSPStr, out int maSP))
+            {
+                thongBao = "Mã hàng hóa không hợp lệ!";
+                return false;
+            }
+
             if (string.IsNullOrWhiteSpace(tenSP))
             {
                 thongBao = "Vui lòng nhập tên hàng hóa!";
@@ -141,8 +143,8 @@ namespace SupermarketManagement.Controllers
 
             try
             {
-                if (maNV <= 0) maNV = 1; // Mặc định MaNV = 1 nếu chưa đăng nhập
-                _repo.ThemSanPham(tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa.Trim(), maDM, maNV);
+                if (maNV <= 0) maNV = 1;
+                _repo.ThemSanPham(maSP, tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa.Trim(), maDM, maNV);
                 thongBao = "Thêm hàng hóa thành công!";
                 return true;
             }
@@ -215,9 +217,7 @@ namespace SupermarketManagement.Controllers
             }
         }
 
-        // =================================================================
-        // PHẦN 3: QUẢN LÝ HÓA ĐƠN NHẬP (PHIẾU NHẬP HÀNG)
-        // =================================================================
+        // Phần hóa đơn nhập hàng
 
         public DataTable LoadPhieuNhapHang()
         {
@@ -293,6 +293,59 @@ namespace SupermarketManagement.Controllers
             catch (Exception ex)
             {
                 thongBao = "Lỗi khi xóa hóa đơn nhập: " + ex.Message;
+                return false;
+            }
+        }
+
+        public string TaoMaPhieuNhapMoi()
+        {
+            return _repo.GetMaPhieuNhapMoi();
+        }
+
+        public string TaoMaSanPhamMoi()
+        {
+            return _repo.GetMaSanPhamMoi();
+        }
+
+        public string TaoMaDanhMucMoi()
+        {
+            return _repo.GetMaDanhMucMoi();
+        }
+
+        public bool ThemHoaDonMoi(string maPNH, DateTime ngayNhap, int maNCC, int maNV, string maSPStr, string soLuongStr, string tongTienStr, out string thongBao)
+        {
+            if (!int.TryParse(maSPStr, out int maSP))
+            { thongBao = "Vui lòng chọn mặt hàng!"; return false; }
+
+            if (!int.TryParse(soLuongStr, out int soLuong) || soLuong <= 0)
+            { thongBao = "Số lượng nhập phải lớn hơn 0!"; return false; }
+
+
+            decimal tongTien = 0;
+            if (!string.IsNullOrWhiteSpace(tongTienStr))
+            {
+                decimal.TryParse(tongTienStr.Replace(",", "").Replace(".", ""), out tongTien);
+            }
+
+            decimal donGiaNhap = soLuong > 0 ? (tongTien / soLuong) : 0;
+
+            try
+            {
+                bool ketQua = _repo.ThemHoaDonVaCapNhatKho(maPNH, ngayNhap, maNCC, maNV, maSP, soLuong, donGiaNhap, tongTien);
+                if (ketQua)
+                {
+                    thongBao = "Nhập hàng và cập nhật kho thành công!";
+                    return true;
+                }
+                else
+                {
+                    thongBao = "Lỗi hệ thống khi lưu dữ liệu (Transaction Rollback)!";
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                thongBao = "Lỗi: " + ex.Message;
                 return false;
             }
         }

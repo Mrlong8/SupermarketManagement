@@ -279,6 +279,9 @@
     <EmbeddedResource Include="Views\Admin\Product\ProductItemControl.resx">
       <DependentUpon>ProductItemControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\QuanLyKhoHang\IndexQuanLyKhoHang.resx">
+      <DependentUpon>IndexQuanLyKhoHang.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\ThongKe\IndexThongKe.resx">
       <DependentUpon>IndexThongKe.cs</DependentUpon>
     </EmbeddedResource>
