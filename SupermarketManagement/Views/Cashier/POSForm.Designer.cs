@@ -129,32 +129,35 @@
             // 
             // btnThemSP
             // 
+            this.btnThemSP.BackColor = System.Drawing.Color.Lime;
             this.btnThemSP.Location = new System.Drawing.Point(55, 198);
             this.btnThemSP.Name = "btnThemSP";
             this.btnThemSP.Size = new System.Drawing.Size(130, 60);
             this.btnThemSP.TabIndex = 7;
             this.btnThemSP.Text = "Thêm sản phẩm";
-            this.btnThemSP.UseVisualStyleBackColor = true;
+            this.btnThemSP.UseVisualStyleBackColor = false;
             this.btnThemSP.Click += new System.EventHandler(this.btnThemSP_Click);
             // 
             // btnSuaSP
             // 
+            this.btnSuaSP.BackColor = System.Drawing.Color.Yellow;
             this.btnSuaSP.Location = new System.Drawing.Point(215, 198);
             this.btnSuaSP.Name = "btnSuaSP";
             this.btnSuaSP.Size = new System.Drawing.Size(130, 60);
             this.btnSuaSP.TabIndex = 8;
             this.btnSuaSP.Text = "Sửa sản phẩm";
-            this.btnSuaSP.UseVisualStyleBackColor = true;
+            this.btnSuaSP.UseVisualStyleBackColor = false;
             this.btnSuaSP.Click += new System.EventHandler(this.btnSuaSP_Click);
             // 
             // btnTimKiemSP
             // 
+            this.btnTimKiemSP.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnTimKiemSP.Location = new System.Drawing.Point(372, 198);
             this.btnTimKiemSP.Name = "btnTimKiemSP";
             this.btnTimKiemSP.Size = new System.Drawing.Size(130, 60);
             this.btnTimKiemSP.TabIndex = 15;
             this.btnTimKiemSP.Text = "Tìm kiếm";
-            this.btnTimKiemSP.UseVisualStyleBackColor = true;
+            this.btnTimKiemSP.UseVisualStyleBackColor = false;
             this.btnTimKiemSP.Click += new System.EventHandler(this.btnTimKiemSP_Click);
             // 
             // txtSoLuong
@@ -288,22 +291,24 @@
             // 
             // btnTimKiemKH
             // 
+            this.btnTimKiemKH.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnTimKiemKH.Location = new System.Drawing.Point(450, 198);
             this.btnTimKiemKH.Name = "btnTimKiemKH";
             this.btnTimKiemKH.Size = new System.Drawing.Size(130, 60);
             this.btnTimKiemKH.TabIndex = 16;
             this.btnTimKiemKH.Text = "Tìm kiếm";
-            this.btnTimKiemKH.UseVisualStyleBackColor = true;
+            this.btnTimKiemKH.UseVisualStyleBackColor = false;
             this.btnTimKiemKH.Click += new System.EventHandler(this.btnTimKiemKH_Click);
             // 
             // btnXoaKH
             // 
+            this.btnXoaKH.BackColor = System.Drawing.Color.Red;
             this.btnXoaKH.Location = new System.Drawing.Point(303, 198);
             this.btnXoaKH.Name = "btnXoaKH";
             this.btnXoaKH.Size = new System.Drawing.Size(130, 60);
             this.btnXoaKH.TabIndex = 13;
             this.btnXoaKH.Text = "Xóa khách hàng";
-            this.btnXoaKH.UseVisualStyleBackColor = true;
+            this.btnXoaKH.UseVisualStyleBackColor = false;
             this.btnXoaKH.Click += new System.EventHandler(this.btnXoaKH_Click);
             // 
             // txtTenKH
@@ -323,12 +328,13 @@
             // 
             // btnSuaKH
             // 
+            this.btnSuaKH.BackColor = System.Drawing.Color.Yellow;
             this.btnSuaKH.Location = new System.Drawing.Point(156, 198);
             this.btnSuaKH.Name = "btnSuaKH";
             this.btnSuaKH.Size = new System.Drawing.Size(130, 60);
             this.btnSuaKH.TabIndex = 12;
             this.btnSuaKH.Text = "Sửa khách hàng";
-            this.btnSuaKH.UseVisualStyleBackColor = true;
+            this.btnSuaKH.UseVisualStyleBackColor = false;
             this.btnSuaKH.Click += new System.EventHandler(this.btnSuaKH_Click);
             // 
             // lblEmain
@@ -351,12 +357,13 @@
             // 
             // btnThemKH
             // 
+            this.btnThemKH.BackColor = System.Drawing.Color.Lime;
             this.btnThemKH.Location = new System.Drawing.Point(11, 198);
             this.btnThemKH.Name = "btnThemKH";
             this.btnThemKH.Size = new System.Drawing.Size(130, 60);
             this.btnThemKH.TabIndex = 11;
             this.btnThemKH.Text = "Thêm khách hàng";
-            this.btnThemKH.UseVisualStyleBackColor = true;
+            this.btnThemKH.UseVisualStyleBackColor = false;
             this.btnThemKH.Click += new System.EventHandler(this.btnThemKH_Click);
             // 
             // lblTenKH
@@ -439,12 +446,13 @@
             // 
             // btnXoaSPKhoiHD
             // 
+            this.btnXoaSPKhoiHD.BackColor = System.Drawing.Color.Red;
             this.btnXoaSPKhoiHD.Location = new System.Drawing.Point(1060, 822);
             this.btnXoaSPKhoiHD.Name = "btnXoaSPKhoiHD";
             this.btnXoaSPKhoiHD.Size = new System.Drawing.Size(135, 60);
             this.btnXoaSPKhoiHD.TabIndex = 10;
             this.btnXoaSPKhoiHD.Text = "Xóa sản phẩm";
-            this.btnXoaSPKhoiHD.UseVisualStyleBackColor = true;
+            this.btnXoaSPKhoiHD.UseVisualStyleBackColor = false;
             this.btnXoaSPKhoiHD.Click += new System.EventHandler(this.btnXoaSPKhoiHD_Click);
             // 
             // label1
@@ -519,42 +527,46 @@
             // 
             // btnThemHoaDon
             // 
+            this.btnThemHoaDon.BackColor = System.Drawing.Color.Lime;
             this.btnThemHoaDon.Location = new System.Drawing.Point(64, 141);
             this.btnThemHoaDon.Name = "btnThemHoaDon";
             this.btnThemHoaDon.Size = new System.Drawing.Size(130, 60);
             this.btnThemHoaDon.TabIndex = 18;
             this.btnThemHoaDon.Text = "Thêm hóa đơn";
-            this.btnThemHoaDon.UseVisualStyleBackColor = true;
+            this.btnThemHoaDon.UseVisualStyleBackColor = false;
             this.btnThemHoaDon.Click += new System.EventHandler(this.btnThemHoaDon_Click);
             // 
             // btnThoat
             // 
+            this.btnThoat.BackColor = System.Drawing.Color.Yellow;
             this.btnThoat.Location = new System.Drawing.Point(1019, 141);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(130, 60);
             this.btnThoat.TabIndex = 13;
             this.btnThoat.Text = "Thoát";
-            this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.UseVisualStyleBackColor = false;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
             // 
             // btnTaoHoaDon
             // 
+            this.btnTaoHoaDon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.btnTaoHoaDon.Location = new System.Drawing.Point(300, 141);
             this.btnTaoHoaDon.Name = "btnTaoHoaDon";
             this.btnTaoHoaDon.Size = new System.Drawing.Size(130, 60);
             this.btnTaoHoaDon.TabIndex = 13;
             this.btnTaoHoaDon.Text = "Tạo hóa đơn";
-            this.btnTaoHoaDon.UseVisualStyleBackColor = true;
+            this.btnTaoHoaDon.UseVisualStyleBackColor = false;
             this.btnTaoHoaDon.Click += new System.EventHandler(this.btnTaoHoaDon_Click);
             // 
             // btnXuatHoaDon
             // 
+            this.btnXuatHoaDon.BackColor = System.Drawing.Color.Fuchsia;
             this.btnXuatHoaDon.Location = new System.Drawing.Point(544, 141);
             this.btnXuatHoaDon.Name = "btnXuatHoaDon";
             this.btnXuatHoaDon.Size = new System.Drawing.Size(130, 60);
             this.btnXuatHoaDon.TabIndex = 14;
             this.btnXuatHoaDon.Text = "Xuất hóa đơn";
-            this.btnXuatHoaDon.UseVisualStyleBackColor = true;
+            this.btnXuatHoaDon.UseVisualStyleBackColor = false;
             this.btnXuatHoaDon.Click += new System.EventHandler(this.btnXuatHoaDon_Click);
             // 
             // txtMaHD
@@ -568,12 +580,13 @@
             // 
             // btnLamMoi
             // 
+            this.btnLamMoi.BackColor = System.Drawing.Color.Aqua;
             this.btnLamMoi.Location = new System.Drawing.Point(782, 141);
             this.btnLamMoi.Name = "btnLamMoi";
             this.btnLamMoi.Size = new System.Drawing.Size(130, 60);
             this.btnLamMoi.TabIndex = 17;
             this.btnLamMoi.Text = "Làm mới";
-            this.btnLamMoi.UseVisualStyleBackColor = true;
+            this.btnLamMoi.UseVisualStyleBackColor = false;
             this.btnLamMoi.Click += new System.EventHandler(this.btnLamMoi_Click);
             // 
             // txtTongTien

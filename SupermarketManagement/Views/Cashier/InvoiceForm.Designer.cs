@@ -216,22 +216,24 @@
             // 
             // btnxuatExecl
             // 
+            this.btnxuatExecl.BackColor = System.Drawing.Color.Fuchsia;
             this.btnxuatExecl.Location = new System.Drawing.Point(281, 581);
             this.btnxuatExecl.Name = "btnxuatExecl";
             this.btnxuatExecl.Size = new System.Drawing.Size(130, 48);
             this.btnxuatExecl.TabIndex = 16;
             this.btnxuatExecl.Text = "Xuất ra Execl";
-            this.btnxuatExecl.UseVisualStyleBackColor = true;
+            this.btnxuatExecl.UseVisualStyleBackColor = false;
             this.btnxuatExecl.Click += new System.EventHandler(this.btnxuatExecl_Click_1);
             // 
             // btnThoat
             // 
+            this.btnThoat.BackColor = System.Drawing.Color.Yellow;
             this.btnThoat.Location = new System.Drawing.Point(587, 581);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(130, 48);
             this.btnThoat.TabIndex = 17;
             this.btnThoat.Text = "Thoát";
-            this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.UseVisualStyleBackColor = false;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click_1);
             // 
             // dtpNgayMua
@@ -246,6 +248,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(987, 641);
             this.Controls.Add(this.dtpNgayMua);
             this.Controls.Add(this.btnThoat);
