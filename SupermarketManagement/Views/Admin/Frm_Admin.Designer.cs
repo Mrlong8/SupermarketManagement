@@ -336,6 +336,7 @@ namespace SupermarketManagement.Views.Admin
             this.Name = "Frm_Admin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Supermarket Management System";
+            this.Load += new System.EventHandler(this.Frm_Admin_Load);
             this.pnlSideBar.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.pnlHeader.ResumeLayout(false);

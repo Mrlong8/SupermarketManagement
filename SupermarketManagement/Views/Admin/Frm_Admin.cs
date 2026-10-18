@@ -36,7 +36,7 @@ namespace SupermarketManagement.Views.Admin
 
         private void Frm_Admin_Load(object sender, EventArgs e)
         {
-
+            btnProfile.Text = UserSession.UserName;
         }
         // lấy màu
         private Color SelectThemeColor()

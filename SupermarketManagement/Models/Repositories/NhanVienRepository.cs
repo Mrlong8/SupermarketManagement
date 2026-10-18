@@ -15,7 +15,7 @@ namespace SupermarketManagement.Models.Repositories
 
         public DataTable GetAll()
         {
-            string sql = "SELECT * FROM NhanVien nv JOIN ChucVu cv ON nv.MaCV = cv.MaCV";
+            string sql = "SELECT * FROM NhanVien nv JOIN ChucVu cv ON nv.MaCV = cv.MaCV where TrangThai = 1";
             return _db.GetListData(sql);
         }
 
@@ -35,16 +35,17 @@ namespace SupermarketManagement.Models.Repositories
 
         public void Update(string maNV, string tenNV, string gioiTinh, string luongCB, DateTime ngaySinh, string diaChi, string maCV, string email)
         {
-            // Đã bổ sung cập nhật cột Email
             string sql = $"UPDATE NhanVien SET HoTen = N'{tenNV}', GioiTinh = N'{gioiTinh}', LuongCoBan = '{luongCB}', " +
                          $"NgaySinh = '{ngaySinh:yyyy-MM-dd}', DiaChi = N'{diaChi}', MaCV = '{maCV}', Email = '{email}' " +
                          $"WHERE MaNV = '{maNV}'";
+
             _db.DataChange(sql);
         }
-
         public void Delete(string maNV)
         {
-            string sql = $"DELETE FROM NhanVien WHERE MaNV = '{maNV}'";
+            string sql = $"UPDATE NhanVien SET TrangThai = 0 WHERE MaNV = '{maNV}'; " +
+                         $"UPDATE TaiKhoan SET Role = 'Locked' WHERE MaNV = '{maNV}';";
+
             _db.DataChange(sql);
         }
 
@@ -67,8 +68,8 @@ namespace SupermarketManagement.Models.Repositories
         public DataTable Search(string keyword)
         {
             string sql = "SELECT * FROM NhanVien nv " +
-                         "JOIN ChucVu cv ON nv.MaCV = cv.MaCV " +
-                         "WHERE 1 = 1 ";
+                 "JOIN ChucVu cv ON nv.MaCV = cv.MaCV " +
+                 "WHERE nv.TrangThai = 1 ";
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
@@ -86,15 +87,22 @@ namespace SupermarketManagement.Models.Repositories
         public DataTable FilterByChucVu(string maCV)
         {
             string sql = "SELECT * FROM NhanVien nv " +
-                         "JOIN ChucVu cv ON nv.MaCV = cv.MaCV ";
-
+                         "JOIN ChucVu cv ON nv.MaCV = cv.MaCV " +
+                         "WHERE nv.TrangThai = 1 "; 
             if (!string.IsNullOrWhiteSpace(maCV) && maCV != "Tất cả")
             {
                 string safeMaCV = maCV.Replace("'", "''");
-                sql += $"WHERE nv.MaCV = '{safeMaCV}' ";
+                sql += $"AND nv.MaCV = '{safeMaCV}' ";
             }
 
             return _db.GetListData(sql);
+        }
+
+        public bool CheckAccount(string maNV)
+        {
+            string sql = $"SELECT COUNT(*) FROM TaiKhoan WHERE MaNV = '{maNV}'";
+            DataTable dt = _db.GetListData(sql);
+            return dt.Rows.Count > 0 && Convert.ToInt32(dt.Rows[0][0]) > 0;
         }
 
     }

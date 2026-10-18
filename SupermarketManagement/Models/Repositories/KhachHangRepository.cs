@@ -15,7 +15,7 @@ namespace SupermarketManagement.Models.Repositories
 
         public DataTable GetAll()
         {
-            string sql = "SELECT * FROM KhachHang";
+            string sql = "SELECT * FROM KhachHang WHERE TrangThai = 1";
             return _db.GetListData(sql);
         }
 
@@ -43,7 +43,7 @@ namespace SupermarketManagement.Models.Repositories
 
         public void Delete(string maKH)
         {
-            string sql = $"DELETE FROM KhachHang WHERE MaKH = '{maKH}'";
+            string sql = $"UPDATE KhachHang SET TrangThai = 0 WHERE MaKH = '{maKH}'";
             _db.DataChange(sql);
         }
 
@@ -52,21 +52,26 @@ namespace SupermarketManagement.Models.Repositories
             string ngay = DateTime.Now.ToString("yyyyMMdd");
             string tiento = "KH" + ngay;
 
-            string sql = $"select count(*) From KhachHang Where MaKH Like '{tiento}%'";
+            string sql = $"SELECT TOP 1 MaKH FROM KhachHang WHERE MaKH LIKE '{tiento}%' ORDER BY MaKH DESC";
             DataTable dt = _db.GetListData(sql);
-            int soLuong = Convert.ToInt32(dt.Rows[0][0]);
 
-            int sttMoi = soLuong + 1;
+            int sttMoi = 1;
 
-            return tiento + sttMoi.ToString("D3");// hiện đủ 3 chữ số vd 3 -> 003
+            if (dt.Rows.Count > 0)
+            {
+                string maMax = dt.Rows[0][0].ToString();
+                int soCuoi = Convert.ToInt32(maMax.Substring(maMax.Length - 3));
+                sttMoi = soCuoi + 1;
+            }
+
+            return tiento + sttMoi.ToString("D3"); // Hiện đủ 3 chữ số vd: 003
         }
 
         // 1. Tìm kiếm khách hàng theo Mã, Tên, SĐT hoặc Email
         public DataTable Search(string keyword)
         {
             string sql = "SELECT * FROM KhachHang " +
-                         "WHERE 1 = 1 ";
-
+                         "WHERE TrangThai = 1 ";
             if (!string.IsNullOrWhiteSpace(keyword))
             {
                 string safeKeyword = keyword.Replace("'", "''");

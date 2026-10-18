@@ -16,18 +16,48 @@ namespace SupermarketManagement.Views.Admin.Account
     public partial class IndexAccount : Form
     {
         private string maNV;
+        private bool status;
         private TaiKhoanRepository _reppo = new TaiKhoanRepository();
-        public IndexAccount(string maNV)
+        public IndexAccount(string maNV,bool status)
         {
             InitializeComponent();
             this.maNV = maNV;
+            this.status = status;
         }
 
      
         private void IndexAccount_Load(object sender, EventArgs e)
         {
-            GetThongTin();
+            if (status == true)
+            {
+                GetThongTin();
+                btnLuu.Text = "Lưu cập nhật";
+            }
+            else
+            {
+                TaoTaiKhoan();
+                btnLuu.Text = "Tạo tài khoản";
+            }
             GetRole();
+        }
+
+        public void TaoTaiKhoan()
+        {
+            txtUserName.Text = "";
+            txtPassCu.Text = "";
+            txtSDT.Text = "";
+            cbRole.SelectedIndex = -1;
+            picAvata.Image = null;
+
+            string txtMaTK = _reppo.RenderMaTK();
+            lblManv.Text = "Mã Nhân Viên : " + maNV;
+            lblMaTK.Text = "Mã Tài Khoản : "+ txtMaTK;
+
+            txtUserName.Enabled = true;
+            txtPassCu.Enabled = true;
+            txtSDT.Enabled = true;
+            cbRole.Enabled = true;
+            btnLuu.Enabled = true;
         }
         public void GetThongTin()
         {
@@ -39,7 +69,7 @@ namespace SupermarketManagement.Views.Admin.Account
 
                 // Gán dữ liệu lên giao diện
                 txtUserName.Text = row["UserName"].ToString();
-                txtPassword.Text = row["Password"].ToString();
+                txtPassCu.Text = "";
                 txtSDT.Text = row["SDT"].ToString();
                 lblManv.Text = "Mã Nhân Viên : " +  row["MaNV"].ToString();
                 lblMaTK.Text = "Mã Tài Khoản : " +  row["MaTK"].ToString();
@@ -47,9 +77,13 @@ namespace SupermarketManagement.Views.Admin.Account
                 txtRole.Text = userRole;
 
                 txtUserName.Enabled = false;
-                txtPassword.Enabled = false;
+                txtPassCu.Enabled = false;
                 txtSDT.Enabled = false;
                 cbRole.Enabled = false;
+                txtPasswordNew.Enabled = false;
+                txtXacNhan.Enabled = false;
+                btnLuu.Enabled = false;
+
 
                 // hiển thi avat
                 string imagePath = row["UrlImage"]?.ToString();
@@ -97,7 +131,7 @@ namespace SupermarketManagement.Views.Admin.Account
             txtUserName.Enabled = true;
             txtSDT.Enabled = true;
             cbRole.Enabled = true;
-
+            btnLuu.Enabled = true;
 
         }
 
@@ -115,11 +149,41 @@ namespace SupermarketManagement.Views.Admin.Account
             }
             try
             {
-                _reppo.UpdateTaiKhoan(maNV, userName, sdt, role);
+                if (status == true)
+                {
+                    _reppo.UpdateTaiKhoan(maNV, userName, sdt, role);
+                    MessageBox.Show("Cập nhật thông tin tài khoản thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                MessageBox.Show("Cập nhật thông tin tài khoản thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    GetThongTin();
+                }
+                else
+                {
+                    string pass = txtPassCu.Text.Trim();
+                    if (string.IsNullOrEmpty(pass))
+                    {
+                        MessageBox.Show("Vui lòng nhập mật khẩu cho tài khoản mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtPassCu.Focus();
+                        return;
+                    }
+                    if (_reppo.CheckTrungUserName(userName))
+                    {
+                        MessageBox.Show("Tên đăng nhập (UserName) này đã tồn tại. Vui lòng chọn tên khác!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtUserName.Focus();
+                        txtUserName.SelectAll();
+                        return;
+                    }
+                    string passHash = SupermarketManagement.Utils.SecurityHelper.Sha256(pass);
+                   
 
-                GetThongTin();
+                    _reppo.ThemTaiKhoanMoi(_reppo.RenderMaTK(), userName, passHash, sdt, role,maNV);
+
+                    MessageBox.Show("Tạo tài khoản thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    status = true;
+                    btnLuu.Text = "Lưu cập nhật";
+
+                    GetThongTin();
+                }
             }
             catch (Exception ex)
             {
@@ -166,6 +230,7 @@ namespace SupermarketManagement.Views.Admin.Account
 
                     // luwu leen csdl
                     string relativePath = Path.Combine("Resources", "Avata", fileName);
+
                     _reppo.UpdateImage(maNV, relativePath);
 
                     if (!string.IsNullOrEmpty(oldFullPath) && File.Exists(oldFullPath) && oldFullPath.ToLower() != fullPath.ToLower())
@@ -182,6 +247,54 @@ namespace SupermarketManagement.Views.Admin.Account
             }
         
         
+        }
+
+        private void btnChangePass_Click(object sender, EventArgs e)
+        {
+
+            txtPasswordNew.Enabled = true;
+            txtPassCu.Enabled = true;
+
+            txtXacNhan.Enabled = true;
+            string passCu = txtPassCu.Text.Trim();
+            string passMoi = txtPasswordNew.Text.Trim();
+            string xacNhan = txtXacNhan.Text.Trim();
+
+        
+            if (string.IsNullOrEmpty(passCu) || string.IsNullOrEmpty(passMoi) || string.IsNullOrEmpty(xacNhan))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (passMoi != xacNhan)
+            {
+                MessageBox.Show("Mật khẩu xác nhận không khớp!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtXacNhan.Focus();
+                return;
+            }
+            string hashCu = SupermarketManagement.Utils.SecurityHelper.Sha256(passCu);
+            string hashMoi = SupermarketManagement.Utils.SecurityHelper.Sha256(passMoi);
+
+           
+            bool isSuccess = _reppo.DoiMatKhau(maNV, hashCu, hashMoi);
+
+            if (isSuccess)
+            {
+                MessageBox.Show("Đổi mật khẩu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+             
+                txtPasswordNew.Clear();
+                txtPassCu.Clear();
+                txtXacNhan.Clear();
+                GetThongTin();
+              
+            }
+            else
+            {
+                MessageBox.Show("Mật khẩu cũ không chính xác!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtPasswordNew.Focus();
+                txtPasswordNew.SelectAll();
+            }
         }
     }
 }

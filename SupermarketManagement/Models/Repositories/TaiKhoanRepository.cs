@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace SupermarketManagement.Controllers.Repositories
@@ -53,10 +54,62 @@ namespace SupermarketManagement.Controllers.Repositories
         }
 
         // cập nhật ảnh
-        public void UpdateImage(string maTK, string urlImage)
+    
+        public void UpdateImage(string maNV, string urlImage)
         {
-            string sql = $"Update TaiKhoan SET UrlImage = N'{urlImage}' where MaTK = '{maTK}' ";
+            string sql = $"Update TaiKhoan SET UrlImage = N'{urlImage}' where MaNV = '{maNV}' ";
             _db.DataChange(sql);
+        }
+        // thêm tài khoản
+        public void ThemTaiKhoanMoi(string maTK, string userName, string password, string sdt, string role,  string maNV)
+        {
+            string sql = $"INSERT INTO TaiKhoan (MaTK, MaNV, UserName, Password, SDT, Role) " +
+                         $"VALUES ('{maTK}', '{maNV}', N'{userName}', '{password}', '{sdt}', N'{role}')";
+
+            _db.DataChange(sql);
+        }
+        // sinh mã
+        public string RenderMaTK()
+        {
+            string ngay = DateTime.Now.ToString("yyyyMMdd");
+            string tiento = "TK" + ngay;
+            string sql = $"SELECT TOP 1 MaTK FROM TaiKhoan WHERE MaTK LIKE '{tiento}%' ORDER BY MaTK DESC";
+            DataTable dt = _db.GetListData(sql);
+
+            int sttMoi = 1; 
+
+            if (dt.Rows.Count > 0)
+            {
+                string maMax = dt.Rows[0][0].ToString();
+                int soCuoi = Convert.ToInt32(maMax.Substring(maMax.Length - 3));
+                sttMoi = soCuoi + 1;
+            }
+
+            return tiento + sttMoi.ToString("D3");
+        }
+
+        // kiểm tra trùng
+        public bool CheckTrungUserName(string userName)
+        {
+            string sql = $"SELECT COUNT(*) FROM TaiKhoan WHERE UserName = N'{userName}'";
+            DataTable dt = _db.GetListData(sql);
+
+            return dt.Rows.Count > 0 && Convert.ToInt32(dt.Rows[0][0]) > 0;
+        }
+
+        public bool DoiMatKhau(string maNV, string matKhauCuHash, string matKhauMoiHash)
+        {
+           
+            string checkSql = $"SELECT COUNT(*) FROM TaiKhoan WHERE MaNV = '{maNV}' AND Password = '{matKhauCuHash}'";
+            DataTable dt = _db.GetListData(checkSql);
+
+            if (dt.Rows.Count > 0 && Convert.ToInt32(dt.Rows[0][0]) > 0)
+            {
+                string updateSql = $"UPDATE TaiKhoan SET Password = '{matKhauMoiHash}' WHERE MaNV = '{maNV}'";
+                _db.DataChange(updateSql);
+                return true; 
+            }
+            return false; 
         }
     }
 }

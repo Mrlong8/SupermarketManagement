@@ -36,7 +36,7 @@ namespace SupermarketManagement.Views.Admin.KhachHang
         public void GetDataKhachHang()
         {
             dgvListKhachHang.DataSource = _repo.GetAll();
-            Onbtn();
+            TrangThaiBanDau();
         }
 
         // Xóa dữ liệu trong các TextBox và thiết lập giá trị mặc định
@@ -49,6 +49,8 @@ namespace SupermarketManagement.Views.Admin.KhachHang
             dtpNgayDangKy.Value = DateTime.Now;
             txtDiemTichLuy.Text = "0";
             txtMaKH.Enabled = true;
+
+            TrangThaiBanDau();
         }
 
         // Gom dữ liệu từ các điều khiển nhập liệu
@@ -71,31 +73,24 @@ namespace SupermarketManagement.Views.Admin.KhachHang
             var data = GetFormData();
             if (string.IsNullOrWhiteSpace(data.maKH) ||
                 string.IsNullOrWhiteSpace(data.hoTen) ||
-                string.IsNullOrWhiteSpace(data.soDienThoai) ||
-                string.IsNullOrWhiteSpace(data.email))
+                string.IsNullOrWhiteSpace(data.soDienThoai))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin khách hàng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-
-            // Kiểm tra trùng mã
             if (!isEdit && _repo.CheckExists(data.maKH))
             {
                 MessageBox.Show("Mã khách hàng đã tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-
-            // Kiểm tra định dạng email
             if (!IsValidEmail(data.email))
             {
                 MessageBox.Show("Định dạng email không hợp lệ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-
             return true;
         }
 
-        // Kiểm tra định dạng email
         private bool IsValidEmail(string email)
         {
             try
@@ -214,7 +209,7 @@ namespace SupermarketManagement.Views.Admin.KhachHang
                 txtDiemTichLuy.Text = row.Cells["DiemTichLuy"].Value?.ToString() ?? "0";
 
                 txtMaKH.Enabled = false;
-                Onbtn();
+                TrangThaiChonDeSua();
             }
         }
 
@@ -225,7 +220,7 @@ namespace SupermarketManagement.Views.Admin.KhachHang
             txtMaKH.Text = _repo.RenderMaKhachHang();
             txtMaKH.Enabled = false;
             txtHoTen.Focus();
-            Offbtn();
+            TrangThaiThemMoi();
         }
 
         // Hỗ trợ phím Enter để chuyển ô nhập liệu tiếp theo
@@ -246,14 +241,23 @@ namespace SupermarketManagement.Views.Admin.KhachHang
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void Offbtn()
+        private void TrangThaiBanDau()
         {
+            btnLuu.Enabled = false;
             btnEdit.Enabled = false;
             btnXoa.Enabled = false;
         }
 
-        private void Onbtn()
+        private void TrangThaiThemMoi()
         {
+            btnLuu.Enabled = true;
+            btnEdit.Enabled = false;
+            btnXoa.Enabled = false;
+        }
+
+        private void TrangThaiChonDeSua()
+        {
+            btnLuu.Enabled = false;
             btnEdit.Enabled = true;
             btnXoa.Enabled = true;
         }
