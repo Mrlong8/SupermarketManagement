@@ -13,6 +13,9 @@ namespace SupermarketManagement.Views.Cashier
 {
     public partial class InvoiceForm : Form
     {
+        private decimal _tienGiamGia;
+        private int _diemSuDung;
+        private decimal _tienPhaiTra;
         public InvoiceForm()
         {
             InitializeComponent();
@@ -25,14 +28,29 @@ namespace SupermarketManagement.Views.Cashier
             string tenNhanVien,
             DateTime ngayMua,
             DataGridView bangSanPham,
-            string tongTien)
+            string tongTien,
+            string tienGiamGia = "0",
+            string diemSuDung = "0",
+            string tienPhaiTra = "")
         {
             txtMaHD.Text = maHD;
             txtMaKH.Text = maKH;
             txtKhachHang.Text = tenKH;
-            txtNhanVien.Text = tenNhanVien;
+            txtMaNV.Text = tenNhanVien;
             dtpNgayMua.Value = ngayMua;
-            txtTongTien.Text = tongTien;
+
+            decimal tong = ChuyenTien(tongTien);
+
+            // Lưu thông tin thanh toán để xuất Excel
+            _tienGiamGia = ChuyenTien(tienGiamGia);
+
+            int.TryParse(diemSuDung, out _diemSuDung);
+
+            _tienPhaiTra = string.IsNullOrWhiteSpace(tienPhaiTra)
+                ? tong - _tienGiamGia
+                : ChuyenTien(tienPhaiTra);
+
+            txtTongTien.Text = _tienPhaiTra.ToString("N0");
 
             dgvInvoiceDetails.Rows.Clear();
 
@@ -54,9 +72,19 @@ namespace SupermarketManagement.Views.Cashier
             }
         }
 
-       
 
-    
+        private decimal ChuyenTien(string giaTri)
+        {
+            if (string.IsNullOrWhiteSpace(giaTri))
+                return 0;
+
+            string so = giaTri.Replace(",", "").Replace(".", "");
+
+            if (decimal.TryParse(so, out decimal ketQua))
+                return ketQua;
+
+            return 0;
+        }
 
         private void btnxuatExecl_Click_1(object sender, EventArgs e)
         {
@@ -113,7 +141,7 @@ namespace SupermarketManagement.Views.Cashier
                         ws.Cell("E4").Value = txtKhachHang.Text;
 
                         ws.Cell("A5").Value = "Nhân viên:";
-                        ws.Cell("B5").Value = txtNhanVien.Text;
+                        ws.Cell("B5").Value = txtMaNV.Text;
 
 
                         // 3. TIÊU ĐỀ BẢNG SẢN PHẨM
@@ -223,27 +251,41 @@ namespace SupermarketManagement.Views.Cashier
                         }
 
                         // 6. TỔNG TIỀN
+
+
+
                         int totalRow = Math.Max(8, row) + 1;
 
-                        ws.Cell(totalRow, 5).Value = "TỔNG TIỀN:";
-                        ws.Cell(totalRow, 5).Style.Font.Bold = true;
+                        // Tổng tiền hàng
+                        ws.Cell(totalRow, 5).Value = "TỔNG TIỀN HÀNG:";
+                        ws.Cell(totalRow, 6).Value = (double)ChuyenTien(txtTongTien.Text);
 
-                        decimal tongTien;
+                        // Tiền giảm giá
+                        ws.Cell(totalRow + 1, 5).Value = "TIỀN GIẢM GIÁ:";
+                        ws.Cell(totalRow + 1, 6).Value = (double)_tienGiamGia;
 
-                        if (decimal.TryParse(
-                            txtTongTien.Text,
-                            out tongTien))
-                        {
-                            ws.Cell(totalRow, 6).Value = (double)tongTien;
-                            ws.Cell(totalRow, 6).Style.NumberFormat.Format = "#,##0";
-                        }
-                        else
-                        {
-                            // Dự phòng nếu tổng tiền có ký tự định dạng
-                            ws.Cell(totalRow, 6).Value = txtTongTien.Text;
-                        }
+                        // Điểm sử dụng
+                        ws.Cell(totalRow + 2, 5).Value = "ĐIỂM SỬ DỤNG:";
+                        ws.Cell(totalRow + 2, 6).Value = _diemSuDung;
 
-                        ws.Cell(totalRow, 6).Style.Font.Bold = true;
+                        // Khách phải trả
+                        ws.Cell(totalRow + 3, 5).Value = "KHÁCH PHẢI TRẢ:";
+                        ws.Cell(totalRow + 3, 6).Value = (double)_tienPhaiTra;
+
+                        // Định dạng tiền
+                        ws.Range(totalRow, 6, totalRow + 1, 6)
+                            .Style.NumberFormat.Format = "#,##0";
+
+                        ws.Cell(totalRow + 3, 6)
+                            .Style.NumberFormat.Format = "#,##0";
+
+                        // In đậm số tiền phải trả
+                        ws.Range(totalRow + 3, 5, totalRow + 3, 6)
+                            .Style.Font.Bold = true;
+
+                        // Kẻ viền khu vực thanh toán
+                        ws.Range(totalRow, 5, totalRow + 3, 6)
+                            .Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         // 7. CĂN CHỈNH CỘT
                         ws.Columns(1, 6).AdjustToContents();
 

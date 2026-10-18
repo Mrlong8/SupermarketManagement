@@ -1,7 +1,8 @@
-﻿using System;
-using System.Data;
-using SupermarketManagement.Controllers.Repositories;
+﻿using SupermarketManagement.Controllers.Repositories;
 using SupermarketManagement.Utils;
+using System;
+using System.Data;
+using System.Windows.Forms;
 
 namespace SupermarketManagement.Controllers
 {
@@ -17,10 +18,13 @@ namespace SupermarketManagement.Controllers
             if (dt.Rows.Count == 0) return false;
 
             DataRow r = dt.Rows[0];
-            UserSession.MaTK = Convert.ToInt32(r["MaTK"]);
+            UserSession.MaTK = Convert.ToString(r["MaTK"]);
             UserSession.UserName = r["UserName"].ToString();
             UserSession.Role = r["Role"].ToString();
-            UserSession.MaNV = r["MaNV"] == DBNull.Value ? 0 : Convert.ToInt32(r["MaNV"]);
+            UserSession.MaNV = r["MaNV"] == DBNull.Value ? null : Convert.ToString(r["MaNV"]);
+            MessageBox.Show(
+                "Tài khoản: " + UserSession.UserName +
+                "\nMã nhân viên: " + UserSession.MaNV);
             UserSession.HoTen = r["HoTen"] == DBNull.Value ? userName : r["HoTen"].ToString();
             UserSession.ChucVu = r["TenChucVu"] == DBNull.Value ? "" : r["TenChucVu"].ToString();
             return true;

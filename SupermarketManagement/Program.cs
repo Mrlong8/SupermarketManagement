@@ -8,8 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 
 // ===== CỦA NAM: muốn test luồng Đăng nhập thì bỏ comment 2 dòng using dưới đây =====
-//using SupermarketManagement.Utils;
-//using SupermarketManagement.Views.Auth;
+using SupermarketManagement.Utils;
+using SupermarketManagement.Views.Auth;
 
 namespace SupermarketManagement
 {
@@ -24,23 +24,27 @@ namespace SupermarketManagement
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new POSForm()); // nếu muons chạy form khác thì đổi tên form ở đây của Long Hiện tại là Admin mọi người có thể comment và tuyệt đói không xóa của người khác nhé
-            Application.Run(new Frm_Admin()); //test ở đây
+            //Application.Run(new Frm_Admin()); //test ở đây
 
             // ================= CỦA NAM: Đăng nhập -> Form tổng -> Đăng xuất =================
             // Cách test: comment dòng Application.Run(new Frm_Admin()) của Long Hiện ở trên,
             // bỏ comment 2 dòng using ở đầu file, rồi bỏ comment đoạn bên dưới.
-            //while (true)
-            //{
-            //    using (LoginForm login = new LoginForm())
-            //    {
-            //        if (login.ShowDialog() != DialogResult.OK) break;   // bấm Thoát
-            //    }
-            //
-            //    DashboardForm main = new DashboardForm();
-            //    Application.Run(main);
-            //    if (!main.DangXuat) break;                              // tắt chương trình
-            //    UserSession.Xoa();
-            //}
+            while (true)
+            {
+                using (LoginForm login = new LoginForm())
+                {
+                    if (login.ShowDialog() != DialogResult.OK) break;   // bấm Thoát
+                }
+
+                //DashboardForm main = new DashboardForm();
+                //Application.Run(main);
+                //if (!main.DangXuat) break;                              // tắt chương trình
+                //UserSession.Xoa();
+                Frm_Admin main = new Frm_Admin();
+                Application.Run(main);
+
+                break;
+            }
         }
     }
 }

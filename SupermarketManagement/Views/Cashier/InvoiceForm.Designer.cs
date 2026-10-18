@@ -36,7 +36,7 @@
             this.lblNgayMua = new System.Windows.Forms.Label();
             this.lblTongTien = new System.Windows.Forms.Label();
             this.txtTongTien = new System.Windows.Forms.TextBox();
-            this.txtNhanVien = new System.Windows.Forms.TextBox();
+            this.txtMaNV = new System.Windows.Forms.TextBox();
             this.txtKhachHang = new System.Windows.Forms.TextBox();
             this.txtMaHD = new System.Windows.Forms.TextBox();
             this.txtMaKH = new System.Windows.Forms.TextBox();
@@ -85,9 +85,9 @@
             this.lblNhanVien.AutoSize = true;
             this.lblNhanVien.Location = new System.Drawing.Point(26, 197);
             this.lblNhanVien.Name = "lblNhanVien";
-            this.lblNhanVien.Size = new System.Drawing.Size(79, 20);
+            this.lblNhanVien.Size = new System.Drawing.Size(105, 20);
             this.lblNhanVien.TabIndex = 4;
-            this.lblNhanVien.Text = "Nhân viên";
+            this.lblNhanVien.Text = "Mã Nhân viên";
             // 
             // lblMaKH
             // 
@@ -120,15 +120,16 @@
             // 
             this.txtTongTien.Location = new System.Drawing.Point(760, 532);
             this.txtTongTien.Name = "txtTongTien";
+            this.txtTongTien.ReadOnly = true;
             this.txtTongTien.Size = new System.Drawing.Size(200, 26);
             this.txtTongTien.TabIndex = 8;
             // 
-            // txtNhanVien
+            // txtMaNV
             // 
-            this.txtNhanVien.Location = new System.Drawing.Point(167, 191);
-            this.txtNhanVien.Name = "txtNhanVien";
-            this.txtNhanVien.Size = new System.Drawing.Size(195, 26);
-            this.txtNhanVien.TabIndex = 9;
+            this.txtMaNV.Location = new System.Drawing.Point(167, 191);
+            this.txtMaNV.Name = "txtMaNV";
+            this.txtMaNV.Size = new System.Drawing.Size(195, 26);
+            this.txtMaNV.TabIndex = 9;
             // 
             // txtKhachHang
             // 
@@ -253,7 +254,7 @@
             this.Controls.Add(this.txtMaKH);
             this.Controls.Add(this.txtMaHD);
             this.Controls.Add(this.txtKhachHang);
-            this.Controls.Add(this.txtNhanVien);
+            this.Controls.Add(this.txtMaNV);
             this.Controls.Add(this.txtTongTien);
             this.Controls.Add(this.lblTongTien);
             this.Controls.Add(this.lblNgayMua);
@@ -280,7 +281,7 @@
         private System.Windows.Forms.Label lblNgayMua;
         private System.Windows.Forms.Label lblTongTien;
         private System.Windows.Forms.TextBox txtTongTien;
-        private System.Windows.Forms.TextBox txtNhanVien;
+        private System.Windows.Forms.TextBox txtMaNV;
         private System.Windows.Forms.TextBox txtKhachHang;
         private System.Windows.Forms.TextBox txtMaHD;
         private System.Windows.Forms.TextBox txtMaKH;
