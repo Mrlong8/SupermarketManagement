@@ -588,7 +588,7 @@ namespace SupermarketManagement
             }
 
             // 3. Lấy mã nhân viên đang đăng nhập
-            string maNV = UserSession.MaNV;
+            string maNV = UserSession.MaNV.ToString();
 
             if (string.IsNullOrWhiteSpace(maNV))
             {

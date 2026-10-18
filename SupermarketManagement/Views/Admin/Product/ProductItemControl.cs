@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SupermarketManagement.Models.Repositories;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,13 +13,15 @@ namespace SupermarketManagement.Views.Admin.Product
 {
     public partial class ProductItemControl : UserControl
     {
+        private string _maSP;
         public ProductItemControl()
         {
             InitializeComponent();
         }
 
-        public void SetData(string TenSP, string GiaNhap,string GiaBan,string SoLuong,string UrlImage)
+        public void SetData(string maSP, string TenSP, string GiaNhap, string GiaBan, string SoLuong, string UrlImage)
         {
+            _maSP = maSP;
             lblTenSP.Text = TenSP;
             lblGiaNhap.Text = "Giá Nhập: " + GiaNhap;
             lblGiaBan.Text = "Giá Bán: " + GiaBan;
@@ -43,6 +46,32 @@ namespace SupermarketManagement.Views.Admin.Product
                     pctbImageItem.Image = null; // Hoặc gán ảnh mặc định nếu không thấy file
                 }
             }
+        }
+
+        private void btnXoaItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show($"Bạn chắc chắn muốn xóa sản phẩm {lblTenSP.Text}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    SanPhamRepositoryV2 repo = new SanPhamRepositoryV2();
+                    repo.Delete(_maSP); // Hàm xóa mềm trạng thái về 0
+
+                    MessageBox.Show("Xóa sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    IndexProduct.Instance.GetSanPham();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xóa: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnSuaItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

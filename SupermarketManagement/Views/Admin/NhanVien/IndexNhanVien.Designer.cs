@@ -52,6 +52,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnTimKiemUser = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.lblTrangThaiTK = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListAccount)).BeginInit();
             this.grb1.SuspendLayout();
             this.grbThongtin.SuspendLayout();
@@ -538,11 +539,23 @@
             this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
+            // lblTrangThaiTK
+            // 
+            this.lblTrangThaiTK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTrangThaiTK.AutoSize = true;
+            this.lblTrangThaiTK.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTrangThaiTK.Location = new System.Drawing.Point(1006, 589);
+            this.lblTrangThaiTK.Name = "lblTrangThaiTK";
+            this.lblTrangThaiTK.Size = new System.Drawing.Size(151, 17);
+            this.lblTrangThaiTK.TabIndex = 14;
+            this.lblTrangThaiTK.Text = "Trạng Thái Tài Khoản : ";
+            // 
             // IndexNhanVien
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
+            this.Controls.Add(this.lblTrangThaiTK);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -603,5 +616,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Label lblTrangThaiTK;
     }
 }

@@ -6,7 +6,7 @@ namespace SupermarketManagement.Utils
     public static class UserSession
     {
         public static string MaTK { get; set; }
-        public static string  MaNV { get; set; }
+        public static int  MaNV { get; set; }
         public static string UserName { get; set; }
         public static string Role { get; set; }       // Admin / Manager / Cashier
         public static string HoTen { get; set; }
@@ -42,7 +42,7 @@ namespace SupermarketManagement.Utils
         public static void Xoa()
         {
             MaTK = null;
-            MaNV = null;
+            MaNV = 0;
             UserName = null;
             Role = null;
             HoTen = null;

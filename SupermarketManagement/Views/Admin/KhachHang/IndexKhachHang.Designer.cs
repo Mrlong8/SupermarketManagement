@@ -43,7 +43,6 @@ namespace SupermarketManagement.Views.Admin.KhachHang
             this.label2 = new System.Windows.Forms.Label();
             this.btnTimKiem = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
-            this.btnLichSuMua = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListKhachHang)).BeginInit();
             this.grb1.SuspendLayout();
             this.grbThongtin.SuspendLayout();
@@ -404,31 +403,12 @@ namespace SupermarketManagement.Views.Admin.KhachHang
             this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // btnLichSuMua
-            // 
-            this.btnLichSuMua.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnLichSuMua.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(191)))), ((int)(((byte)(255)))));
-            this.btnLichSuMua.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLichSuMua.FlatAppearance.BorderSize = 0;
-            this.btnLichSuMua.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(145)))), ((int)(((byte)(205)))));
-            this.btnLichSuMua.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(225)))));
-            this.btnLichSuMua.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLichSuMua.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnLichSuMua.ForeColor = System.Drawing.Color.White;
-            this.btnLichSuMua.Location = new System.Drawing.Point(586, 578);
-            this.btnLichSuMua.Name = "btnLichSuMua";
-            this.btnLichSuMua.Size = new System.Drawing.Size(229, 36);
-            this.btnLichSuMua.TabIndex = 14;
-            this.btnLichSuMua.Text = "Lịch Sử Mua Hàng";
-            this.btnLichSuMua.UseVisualStyleBackColor = false;
-            // 
             // IndexKhachHang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(1240, 633);
-            this.Controls.Add(this.btnLichSuMua);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.grbThongtin);
@@ -478,6 +458,5 @@ namespace SupermarketManagement.Views.Admin.KhachHang
         private System.Windows.Forms.TextBox txtMaKH;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnReset;
-        private System.Windows.Forms.Button btnLichSuMua;
     }
 }
