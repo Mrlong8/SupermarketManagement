@@ -56,7 +56,7 @@ namespace SupermarketManagement.Views.Admin.Product
                 try
                 {
                     SanPhamRepositoryV2 repo = new SanPhamRepositoryV2();
-                    repo.Delete(_maSP); // Hàm xóa mềm trạng thái về 0
+                    repo.Delete(_maSP); 
 
                     MessageBox.Show("Xóa sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -71,7 +71,8 @@ namespace SupermarketManagement.Views.Admin.Product
 
         private void btnSuaItem_Click(object sender, EventArgs e)
         {
-
+            EditProduct frm = new EditProduct(_maSP);
+            frm.ShowDialog();
         }
     }
 }
