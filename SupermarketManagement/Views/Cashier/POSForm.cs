@@ -28,6 +28,11 @@ namespace SupermarketManagement
 
 
             InitializeComponent();
+            ApDungGiaoDienThongNhat();
+            this.AutoScroll = false;
+            this.Resize += (s, e) => LayoutPOSForm();
+
+            LayoutPOSForm();
             // Cấu hình bảng chi tiết hóa đơn
             dgvChiTietHoaDon.ReadOnly = true;
             dgvChiTietHoaDon.MultiSelect = false;
@@ -63,111 +68,111 @@ namespace SupermarketManagement
 
         // Thêm sản phẩm vào hóa đơn
 
-        private void btnThemSP_Click(object sender, EventArgs e)
-        {
-            string maSP = txtMaSP.Text.Trim();
-            string tenSP = txtTenSP.Text.Trim();
+        //private void btnThemSP_Click(object sender, EventArgs e)
+        //{
+        //    string maSP = txtMaSP.Text.Trim();
+        //    string tenSP = txtTenSP.Text.Trim();
 
-            if (maSP == "" || tenSP == "")
-            {
-                MessageBox.Show("Vui lòng nhập mã và tên sản phẩm.");
-                return;
-            }
+        //    if (maSP == "" || tenSP == "")
+        //    {
+        //        MessageBox.Show("Vui lòng nhập mã và tên sản phẩm.");
+        //        return;
+        //    }
 
-            if (!decimal.TryParse(txtDonGia.Text.Trim(), out decimal donGia)
-                || donGia <= 0)
-            {
-                MessageBox.Show("Đơn giá phải là số lớn hơn 0.");
-                txtDonGia.Focus();
-                return;
-            }
+        //    if (!decimal.TryParse(txtDonGia.Text.Trim(), out decimal donGia)
+        //        || donGia <= 0)
+        //    {
+        //        MessageBox.Show("Đơn giá phải là số lớn hơn 0.");
+        //        txtDonGia.Focus();
+        //        return;
+        //    }
 
-            if (!int.TryParse(txtSoLuong.Text.Trim(), out int soLuong)
-                || soLuong <= 0)
-            {
-                MessageBox.Show("Số lượng phải là số nguyên lớn hơn 0.");
-                txtSoLuong.Focus();
-                return;
-            }
+        //    if (!int.TryParse(txtSoLuong.Text.Trim(), out int soLuong)
+        //        || soLuong <= 0)
+        //    {
+        //        MessageBox.Show("Số lượng phải là số nguyên lớn hơn 0.");
+        //        txtSoLuong.Focus();
+        //        return;
+        //    }
 
-            // Tìm sản phẩm trong danh sách tồn kho
-            DataGridViewRow dongSanPham = null;
+        //    // Tìm sản phẩm trong danh sách tồn kho
+        //    DataGridViewRow dongSanPham = null;
 
-            foreach (DataGridViewRow row in dgvDSSP.Rows)
-            {
-                if (row.IsNewRow)
-                    continue;
+        //    foreach (DataGridViewRow row in dgvDSSP.Rows)
+        //    {
+        //        if (row.IsNewRow)
+        //            continue;
 
-                if (Convert.ToString(row.Cells["colMaSP_DSSP"].Value) == maSP)
-                {
-                    dongSanPham = row;
-                    break;
-                }
-            }
+        //        if (Convert.ToString(row.Cells["colMaSP_DSSP"].Value) == maSP)
+        //        {
+        //            dongSanPham = row;
+        //            break;
+        //        }
+        //    }
 
-            if (dongSanPham == null)
-            {
-                MessageBox.Show("Không tìm thấy sản phẩm trong danh sách tồn kho.");
-                return;
-            }
+        //    if (dongSanPham == null)
+        //    {
+        //        MessageBox.Show("Không tìm thấy sản phẩm trong danh sách tồn kho.");
+        //        return;
+        //    }
 
-            int tonKho = Convert.ToInt32(
-                dongSanPham.Cells["colSoLuong_DSSP"].Value);
+        //    int tonKho = Convert.ToInt32(
+        //        dongSanPham.Cells["colSoLuong_DSSP"].Value);
 
-            if (soLuong > tonKho)
-            {
-                MessageBox.Show("Số lượng tồn kho không đủ!");
-                return;
-            }
+        //    if (soLuong > tonKho)
+        //    {
+        //        MessageBox.Show("Số lượng tồn kho không đủ!");
+        //        return;
+        //    }
 
-            // Kiểm tra sản phẩm đã có trong hóa đơn chưa
-            foreach (DataGridViewRow row in dgvChiTietHoaDon.Rows)
-            {
-                if (row.IsNewRow)
-                    continue;
+        //    // Kiểm tra sản phẩm đã có trong hóa đơn chưa
+        //    foreach (DataGridViewRow row in dgvChiTietHoaDon.Rows)
+        //    {
+        //        if (row.IsNewRow)
+        //            continue;
 
-                if (Convert.ToString(row.Cells["colMaSP"].Value) == maSP)
-                {
-                    decimal giaCu = Convert.ToDecimal(
-                        row.Cells["colDonGia"].Value);
+        //        if (Convert.ToString(row.Cells["colMaSP"].Value) == maSP)
+        //        {
+        //            decimal giaCu = Convert.ToDecimal(
+        //                row.Cells["colDonGia"].Value);
 
-                    if (giaCu != donGia)
-                    {
-                        MessageBox.Show(
-                            "Mã sản phẩm này đã có trong hóa đơn với đơn giá khác.");
-                        return;
-                    }
+        //            if (giaCu != donGia)
+        //            {
+        //                MessageBox.Show(
+        //                    "Mã sản phẩm này đã có trong hóa đơn với đơn giá khác.");
+        //                return;
+        //            }
 
-                    int soLuongCu = Convert.ToInt32(
-                        row.Cells["colSoLuong"].Value);
+        //            int soLuongCu = Convert.ToInt32(
+        //                row.Cells["colSoLuong"].Value);
 
-                    row.Cells["colSoLuong"].Value = soLuongCu + soLuong;
-                    row.Cells["colThanhTien"].Value =
-                        (soLuongCu + soLuong) * donGia;
+        //            row.Cells["colSoLuong"].Value = soLuongCu + soLuong;
+        //            row.Cells["colThanhTien"].Value =
+        //                (soLuongCu + soLuong) * donGia;
 
-                    // Trừ số lượng tồn kho
+        //            // Trừ số lượng tồn kho
 
 
-                    CapNhatTongTien();
-                    LamTrongThongTinSanPham();
-                    return;
-                }
-            }
+        //            CapNhatTongTien();
+        //            LamTrongThongTinSanPham();
+        //            return;
+        //        }
+        //    }
 
-            // Thêm sản phẩm mới vào chi tiết hóa đơn
-            dgvChiTietHoaDon.Rows.Add(
-                maSP,
-                tenSP,
-                soLuong,
-                donGia,
-                soLuong * donGia
-            );
+        //    // Thêm sản phẩm mới vào chi tiết hóa đơn
+        //    dgvChiTietHoaDon.Rows.Add(
+        //        maSP,
+        //        tenSP,
+        //        soLuong,
+        //        donGia,
+        //        soLuong * donGia
+        //    );
 
-            // Trừ số lượng tồn kho
+        //    // Trừ số lượng tồn kho
          
-            CapNhatTongTien();
-            LamTrongThongTinSanPham();
-        }
+        //    CapNhatTongTien();
+        //    LamTrongThongTinSanPham();
+        //}
 
 
         // Sửa sản phẩm đang được chọn trong hóa đơn
@@ -180,7 +185,8 @@ namespace SupermarketManagement
                 MessageBox.Show("Vui lòng chọn sản phẩm trong chi tiết hóa đơn.");
                 return;
             }
-
+            txtTenSP.ReadOnly = true;
+            txtSoLuong.ReadOnly = false;
             string maSP = Convert.ToString(
                 dgvChiTietHoaDon.CurrentRow.Cells["colMaSP"].Value);
 
@@ -355,47 +361,131 @@ namespace SupermarketManagement
 
 
         // Tìm sản phẩm trong các dòng đã thêm vào hóa đơn
+
         private void btnTimKiemSP_Click(object sender, EventArgs e)
         {
-            string tuKhoa = txtMaSP.Text.Trim();
-
-            if (tuKhoa == "")
-                tuKhoa = txtTenSP.Text.Trim();
-
-            if (tuKhoa == "")
+            // Bước 1: Mở ô tên sản phẩm
+            if (txtTenSP.ReadOnly && txtMaSP.ReadOnly)
             {
-                MessageBox.Show("Nhập mã hoặc tên sản phẩm cần tìm.");
+                txtMaSP.Clear();
+                txtTenSP.Clear();
+                txtDonGia.Clear();
+                txtSoLuong.Clear();
+
+                txtTenSP.ReadOnly = false;
+                txtMaSP.ReadOnly = true;
+                txtDonGia.ReadOnly = true;
+                txtSoLuong.ReadOnly = true;
+
+                txtTenSP.Focus();
                 return;
             }
 
-            foreach (DataGridViewRow row in dgvChiTietHoaDon.Rows)
+            string tenSP = txtTenSP.Text.Trim();
+
+            if (tenSP == "")
             {
-                string maSP = Convert.ToString(
-                    row.Cells["colMaSP"].Value);
-                string tenSP = Convert.ToString(
-                    row.Cells["colTenSP"].Value);
+                MessageBox.Show("Vui lòng nhập tên sản phẩm!");
+                txtTenSP.Focus();
+                return;
+            }
 
-                if (maSP.IndexOf(tuKhoa,
-                        StringComparison.OrdinalIgnoreCase) >= 0
-                    || tenSP.IndexOf(tuKhoa,
-                        StringComparison.OrdinalIgnoreCase) >= 0)
+            // Đếm số sản phẩm khớp với tên tìm kiếm
+            int soKetQua = 0;
+            DataGridViewRow dongTimThay = null;
+
+            foreach (DataGridViewRow row in dgvDSSP.Rows)
+            {
+                if (row.IsNewRow)
+                    continue;
+
+                string tenTrongBang = Convert.ToString(
+                    row.Cells["colTenSP_DSSP"].Value);
+
+                if (tenTrongBang != null &&
+                    tenTrongBang.IndexOf(
+                        tenSP, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    dgvChiTietHoaDon.ClearSelection();
-                    row.Selected = true;
-                    dgvChiTietHoaDon.CurrentCell =
-                        row.Cells["colMaSP"];
+                    soKetQua++;
+                    dongTimThay = row;
+                }
+            }
 
-                    dgvChiTietHoaDon_CellClick(
-                        dgvChiTietHoaDon,
-                        new DataGridViewCellEventArgs(
-                            0, row.Index));
+            // Không tìm thấy
+            if (soKetQua == 0)
+            {
+                MessageBox.Show("Không tìm thấy sản phẩm!");
+                txtTenSP.Focus();
+                txtTenSP.SelectAll();
+                return;
+            }
 
+            // Có nhiều sản phẩm trùng tên
+            if (soKetQua > 1 && txtMaSP.ReadOnly)
+            {
+                MessageBox.Show(
+                    "Có nhiều sản phẩm trùng tên. Vui lòng nhập mã sản phẩm để tìm chính xác.");
+
+                txtMaSP.ReadOnly = false;
+                txtMaSP.Focus();
+                return;
+            }
+
+            // Nếu đã nhập mã, tìm đúng sản phẩm theo cả tên và mã
+            if (!txtMaSP.ReadOnly)
+            {
+                string maSP = txtMaSP.Text.Trim();
+                dongTimThay = null;
+
+                foreach (DataGridViewRow row in dgvDSSP.Rows)
+                {
+                    if (row.IsNewRow)
+                        continue;
+
+                    string maTrongBang = Convert.ToString(
+                        row.Cells["colMaSP_DSSP"].Value);
+
+                    string tenTrongBang = Convert.ToString(
+                        row.Cells["colTenSP_DSSP"].Value);
+
+                    if (maTrongBang == maSP &&
+                        tenTrongBang != null &&
+                        tenTrongBang.IndexOf(
+                            tenSP, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        dongTimThay = row;
+                        break;
+                    }
+                }
+
+                if (dongTimThay == null)
+                {
+                    MessageBox.Show("Mã sản phẩm không khớp với tên đã nhập!");
+                    txtMaSP.Focus();
+                    txtMaSP.SelectAll();
                     return;
                 }
             }
 
-            MessageBox.Show("Không tìm thấy sản phẩm trong hóa đơn.");
+            // Hiển thị sản phẩm tìm thấy
+            txtMaSP.Text = Convert.ToString(
+                dongTimThay.Cells["colMaSP_DSSP"].Value);
+
+            txtTenSP.Text = Convert.ToString(
+                dongTimThay.Cells["colTenSP_DSSP"].Value);
+
+            txtDonGia.Text = Convert.ToString(
+                dongTimThay.Cells["colDonGiaBan_DSSP"].Value);
+
+            txtSoLuong.Text = "1";
+
+            // Khóa cả 4 ô sau khi tìm thành công
+            txtMaSP.ReadOnly = true;
+            txtTenSP.ReadOnly = true;
+            txtDonGia.ReadOnly = true;
+            txtSoLuong.ReadOnly = true;
         }
+
 
         // Xóa sản phẩm khỏi hóa đơn
         private void btnXoaSPKhoiHD_Click(object sender, EventArgs e)
@@ -958,131 +1048,131 @@ namespace SupermarketManagement
         }
 
 
-        private void btnSuaKH_Click(object sender, EventArgs e)
-        {
-            string maKH = txtMaKH.Text.Trim();
-            string tenKH = txtTenKH.Text.Trim();
-            string sdt = txtSDT.Text.Trim();
-            string email = txtEmail.Text.Trim();
+        //private void btnSuaKH_Click(object sender, EventArgs e)
+        //{
+        //    string maKH = txtMaKH.Text.Trim();
+        //    string tenKH = txtTenKH.Text.Trim();
+        //    string sdt = txtSDT.Text.Trim();
+        //    string email = txtEmail.Text.Trim();
 
-            if (!KiemTraThongTinKhachHang(maKH, tenKH, sdt, email))
-                return;
+        //    if (!KiemTraThongTinKhachHang(maKH, tenKH, sdt, email))
+        //        return;
 
-            try
-            {
-                DbConection db = new DbConection();
+        //    try
+        //    {
+        //        DbConection db = new DbConection();
 
-                // Kiểm tra khách hàng có tồn tại
-                DataTable dt = db.GetTable(
-                    "SELECT MaKH FROM dbo.KhachHang WHERE MaKH = @MaKH",
-                    new SqlParameter("@MaKH", maKH));
+        //        // Kiểm tra khách hàng có tồn tại
+        //        DataTable dt = db.GetTable(
+        //            "SELECT MaKH FROM dbo.KhachHang WHERE MaKH = @MaKH",
+        //            new SqlParameter("@MaKH", maKH));
 
-                if (dt.Rows.Count == 0)
-                {
-                    MessageBox.Show("Không tìm thấy khách hàng cần sửa.");
-                    return;
-                }
+        //        if (dt.Rows.Count == 0)
+        //        {
+        //            MessageBox.Show("Không tìm thấy khách hàng cần sửa.");
+        //            return;
+        //        }
 
-                // Kiểm tra số điện thoại có thuộc khách hàng khác không
-                dt = db.GetTable(
-                    @"SELECT MaKH FROM dbo.KhachHang
-              WHERE SoDienThoai = @SDT AND MaKH <> @MaKH",
-                    new SqlParameter("@SDT", sdt),
-                    new SqlParameter("@MaKH", maKH));
+        //        // Kiểm tra số điện thoại có thuộc khách hàng khác không
+        //        dt = db.GetTable(
+        //            @"SELECT MaKH FROM dbo.KhachHang
+        //      WHERE SoDienThoai = @SDT AND MaKH <> @MaKH",
+        //            new SqlParameter("@SDT", sdt),
+        //            new SqlParameter("@MaKH", maKH));
 
-                if (dt.Rows.Count > 0)
-                {
-                    MessageBox.Show("Số điện thoại đã được khách hàng khác đăng ký.");
-                    return;
-                }
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            MessageBox.Show("Số điện thoại đã được khách hàng khác đăng ký.");
+        //            return;
+        //        }
 
-                // Kiểm tra email có thuộc khách hàng khác không
-                dt = db.GetTable(
-                    @"SELECT MaKH FROM dbo.KhachHang
-              WHERE Email = @Email AND MaKH <> @MaKH",
-                    new SqlParameter("@Email", email),
-                    new SqlParameter("@MaKH", maKH));
+        //        // Kiểm tra email có thuộc khách hàng khác không
+        //        dt = db.GetTable(
+        //            @"SELECT MaKH FROM dbo.KhachHang
+        //      WHERE Email = @Email AND MaKH <> @MaKH",
+        //            new SqlParameter("@Email", email),
+        //            new SqlParameter("@MaKH", maKH));
 
-                if (dt.Rows.Count > 0)
-                {
-                    MessageBox.Show("Email đã được khách hàng khác đăng ký.");
-                    return;
-                }
+        //        if (dt.Rows.Count > 0)
+        //        {
+        //            MessageBox.Show("Email đã được khách hàng khác đăng ký.");
+        //            return;
+        //        }
 
-                string sql = @"
-            UPDATE dbo.KhachHang
-            SET HoTen = @HoTen,
-                SoDienThoai = @SDT,
-                Email = @Email
-            WHERE MaKH = @MaKH";
+        //        string sql = @"
+        //    UPDATE dbo.KhachHang
+        //    SET HoTen = @HoTen,
+        //        SoDienThoai = @SDT,
+        //        Email = @Email
+        //    WHERE MaKH = @MaKH";
 
-                int soDong = db.ExecuteNonQuery(
-                    sql,
-                    new SqlParameter("@HoTen", tenKH),
-                    new SqlParameter("@SDT", sdt),
-                    new SqlParameter("@Email", email),
-                    new SqlParameter("@MaKH", maKH));
+        //        int soDong = db.ExecuteNonQuery(
+        //            sql,
+        //            new SqlParameter("@HoTen", tenKH),
+        //            new SqlParameter("@SDT", sdt),
+        //            new SqlParameter("@Email", email),
+        //            new SqlParameter("@MaKH", maKH));
 
-                MessageBox.Show(soDong > 0
-                    ? "Sửa khách hàng thành công."
-                    : "Không có dữ liệu được cập nhật.");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi khi sửa khách hàng:\n" + ex.Message);
-            }
-        }
+        //        MessageBox.Show(soDong > 0
+        //            ? "Sửa khách hàng thành công."
+        //            : "Không có dữ liệu được cập nhật.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Lỗi khi sửa khách hàng:\n" + ex.Message);
+        //    }
+        //}
 
 
 
-        private void btnXoaKH_Click(object sender, EventArgs e)
-        {
-            string maKH = txtMaKH.Text.Trim();
+        //private void btnXoaKH_Click(object sender, EventArgs e)
+        //{
+        //    string maKH = txtMaKH.Text.Trim();
 
-            if (maKH == "")
-            {
-                MessageBox.Show("Vui lòng nhập mã khách hàng cần xóa.");
-                txtMaKH.Focus();
-                return;
-            }
+        //    if (maKH == "")
+        //    {
+        //        MessageBox.Show("Vui lòng nhập mã khách hàng cần xóa.");
+        //        txtMaKH.Focus();
+        //        return;
+        //    }
 
-            DialogResult ketQua = MessageBox.Show(
-                "Bạn có chắc chắn muốn xóa khách hàng " + maKH + "?",
-                "Xác nhận xóa",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+        //    DialogResult ketQua = MessageBox.Show(
+        //        "Bạn có chắc chắn muốn xóa khách hàng " + maKH + "?",
+        //        "Xác nhận xóa",
+        //        MessageBoxButtons.YesNo,
+        //        MessageBoxIcon.Question);
 
-            if (ketQua != DialogResult.Yes)
-                return;
+        //    if (ketQua != DialogResult.Yes)
+        //        return;
 
-            try
-            {
-                DbConection db = new DbConection();
+        //    try
+        //    {
+        //        DbConection db = new DbConection();
 
-                int soDong = db.ExecuteNonQuery(
-                    "DELETE FROM dbo.KhachHang WHERE MaKH = @MaKH",
-                    new SqlParameter("@MaKH", maKH));
+        //        int soDong = db.ExecuteNonQuery(
+        //            "DELETE FROM dbo.KhachHang WHERE MaKH = @MaKH",
+        //            new SqlParameter("@MaKH", maKH));
 
-                if (soDong > 0)
-                {
-                    MessageBox.Show("Xóa khách hàng thành công.");
-                    txtMaKH.Clear();
-                    txtTenKH.Clear();
-                    txtSDT.Clear();
-                    txtEmail.Clear();
-                }
-                else
-                {
-                    MessageBox.Show("Không tìm thấy khách hàng cần xóa.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Không thể xóa khách hàng. Có thể khách hàng đã có hóa đơn liên quan.\n"
-                    + ex.Message);
-            }
-        }
+        //        if (soDong > 0)
+        //        {
+        //            MessageBox.Show("Xóa khách hàng thành công.");
+        //            txtMaKH.Clear();
+        //            txtTenKH.Clear();
+        //            txtSDT.Clear();
+        //            txtEmail.Clear();
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("Không tìm thấy khách hàng cần xóa.");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(
+        //            "Không thể xóa khách hàng. Có thể khách hàng đã có hóa đơn liên quan.\n"
+        //            + ex.Message);
+        //    }
+        //}
 
 
         private void btnTimKiemKH_Click(object sender, EventArgs e)
@@ -1164,7 +1254,361 @@ namespace SupermarketManagement
             }
         }
 
+        private void ApDungGiaoDienThongNhat()
+        {
+            // Màu sắc đồng bộ với giao diện Admin
+            Color xanhChuDao = Color.FromArgb(8, 181, 232);
+            Color xanhDuong = Color.FromArgb(0, 123, 255);
+            Color xanhLa = Color.FromArgb(40, 167, 69);
+            Color doo = Color.FromArgb(220, 53, 69);
+
+            Color cam = Color.FromArgb(255, 193, 7);
+            Color nen = Color.FromArgb(244, 246, 249);
+
+            // Giao diện chung
+            this.BackColor = nen;
+            this.Font = new Font("Segoe UI", 10F);
+
        
+            // Tiêu đề QUẢN LÝ BÁN HÀNG
+            lblTieuDe.BackColor = Color.Transparent;
+            lblTieuDe.ForeColor = Color.FromArgb(33, 37, 41);
+            lblTieuDe.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblTieuDe.TextAlign = ContentAlignment.MiddleCenter;
+            lblTieuDe.AutoSize = false;
+            lblTieuDe.Location = new Point(0, 45);
+            lblTieuDe.Size = new Size(this.ClientSize.Width, 38);
+            lblTieuDe.Anchor = AnchorStyles.Top
+                             | AnchorStyles.Left
+                             | AnchorStyles.Right;
+
+            // Mã nhân viên
+            lblMaNV.ForeColor = Color.FromArgb(33, 37, 41);
+            lblMaNV.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblMaNV.AutoSize = true;
+            lblMaNV.Location = new Point(600, 88);
+
+            // Tên nhân viên
+            lblTenNV.ForeColor = Color.FromArgb(33, 37, 41);
+            lblTenNV.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblTenNV.AutoSize = true;
+            lblTenNV.Location = new Point(790, 88);
+
+            // Các khu vực thông tin
+            GroupBox[] nhom = {
+                grpSanPham,
+                grpKhachHang,
+                grpHoaDon
+            };
+
+            foreach (GroupBox group in nhom)
+            {
+                group.BackColor = Color.White;
+                group.ForeColor = Color.FromArgb(40, 50, 65);
+                group.Font = new Font("Segoe UI", 10F,
+                                      FontStyle.Bold);
+            }
+
+            // Nút chức năng
+            Button[] tatCaNut = {
+                btnSuaSP,
+                btnTimKiemSP,
+                btnThemKH,
+                btnTimKiemKH,
+                btnTaoMaKH,
+                btnThemHoaDon,
+                btnTaoHoaDon,
+                btnXuatHoaDon,
+                btnLamMoi,
+                btnThoat,
+                btnXoaSPKhoiHD
+            };
+
+            foreach (Button nut in tatCaNut)
+            {
+                nut.FlatStyle = FlatStyle.Flat;
+                nut.FlatAppearance.BorderSize = 0;
+                nut.ForeColor = Color.White;
+                nut.Font = new Font("Segoe UI", 9.5F,
+                                    FontStyle.Bold);
+                nut.Cursor = Cursors.Hand;
+
+                string ten = nut.Text.ToLower();
+
+                if (ten.Contains("xóa"))
+                    nut.BackColor = doo;
+                else if (ten.Contains("thêm"))
+                    nut.BackColor = xanhLa;
+                else if (ten.Contains("tìm kiếm")
+                      || ten.Contains("tạo hóa đơn"))
+                    nut.BackColor = xanhDuong;
+                else if (ten.Contains("sửa"))
+                    nut.BackColor = cam;
+                else if (ten.Contains("xuất"))
+                    nut.BackColor = xanhChuDao;
+                else
+                    nut.BackColor = Color.FromArgb(108, 117, 125);
+            }
+
+            // Hai bảng dữ liệu
+            DataGridView[] bang = {
+                dgvDSSP,
+                dgvChiTietHoaDon
+                };
+
+            foreach (DataGridView dgv in bang)
+            {
+                dgv.BackgroundColor = Color.White;
+                dgv.BorderStyle = BorderStyle.FixedSingle;
+                dgv.GridColor = Color.FromArgb(220, 225, 230);
+
+                dgv.EnableHeadersVisualStyles = false;
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = xanhChuDao;
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dgv.ColumnHeadersDefaultCellStyle.Font =
+                    new Font("Segoe UI", 10F, FontStyle.Bold);
+                dgv.ColumnHeadersHeight = 35;
+
+                dgv.DefaultCellStyle.BackColor = Color.White;
+                dgv.DefaultCellStyle.ForeColor =
+                    Color.FromArgb(40, 50, 65);
+                dgv.DefaultCellStyle.SelectionBackColor =
+                    Color.FromArgb(204, 235, 250);
+                dgv.DefaultCellStyle.SelectionForeColor =
+                    Color.FromArgb(30, 40, 50);
+
+                dgv.AlternatingRowsDefaultCellStyle.BackColor =
+                    Color.FromArgb(240, 247, 252);
+
+                dgv.RowTemplate.Height = 30;
+
+            }
+        }
+
+        private void LayoutPOSForm()
+        {
+            int w = this.ClientSize.Width;
+            int h = this.ClientSize.Height;
+
+            if (w < 500 || h < 500)
+                return;
+
+            int margin = 10;
+            int gap = 12;
+
+            // Tiêu đề: nền trong suốt, chữ đen
+            lblTieuDe.BackColor = Color.Transparent;
+            lblTieuDe.ForeColor = Color.FromArgb(33, 37, 41);
+            lblTieuDe.TextAlign = ContentAlignment.MiddleLeft;
+            lblTieuDe.Location = new Point(10, 45);
+            lblTieuDe.Size = new Size(w - 20, 38);
+            lblTieuDe.Anchor = AnchorStyles.Top
+                             | AnchorStyles.Left
+                             | AnchorStyles.Right;
+
+            // Căn chỉnh thông tin nhân viên
+            // Font giống label Mã sản phẩm
+            lblMaNV.Font = lblMaSP.Font;
+            lblTenNV.Font = lblMaSP.Font;
+            // Mã nhân viên
+            lblMaNV.Location = new Point(w / 2 + 250, 5);
+
+            // Tên nhân viên
+            lblTenNV.Location = new Point(w / 2 + 450, 5);
+            int topY = 48;
+            int topH = 195;
+            int groupW = (w - margin * 2 - gap) / 2;
+
+            grpSanPham.Location = new Point(margin, topY);
+            grpSanPham.Size = new Size(groupW, topH);
+
+            grpKhachHang.Location =
+                new Point(margin + groupW + gap, topY);
+            grpKhachHang.Size = new Size(groupW, topH);
+
+            // Thông tin sản phẩm
+            lblMaSP.Location = new Point(15, 30);
+            txtMaSP.Location = new Point(135, 27);
+            txtMaSP.Size = new Size(Math.Max(120, groupW / 3), 26);
+
+            lblTenSP.Location = new Point(15, 63);
+            txtTenSP.Location = new Point(135, 60);
+            txtTenSP.Size = new Size(Math.Max(150, groupW / 2), 26);
+
+            lblDonGia.Location = new Point(15, 96);
+            txtDonGia.Location = new Point(135, 93);
+            txtDonGia.Size = new Size(140, 26);
+
+            lblSoLuong.Location = new Point(15, 129);
+            txtSoLuong.Location = new Point(135, 126);
+            txtSoLuong.Size = new Size(140, 26);
+
+            int buttonY = 157;
+            int buttonW = Math.Min(130, (groupW - 45) / 2);
+
+            btnSuaSP.Location = new Point(30, buttonY);
+            btnSuaSP.Size = new Size(buttonW, 32);
+
+            btnTimKiemSP.Location =
+                new Point(groupW - buttonW - 30, buttonY);
+            btnTimKiemSP.Size = new Size(buttonW, 32);
+
+            // Thông tin khách hàng
+            lblMaKH.Location = new Point(15, 30);
+            txtMaKH.Location = new Point(145, 27);
+            txtMaKH.Size = new Size(Math.Max(130, groupW / 3), 26);
+
+            lblTenKH.Location = new Point(15, 63);
+            txtTenKH.Location = new Point(145, 60);
+            txtTenKH.Size = new Size(Math.Max(130, groupW / 3), 26);
+
+            lblSDT.Location = new Point(15, 96);
+            txtSDT.Location = new Point(145, 93);
+            txtSDT.Size = new Size(Math.Max(130, groupW / 3), 26);
+
+            lblEmain.Location = new Point(15, 129);
+            txtEmail.Location = new Point(145, 126);
+            txtEmail.Size = new Size(Math.Max(130, groupW / 3), 26);
+
+            btnTaoMaKH.Location =
+                new Point(groupW - 145, 27);
+            btnTaoMaKH.Size = new Size(130, 30);
+
+            txtDiemTichLuy.Location =
+                new Point(groupW - 145, 65);
+            txtDiemTichLuy.Size = new Size(130, 26);
+
+            btnThemKH.Location = new Point(145, 157);
+            btnThemKH.Size = new Size(130, 32);
+
+            btnTimKiemKH.Location =
+                new Point(groupW - 145, 157);
+            btnTimKiemKH.Size = new Size(130, 32);
+
+            // 3. Danh sách sản phẩm
+            int labelY = topY + topH + 4;
+            label2.AutoSize = false;
+            label2.TextAlign = ContentAlignment.MiddleCenter;
+            label2.Location = new Point(margin, labelY);
+            label2.Size = new Size(w - margin * 2, 25);
+
+            int productY = labelY + 27;
+            int productH = Math.Max(100, (h - productY) / 5);
+
+            dgvDSSP.Location = new Point(margin, productY);
+            dgvDSSP.Size = new Size(w - margin * 2, productH);
+            dgvDSSP.Anchor = AnchorStyles.Top
+                           | AnchorStyles.Left
+                           | AnchorStyles.Right;
+
+            // 4. Chi tiết hóa đơn
+            int detailLabelY = productY + productH + 4;
+
+            label1.AutoSize = false;
+            label1.TextAlign = ContentAlignment.MiddleCenter;
+            label1.Location = new Point(margin, detailLabelY);
+            label1.Size = new Size(w - margin * 2, 25);
+
+            int detailY = detailLabelY + 27;
+            int bottomH = 175;
+            int deleteH = 35;
+            int detailH = Math.Max(
+                80,
+                h - detailY - deleteH - bottomH - 4 * margin
+            );
+
+            dgvChiTietHoaDon.Location = new Point(margin, detailY);
+            dgvChiTietHoaDon.Size =
+                new Size(w - margin * 2, detailH);
+            dgvChiTietHoaDon.Anchor = AnchorStyles.Top
+                                    | AnchorStyles.Left
+                                    | AnchorStyles.Right;
+
+            btnXoaSPKhoiHD.Location = new Point(
+                w - margin - 135,
+                detailY + detailH + 3
+            );
+            btnXoaSPKhoiHD.Size = new Size(135, deleteH);
+
+            // 5. Khu vực hóa đơn
+            int invoiceY = btnXoaSPKhoiHD.Bottom + 3;
+
+            grpHoaDon.Location = new Point(margin, invoiceY);
+            grpHoaDon.Size = new Size(
+                w - margin * 2,
+                Math.Max(160, h - invoiceY - margin)
+            );
+
+            grpHoaDon.Anchor = AnchorStyles.Top
+                             | AnchorStyles.Left
+                             | AnchorStyles.Right
+                             | AnchorStyles.Bottom;
+
+            // Các trường hóa đơn được bố trí thành 3 cột
+            int invoiceW = grpHoaDon.ClientSize.Width;
+
+            int marginLeft = 15;
+            int labelWidth = 115;
+
+            int col1 = marginLeft;
+            int col2 = invoiceW / 3;
+            int col3 = invoiceW * 2 / 3;
+
+            // Cột 1: Mã hóa đơn và điểm tích lũy
+            lblMaHD.Location = new Point(col1, 35);
+            txtMaHD.Location = new Point(col1 + labelWidth, 30);
+            txtMaHD.Width = 180;
+
+            lblDiemTichLuy.Location = new Point(col1, 75);
+            txtDiemTichLuyHD.Location = new Point(
+                 txtMaHD.Left,
+                 70
+             );
+            txtDiemTichLuy.Width = 165;
+
+            // Cột 2: Tổng tiền hàng và điểm sử dụng
+            lblTongTien.Location = new Point(col2, 35);
+            txtTongTien.Location = new Point(col2 + labelWidth, 30);
+            txtTongTien.Width = 150;
+
+            lblDiemSuDung.Location = new Point(col2, 75);
+            txtDiemSuDung.Location = new Point(col2 + labelWidth, 70);
+            txtDiemSuDung.Width = 150;
+
+            // Cột 3: Tiền giảm giá và khách hàng trả
+            label5.Location = new Point(col3, 35);
+            txtTienGiamGia.Location = new Point(col3 + labelWidth, 30);
+            txtTienGiamGia.Width = 150;
+
+            label4.Location = new Point(col3, 75);
+            txtTienPhaiTra.Location = new Point(col3 + labelWidth, 70);
+            txtTienPhaiTra.Width = 150;
+
+            // Nhóm nút phía dưới
+            int btnY = grpHoaDon.ClientSize.Height - 48;
+            int btnWidth = Math.Min(130, (invoiceW - 60) / 5);
+            int btnGap = (invoiceW - 2 * margin - 5 * btnWidth) / 4;
+
+            Button[] buttons =
+            {
+                btnThemHoaDon,
+                btnTaoHoaDon,
+                btnXuatHoaDon,
+                btnLamMoi,
+                btnThoat
+            };
+
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].Location = new Point(
+                    margin + i * (btnWidth + btnGap),
+                    btnY
+                );
+                buttons[i].Size = new Size(btnWidth, 38);
+            }
+        }
+
+
     }
 
 }
