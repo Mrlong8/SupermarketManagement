@@ -31,7 +31,7 @@
             this.lblTitle = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtGhiChu = new System.Windows.Forms.RichTextBox();
-            this.cboDanhMuc = new System.Windows.Forms.ComboBox();
+            this.cbDanhMuc = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -72,7 +72,7 @@
             // 
             this.groupBox1.BackColor = System.Drawing.Color.White;
             this.groupBox1.Controls.Add(this.txtGhiChu);
-            this.groupBox1.Controls.Add(this.cboDanhMuc);
+            this.groupBox1.Controls.Add(this.cbDanhMuc);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
@@ -107,15 +107,15 @@
             this.txtGhiChu.TabIndex = 17;
             this.txtGhiChu.Text = "";
             // 
-            // cboDanhMuc
+            // cbDanhMuc
             // 
-            this.cboDanhMuc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboDanhMuc.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cboDanhMuc.FormattingEnabled = true;
-            this.cboDanhMuc.Location = new System.Drawing.Point(190, 300);
-            this.cboDanhMuc.Name = "cboDanhMuc";
-            this.cboDanhMuc.Size = new System.Drawing.Size(385, 31);
-            this.cboDanhMuc.TabIndex = 16;
+            this.cbDanhMuc.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDanhMuc.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cbDanhMuc.FormattingEnabled = true;
+            this.cbDanhMuc.Location = new System.Drawing.Point(190, 300);
+            this.cbDanhMuc.Name = "cbDanhMuc";
+            this.cbDanhMuc.Size = new System.Drawing.Size(385, 31);
+            this.cbDanhMuc.TabIndex = 16;
             // 
             // label8
             // 
@@ -124,9 +124,9 @@
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(70)))), ((int)(((byte)(91)))));
             this.label8.Location = new System.Drawing.Point(24, 348);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(69, 23);
+            this.label8.Size = new System.Drawing.Size(55, 23);
             this.label8.TabIndex = 15;
-            this.label8.Text = "Ghi chú";
+            this.label8.Text = "Mô tả";
             // 
             // label7
             // 
@@ -158,6 +158,7 @@
             this.txtDonGiaBan.Name = "txtDonGiaBan";
             this.txtDonGiaBan.Size = new System.Drawing.Size(385, 30);
             this.txtDonGiaBan.TabIndex = 10;
+            this.txtDonGiaBan.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoLuong_KeyPress);
             // 
             // label5
             // 
@@ -178,6 +179,7 @@
             this.txtDonGiaNhap.Name = "txtDonGiaNhap";
             this.txtDonGiaNhap.Size = new System.Drawing.Size(385, 30);
             this.txtDonGiaNhap.TabIndex = 8;
+            this.txtDonGiaNhap.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoLuong_KeyPress);
             // 
             // label4
             // 
@@ -198,6 +200,7 @@
             this.txtTrongLuong.Name = "txtTrongLuong";
             this.txtTrongLuong.Size = new System.Drawing.Size(385, 30);
             this.txtTrongLuong.TabIndex = 6;
+            this.txtTrongLuong.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoLuong_KeyPress);
             // 
             // label3
             // 
@@ -218,6 +221,7 @@
             this.txtSoLuong.Name = "txtSoLuong";
             this.txtSoLuong.Size = new System.Drawing.Size(385, 30);
             this.txtSoLuong.TabIndex = 4;
+            this.txtSoLuong.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoLuong_KeyPress);
             // 
             // label2
             // 
@@ -368,6 +372,6 @@
         private System.Windows.Forms.Button btnLuu;
         private System.Windows.Forms.Button btnThoat;
         private System.Windows.Forms.RichTextBox txtGhiChu;
-        private System.Windows.Forms.ComboBox cboDanhMuc;
+        private System.Windows.Forms.ComboBox cbDanhMuc;
     }
 }

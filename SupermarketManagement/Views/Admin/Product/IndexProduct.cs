@@ -76,7 +76,7 @@ namespace SupermarketManagement.Views.Admin.Product
                 return;
             }
 
-            // Bỏ chọn danh mục khi thực hiện tìm kiếm riêng
+         
             cbDanhMuc.SelectedIndex = -1;
 
             DataTable dtResult = _repo.TimKiemSanPhamTheoTen(keyword);
@@ -89,7 +89,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
-        // Bấm Enter trong ô tìm kiếm để kích hoạt nút Tìm kiếm
+     
         private void txtTimKiem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
