@@ -8,9 +8,7 @@ namespace SupermarketManagement.Models.Repositories
     {
         private DbConection _db = new DbConection();
 
-        // =================================================================
-        // PHẦN 1: QUẢN LÝ DANH MỤC (Bảng DanhMuc: MaDM, TenDanhMuc)
-        // =================================================================
+        //phần danh mục
 
         public DataTable GetDanhMuc()
         {
@@ -18,10 +16,9 @@ namespace SupermarketManagement.Models.Repositories
             return _db.GetListData(sql);
         }
 
-        public void ThemDanhMuc(string tenDanhMuc)
+        public void ThemDanhMuc(string maDM, string tenDanhMuc)
         {
-            // Nếu MaDM trong SQL của bạn là tự tăng (IDENTITY) thì chỉ cần truyền TenDanhMuc
-            string sql = $"INSERT INTO DanhMuc (TenDanhMuc) VALUES (N'{tenDanhMuc}')";
+            string sql = $"INSERT INTO DanhMuc (MaDM, TenDanhMuc) VALUES ({maDM}, N'{tenDanhMuc}')";
             _db.DataChange(sql);
         }
 
@@ -37,9 +34,7 @@ namespace SupermarketManagement.Models.Repositories
             _db.DataChange(sql);
         }
 
-        // =================================================================
-        // PHẦN 2: QUẢN LÝ HÀNG HÓA (Bảng SanPham)
-        // =================================================================
+        // phần hàng háo
 
         public DataTable GetSanPham()
         {
@@ -78,12 +73,12 @@ namespace SupermarketManagement.Models.Repositories
             return _db.GetListData(sql);
         }
 
-        public void ThemSanPham(string tenSP, int soLuong, double trongLuong, decimal giaNhap, decimal giaBan, string moTa, int maDM, int maNV)
+        public void ThemSanPham(int maSP, string tenSP, int soLuong, double trongLuong, decimal giaNhap, decimal giaBan, string moTa, int maDM, int maNV)
         {
-            // Mặc định MaKM = 1 và UrlImage = '' để không bị lỗi thiếu cột khi thêm mới
+
             string sql = $@"
-                INSERT INTO SanPham (TenSanPham, SoLuong, TrongLuong, DonGiaNhap, DonGiaBan, UrlImage, MoTa, MaDM, MaKM, MaNV)
-                VALUES (N'{tenSP}', {soLuong}, {trongLuong}, {giaNhap}, {giaBan}, '', N'{moTa}', {maDM}, 1, {maNV})";
+        INSERT INTO SanPham (MaSP, TenSanPham, SoLuong, TrongLuong, DonGiaNhap, DonGiaBan, UrlImage, MoTa, MaDM, MaKM, MaNV)
+        VALUES ({maSP}, N'{tenSP}', {soLuong}, {trongLuong}, {giaNhap}, {giaBan}, '', N'{moTa}', {maDM}, 1, {maNV})";
             _db.DataChange(sql);
         }
 
@@ -108,9 +103,7 @@ namespace SupermarketManagement.Models.Repositories
             _db.DataChange(sql);
         }
 
-        // =================================================================
-        // PHẦN 3: QUẢN LÝ HÓA ĐƠN NHẬP (Bảng PhieuNhapHang)
-        // =================================================================
+        // phần hóa đơn nhập
 
         public DataTable GetPhieuNhapHang()
         {
@@ -166,12 +159,85 @@ namespace SupermarketManagement.Models.Repositories
 
         public void XoaPhieuNhap(string maPNH)
         {
-            // Xóa chi tiết phiếu nhập trước (nếu có) để tránh lỗi khóa ngoại, sau đó xóa phiếu nhập
+
             string sqlChiTiet = $"DELETE FROM ChiTietPhieuNhapHang WHERE MaPNH = '{maPNH}'";
             _db.DataChange(sqlChiTiet);
 
             string sqlPhieu = $"DELETE FROM PhieuNhapHang WHERE MaPNH = '{maPNH}'";
             _db.DataChange(sqlPhieu);
         }
+
+        public string GetMaPhieuNhapMoi()
+        {
+
+            string sql = "SELECT TOP 1 MaPNH FROM PhieuNhapHang ORDER BY MaPNH DESC";
+            DataTable dt = _db.GetListData(sql);
+            if (dt.Rows.Count > 0)
+            {
+                string maCu = dt.Rows[0][0].ToString();
+                if (maCu.Length >= 6)
+                {
+
+                    int so = int.Parse(maCu.Substring(3)) + 1;
+                    return "PNH" + so.ToString("D3");
+                }
+            }
+            return "PNH001";
+        }
+
+        public string GetMaSanPhamMoi()
+        {
+
+            string sql = "SELECT ISNULL(MAX(CAST(MaSP AS INT)), 0) + 1 FROM SanPham";
+            DataTable dt = _db.GetListData(sql);
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0][0].ToString();
+            }
+            return "1";
+        }
+        public string GetMaDanhMucMoi()
+        {
+
+            string sql = "SELECT ISNULL(MAX(MaDM), 0) + 1 FROM DanhMuc";
+            DataTable dt = _db.GetListData(sql);
+            if (dt.Rows.Count > 0)
+            {
+                return dt.Rows[0][0].ToString();
+            }
+            return "1";
+        }
+        public bool ThemHoaDonVaCapNhatKho(string maPNH, DateTime ngayNhap, int maNCC, int maNV, int maSP, int soLuong, decimal donGiaNhap, decimal tongTien)
+        {
+            try
+            {
+                string strDonGia = donGiaNhap.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+                string sql = $@"
+            BEGIN TRAN;
+            
+            -- Đã xóa cột TongTien ra khỏi bảng PhieuNhapHang
+            INSERT INTO PhieuNhapHang (MaPNH, NgayNhap, MaNCC, MaNV) 
+            VALUES ('{maPNH}', '{ngayNhap:yyyy-MM-dd}', {maNCC}, {maNV});
+
+            INSERT INTO ChiTietPhieuNhapHang (MaPNH, MaSP, SoLuongNhap, DonGiaNhap) 
+            VALUES ('{maPNH}', {maSP}, {soLuong}, {strDonGia});
+
+            UPDATE SanPham 
+            SET SoLuong = SoLuong + {soLuong} 
+            WHERE MaSP = {maSP};
+
+            COMMIT TRAN;
+        ";
+
+                _db.DataChange(sql);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi chi tiết từ SQL: " + ex.Message);
+            }
+        }
     }
+
 }
