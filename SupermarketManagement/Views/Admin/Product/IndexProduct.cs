@@ -8,10 +8,11 @@ namespace SupermarketManagement.Views.Admin.Product
     public partial class IndexProduct : Form
     {
         private SanPhamRepositoryV2 _repo = new SanPhamRepositoryV2();
-
+        public static IndexProduct Instance;
         public IndexProduct()
         {
             InitializeComponent();
+            Instance = this;
         }
 
         private void IndexProduct_Load(object sender, EventArgs e)
@@ -32,13 +33,14 @@ namespace SupermarketManagement.Views.Admin.Product
                 {
                     ProductItemControl control = new ProductItemControl();
 
+                    string maSP = item["MaSP"]?.ToString();
                     string tenSP = item["TenSanPham"]?.ToString();
                     string giaNhap = item["DonGiaNhap"]?.ToString();
                     string giaBan = item["DonGiaBan"]?.ToString();
                     string soLuong = item["SoLuong"]?.ToString();
                     string urlImage = item["UrlImage"]?.ToString();
 
-                    control.SetData(tenSP, giaNhap, giaBan, soLuong, urlImage);
+                    control.SetData(maSP,tenSP, giaNhap, giaBan, soLuong, urlImage);
                     flpListProduct.Controls.Add(control);
                 }
             }
@@ -46,7 +48,7 @@ namespace SupermarketManagement.Views.Admin.Product
             flpListProduct.ResumeLayout();
         }
 
-        private void GetSanPham()
+        public void GetSanPham()
         {
             DataTable products = _repo.GetListSanPham();
             RenderProductList(products);
@@ -74,7 +76,7 @@ namespace SupermarketManagement.Views.Admin.Product
                 return;
             }
 
-            // Bỏ chọn danh mục khi thực hiện tìm kiếm riêng
+         
             cbDanhMuc.SelectedIndex = -1;
 
             DataTable dtResult = _repo.TimKiemSanPhamTheoTen(keyword);
@@ -87,7 +89,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
-        // Bấm Enter trong ô tìm kiếm để kích hoạt nút Tìm kiếm
+     
         private void txtTimKiem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)

@@ -1,4 +1,4 @@
-﻿using SupermarketManagement.Utils;
+using SupermarketManagement.Utils;
 using SupermarketManagement.Views.Account;
 using SupermarketManagement.Views.Admin.KhachHang;
 using SupermarketManagement.Views.Admin.LichSuBan;
@@ -36,7 +36,7 @@ namespace SupermarketManagement.Views.Admin
 
         private void Frm_Admin_Load(object sender, EventArgs e)
         {
-
+            btnProfile.Text = UserSession.UserName;
         }
         // lấy màu
         private Color SelectThemeColor()
@@ -160,6 +160,23 @@ namespace SupermarketManagement.Views.Admin
 
         }
 
-       
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexQuanLyKhoHang(), sender);
+        }
+
+        private void btnBanHang_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new POSForm(), sender);
+;        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                UserSession.DangXuat(this);
+            }
+        }
     }
 }

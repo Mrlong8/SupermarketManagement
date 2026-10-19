@@ -25,7 +25,6 @@ namespace SupermarketManagement.Views.Admin.ChucVu
         public void GetDataChucVu()
         {
             dgvListChucVu.DataSource = _repo.GetAll();
-            txtMaCV.Text = _repo.RendermaCV();
 
         }
 
@@ -37,7 +36,11 @@ namespace SupermarketManagement.Views.Admin.ChucVu
             rdbFullTime.Checked = false;
             rdbPartTime.Checked = false;
             txtMaCV.Enabled = true;
-          
+            btnThem.Enabled = true;
+            btnSua.Enabled = true;
+            btnXoa.Enabled = true;
+
+
         }
 
         // Hàm helper gom nhóm dữ liệu đầu vào từ Form
@@ -77,9 +80,20 @@ namespace SupermarketManagement.Views.Admin.ChucVu
             return true;
         }
 
-        // THÊM
+
         private void btnThem_Click(object sender, EventArgs e)
         {
+
+            if (string.IsNullOrWhiteSpace(txtMaCV.Text))
+            {
+                txtMaCV.Text = _repo.RendermaCV();
+                txtMaCV.Enabled = false;
+                btnSua.Enabled = false;
+                btnXoa.Enabled = false;
+                return;
+            }
+
+
             if (!ValidateForm(isEdit: false)) return;
 
             try
@@ -100,6 +114,8 @@ namespace SupermarketManagement.Views.Admin.ChucVu
         // SỬA
         private void btnSua_Click(object sender, EventArgs e)
         {
+
+   
             if (dgvListChucVu.CurrentRow == null || dgvListChucVu.CurrentRow.Index < 0)
             {
                 MessageBox.Show("Vui lòng chọn một chức vụ để sửa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -143,6 +159,8 @@ namespace SupermarketManagement.Views.Admin.ChucVu
 
                     ClearData();
                     GetDataChucVu();
+                    btnXoa.Enabled = true;
+                    btnThem.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -166,12 +184,18 @@ namespace SupermarketManagement.Views.Admin.ChucVu
                 rdbFullTime.Checked = (caLamViec == "Full-time");
                 rdbPartTime.Checked = (caLamViec == "Part-time");
 
-                txtMaCV.Enabled = false; // Khi chọn dòng thì không cho sửa Mã
+                txtMaCV.Enabled = false;
+                btnThem.Enabled = false;// Khi chọn dòng thì không cho sửa Mã
             }
         }
 
         private void rdbFullTime_CheckedChanged(object sender, EventArgs e) => txtHeSoLuong.Text = "1.7";
         private void rdbPartTime_CheckedChanged(object sender, EventArgs e) => txtHeSoLuong.Text = "1.2";
         private void btnThoat_Click(object sender, EventArgs e) => Close();
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            ClearData();
+        }
     }
 }

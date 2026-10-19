@@ -1,33 +1,33 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace SupermarketManagement.Controllers.Repositories
 {
     // Chỉ chứa câu SQL liên quan bảng TaiKhoan, KHÔNG chứa code giao diện
-    // (của Nam) Dùng GetListData có sẵn của nhóm trưởng nên không cần sửa DbConection
     public class TaiKhoanRepository
     {
         private readonly DbConection _db = new DbConection();
 
-        // Trả về 1 dòng (kèm họ tên + chức vụ) nếu đúng tài khoản, ngược lại bảng rỗng
-        // Nếu tên cột trong CSDL của nhóm khác thì sửa ở câu SQL này
+        // ===== CỦA NAM: Đăng nhập (dùng GetTable có @param của DbConection -> chống SQL Injection) =====
+        // Trả về 1 dòng của bảng TaiKhoan nếu đúng tài khoản + mật khẩu (đã SHA256), ngược lại bảng rỗng
         public DataTable DangNhap(string userName, string passHash)
         {
-            // GetListData không có tham số nên phải tự escape dấu ' để chống SQL Injection cơ bản
-            // (passHash là chuỗi hex SHA256 nên an toàn)
-            string u = userName.Replace("'", "''");
-
-            string sql = @"SELECT tk.MaTK, tk.UserName, tk.[Role], tk.MaNV, nv.HoTen, cv.TenChucVu
-                           FROM TaiKhoan tk
-                           LEFT JOIN NhanVien nv ON tk.MaNV = nv.MaNV
-                           LEFT JOIN ChucVu cv ON nv.MaCV = cv.MaCV
-                           WHERE tk.UserName = N'" + u + "' AND tk.[Password] = '" + passHash + "'";
-
-            return _db.GetListData(sql);
+            string sql = "SELECT * FROM TaiKhoan WHERE UserName = @u AND [Password] = @p";
+            return _db.GetTable(sql,
+                new SqlParameter("@u", userName),
+                new SqlParameter("@p", passHash));
         }
 
-        // Khi bỏ comment GetTable (có @param) trong DbConection thì đổi sang dạng:
-        //   WHERE tk.UserName = @u AND tk.[Password] = @p
-        //   return db.GetTable(sql, new SqlParameter("@u", userName), new SqlParameter("@p", passHash));
+        // ===== CỦA NAM: lấy họ tên + chức vụ để hiển thị (nếu tên cột khác thì sửa ở câu SQL này) =====
+        public DataTable GetHoTenChucVu(int maNV)
+        {
+            string sql = @"SELECT nv.HoTen, cv.TenChucVu
+                           FROM NhanVien nv
+                           LEFT JOIN ChucVu cv ON nv.MaCV = cv.MaCV
+                           WHERE nv.MaNV = @nv";
+            return _db.GetTable(sql, new SqlParameter("@nv", maNV));
+        }
 
 
         // Long lấy thông tin TK
@@ -47,17 +47,69 @@ namespace SupermarketManagement.Controllers.Repositories
             string sql = $"UPDATE TaiKhoan " +
                   $"SET UserName = N'{userName}', " +
                   $"    SDT = '{sdt}', " +
-                  $"    Role = N'{role}' " + 
+                  $"    Role = N'{role}' " +
                   $"WHERE MaNV = '{maNV}'";
 
-            _db.DataChange(sql); 
+            _db.DataChange(sql);
         }
 
         // cập nhật ảnh
-        public void UpdateImage(string maTK,string urlImage)
+    
+        public void UpdateImage(string maNV, string urlImage)
         {
-            string sql = $"Update TaiKhoan SET UrlImage = N'{urlImage}' where MaTK = '{maTK}' ";
+            string sql = $"Update TaiKhoan SET UrlImage = N'{urlImage}' where MaNV = '{maNV}' ";
             _db.DataChange(sql);
+        }
+        // thêm tài khoản
+        public void ThemTaiKhoanMoi(string maTK, string userName, string password, string sdt, string role,  string maNV)
+        {
+            string sql = $"INSERT INTO TaiKhoan (MaTK, MaNV, UserName, Password, SDT, Role) " +
+                         $"VALUES ('{maTK}', '{maNV}', N'{userName}', '{password}', '{sdt}', N'{role}')";
+
+            _db.DataChange(sql);
+        }
+        // sinh mã
+        public string RenderMaTK()
+        {
+            string ngay = DateTime.Now.ToString("yyyyMMdd");
+            string tiento = "TK" + ngay;
+            string sql = $"SELECT TOP 1 MaTK FROM TaiKhoan WHERE MaTK LIKE '{tiento}%' ORDER BY MaTK DESC";
+            DataTable dt = _db.GetListData(sql);
+
+            int sttMoi = 1; 
+
+            if (dt.Rows.Count > 0)
+            {
+                string maMax = dt.Rows[0][0].ToString();
+                int soCuoi = Convert.ToInt32(maMax.Substring(maMax.Length - 3));
+                sttMoi = soCuoi + 1;
+            }
+
+            return tiento + sttMoi.ToString("D3");
+        }
+
+        // kiểm tra trùng
+        public bool CheckTrungUserName(string userName)
+        {
+            string sql = $"SELECT COUNT(*) FROM TaiKhoan WHERE UserName = N'{userName}'";
+            DataTable dt = _db.GetListData(sql);
+
+            return dt.Rows.Count > 0 && Convert.ToInt32(dt.Rows[0][0]) > 0;
+        }
+
+        public bool DoiMatKhau(string maNV, string matKhauCuHash, string matKhauMoiHash)
+        {
+           
+            string checkSql = $"SELECT COUNT(*) FROM TaiKhoan WHERE MaNV = '{maNV}' AND Password = '{matKhauCuHash}'";
+            DataTable dt = _db.GetListData(checkSql);
+
+            if (dt.Rows.Count > 0 && Convert.ToInt32(dt.Rows[0][0]) > 0)
+            {
+                string updateSql = $"UPDATE TaiKhoan SET Password = '{matKhauMoiHash}' WHERE MaNV = '{maNV}'";
+                _db.DataChange(updateSql);
+                return true; 
+            }
+            return false; 
         }
     }
 }

@@ -84,6 +84,7 @@
             this.btnSuaItem.TabIndex = 4;
             this.btnSuaItem.Text = "Sửa";
             this.btnSuaItem.UseVisualStyleBackColor = false;
+            this.btnSuaItem.Click += new System.EventHandler(this.btnSuaItem_Click);
             // 
             // btnXoaItem
             // 
@@ -93,12 +94,13 @@
             this.btnXoaItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXoaItem.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnXoaItem.ForeColor = System.Drawing.Color.White;
-            this.btnXoaItem.Location = new System.Drawing.Point(118, 280);
+            this.btnXoaItem.Location = new System.Drawing.Point(114, 280);
             this.btnXoaItem.Name = "btnXoaItem";
             this.btnXoaItem.Size = new System.Drawing.Size(88, 30);
             this.btnXoaItem.TabIndex = 5;
             this.btnXoaItem.Text = "Xóa";
             this.btnXoaItem.UseVisualStyleBackColor = false;
+            this.btnXoaItem.Click += new System.EventHandler(this.btnXoaItem_Click);
             // 
             // lblGiaBan
             // 

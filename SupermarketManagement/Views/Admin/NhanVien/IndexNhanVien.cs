@@ -17,7 +17,7 @@ namespace SupermarketManagement.Views.Account
 {
     public partial class IndexNhanVien : UserControl
     {
-        DbConection _db = new DbConection();
+      
         private NhanVienRepository _repo = new NhanVienRepository();
         private ChucVuRepository _repoCV = new ChucVuRepository();
 
@@ -44,6 +44,9 @@ namespace SupermarketManagement.Views.Account
             Onbtn();
 
         }
+
+      
+        
 
         // lấy mã chức vụ
         public void getChucVu()
@@ -85,6 +88,8 @@ namespace SupermarketManagement.Views.Account
             cbMaCV.SelectedIndex = -1;
             txtEmail.Clear();
             txtMaNV.Enabled = true;
+            btnThemMoi.Enabled = true;
+
         }
         // gom dữ liệu từ các TextBox và ComboBox
         private (string maNV, string hotenNV,string gioiTinh,string luongCB, DateTime ngaySinh, string diaChi, string maCV, string email) GetFormData()
@@ -215,7 +220,7 @@ namespace SupermarketManagement.Views.Account
                 return;
             }
 
-            string maNV = dgvListAccount.CurrentRow.Cells["MaNV"].Value?.ToString();
+            string maNV = dgvListAccount.CurrentRow.Cells["MaNV"].Value?.ToString().Trim();
 
             DialogResult result = MessageBox.Show("Bạn chắc chắn muốn xóa nhân viên này ", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
@@ -251,7 +256,21 @@ namespace SupermarketManagement.Views.Account
                 rdbNam.Checked = (gioiTinh == "Nam");
                 rdbNu.Checked = (gioiTinh == "Nữ" || gioiTinh == "Nu");
                 txtMaNV.Enabled = false;
+                cbMaCV.Text = row.Cells["TenChucVu"].Value?.ToString();
+                btnThemMoi.Enabled = false;
                 Onbtn();
+
+                if (_repo.CheckAccount(txtMaNV.Text))
+                {
+                    lblTrangThaiTK.Text = "Đã Có Tài Khoản";
+                    btnEditAccount.Text = "Sửa Tài Khoản";
+                }
+                else
+                {
+                    lblTrangThaiTK.Text = "Chưa Có Tài Khoản";
+                    btnEditAccount.Text = "Tạo Tài Khoản";
+
+                }
 
             }
         }
@@ -323,7 +342,7 @@ namespace SupermarketManagement.Views.Account
                 return;
             }
 
-            IndexAccount frm = new IndexAccount(SelectedmaNV);
+            IndexAccount frm = new IndexAccount(SelectedmaNV,_repo.CheckAccount(txtMaNV.Text));
             frm.ShowDialog();
         }
 
