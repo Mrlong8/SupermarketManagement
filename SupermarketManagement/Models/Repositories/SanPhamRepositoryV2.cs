@@ -40,25 +40,33 @@ namespace SupermarketManagement.Models.Repositories
             _db.DataChange(sql);
         }
 
-        public DataRow GetSanPhamById(string maSP)
+        public DataTable GetSanPhamById(string maSP)
         {
-            string sql = $"SELECT * FROM SanPham WHERE MaSP = '{maSP.Replace("'", "''")}'";
+            string sql = $"SELECT * FROM SanPham WHERE MaSP = '{maSP}'";
             DataTable dt = _db.GetListData(sql);
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
+            return dt;
         }
 
         public void Update(string maSP, string tenSP, decimal giaNhap, decimal giaBan,
-                           int soLuong, string maDM, string urlImage)
+                     int soLuong, string maDM,string moTa)
         {
             var ci = CultureInfo.InvariantCulture;
+
             string sql = $@"UPDATE SanPham SET
-                        TenSanPham = N'{tenSP.Replace("'", "''")}',
-                        DonGiaNhap = {giaNhap.ToString(ci)},
-                        DonGiaBan  = {giaBan.ToString(ci)},
-                        SoLuong    = {soLuong},
-                        MaDM       = '{maDM.Replace("'", "''")}',
-                        UrlImage   = '{urlImage.Replace("'", "''")}'
-                    WHERE MaSP = '{maSP.Replace("'", "''")}'";
+                TenSanPham = N'{tenSP}',
+                DonGiaNhap = {giaNhap.ToString(ci)},
+                DonGiaBan  = {giaBan.ToString(ci)},
+                SoLuong    = {soLuong},
+                MaDM       = '{maDM}',
+                MoTa       = '{moTa}'
+            WHERE MaSP = '{maSP.Replace("'", "''")}'";
+
+            _db.DataChange(sql);
+        }
+
+        public void UpdateImage(string maSP, string urlImage)
+        {
+            string sql = $"Update SanPham SET UrlImage = N'{urlImage}' where MaSP = '{maSP}' ";
             _db.DataChange(sql);
         }
     }
