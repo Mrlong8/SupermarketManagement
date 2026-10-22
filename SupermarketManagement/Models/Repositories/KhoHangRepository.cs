@@ -1,6 +1,7 @@
 ﻿using SupermarketManagement.Controllers.Repositories;
 using System;
 using System.Data;
+using System.Windows.Forms;
 
 namespace SupermarketManagement.Models.Repositories
 {
@@ -50,7 +51,8 @@ namespace SupermarketManagement.Models.Repositories
                     sp.MaDM,
                     dm.TenDanhMuc
                 FROM SanPham sp
-                LEFT JOIN DanhMuc dm ON sp.MaDM = dm.MaDM";
+                LEFT JOIN DanhMuc dm ON sp.MaDM = dm.MaDM
+                WHERE sp.TrangThai = 1";
             return _db.GetListData(sql);
         }
 
@@ -76,9 +78,30 @@ namespace SupermarketManagement.Models.Repositories
         public void ThemSanPham(int maSP, string tenSP, int soLuong, double trongLuong, decimal giaNhap, decimal giaBan, string moTa, int maDM, int maNV)
         {
 
+            // 1. Lệnh thêm Sản Phẩm
             string sql = $@"
         INSERT INTO SanPham (MaSP, TenSanPham, SoLuong, TrongLuong, DonGiaNhap, DonGiaBan, UrlImage, MoTa, MaDM, MaKM, MaNV)
-        VALUES ({maSP}, N'{tenSP}', {soLuong}, {trongLuong}, {giaNhap}, {giaBan}, '', N'{moTa}', {maDM}, 1, {maNV})";
+        VALUES ({maSP}, N'{tenSP}', {soLuong}, {trongLuong}, {giaNhap}, {giaBan}, '', N'{moTa}', {maDM}, 1, {maNV});
+    ";
+
+            // 2. Xử lý tạo Hóa đơn nếu có nhập số lượng > 0
+            if (soLuong > 0)
+            {
+                // TẠO MÃ PHIẾU TỰ ĐỘNG
+                // Dùng ngày giờ (ví dụ: PNH2210262140) để làm mã tạm đảm bảo không bao giờ bị trùng
+                string maPNHMoi = TaoMaPhieuNhapMoi();
+
+                // Nối thêm lệnh INSERT có truyền rành mạch mã PNHMoi vào cả 2 bảng
+                sql += $@"
+            INSERT INTO PhieuNhapHang (MaPNH, NgayNhap, MaNV) 
+            VALUES ('{maPNHMoi}', GETDATE(), {maNV});
+
+            INSERT INTO ChiTietPhieuNhapHang (MaPNH, MaSP, SoLuongNhap, DonGiaNhap) 
+            VALUES ('{maPNHMoi}', {maSP}, {soLuong}, {giaNhap});
+        ";
+            }
+
+            // 3. Thực thi toàn bộ chuỗi
             _db.DataChange(sql);
         }
 
@@ -99,7 +122,8 @@ namespace SupermarketManagement.Models.Repositories
 
         public void XoaSanPham(int maSP)
         {
-            string sql = $"DELETE FROM SanPham WHERE MaSP = {maSP}";
+            string sql = $"UPDATE SanPham SET TrangThai = 0 WHERE MaSP = {maSP}";
+            MessageBox.Show(sql);
             _db.DataChange(sql);
         }
 
@@ -108,25 +132,24 @@ namespace SupermarketManagement.Models.Repositories
         public DataTable GetPhieuNhapHang()
         {
             string sql = @"
-                SELECT 
-                    pnh.MaPNH,            
-                    pnh.NgayNhap,            
-                    pnh.MaNCC,            
+               SELECT 
+                    pn.MaPNH, 
+                    pn.NgayNhap, 
                     sp.TenSanPham AS MatHang, 
-                    pnh.MaNV,            
-                    nv.HoTen AS NguoiNhap,            
-                    ISNULL(SUM(ct.SoLuongNhap * ct.DonGiaNhap), 0) AS TongTien        
-                FROM PhieuNhapHang pnh        
-                LEFT JOIN NhanVien nv ON pnh.MaNV = nv.MaNV        
-                LEFT JOIN ChiTietPhieuNhapHang ct ON pnh.MaPNH = ct.MaPNH
-                LEFT JOIN SanPham sp ON ct.MaSP = sp.MaSP 
-                GROUP BY 
-                    pnh.MaPNH, 
-                    pnh.NgayNhap, 
-                    pnh.MaNCC, 
-                    sp.TenSanPham,
-                    pnh.MaNV, 
-                    nv.HoTen";
+                    ct.SoLuongNhap,       -- Lấy số lượng từ bảng Chi Tiết
+                    ct.DonGiaNhap,    -- Lấy đơn giá từ bảng Chi Tiết
+                    nv.HoTen AS NguoiNhap, 
+                    (ct.SoLuongNhap * ct.DonGiaNhap) AS TongTien,
+                    pn.MaNCC,
+                    pn.MaNV
+                FROM PhieuNhapHang pn
+              
+                INNER JOIN ChiTietPhieuNhapHang ct ON pn.MaPNH = ct.MaPNH
+               
+                INNER JOIN SanPham sp ON ct.MaSP = sp.MaSP
+              
+                INNER JOIN NhanVien nv ON pn.MaNV = nv.MaNV
+            ";
 
             return _db.GetListData(sql);
         }
@@ -244,6 +267,32 @@ namespace SupermarketManagement.Models.Repositories
             {
                 throw new Exception("Lỗi chi tiết từ SQL: " + ex.Message);
             }
+        }
+        private string TaoMaPhieuNhapMoi()
+        {
+            // Lấy mã phiếu nhập cuối cùng (lớn nhất) trong CSDL
+            string sql = "SELECT TOP 1 MaPNH FROM PhieuNhapHang ORDER BY MaPNH DESC";
+
+            // Giả sử hàm lấy dữ liệu của bạn trả về DataTable
+            DataTable dt = _db.GetListData(sql);
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                string maCu = dt.Rows[0]["MaPNH"].ToString(); // Ví dụ lấy được: "PNH011"
+
+                // Cắt bỏ 3 chữ cái đầu ("PNH"), giữ lại phần số ("011")
+                string phanSoCu = maCu.Substring(3);
+
+                if (int.TryParse(phanSoCu, out int soMoi))
+                {
+                    soMoi++; // Tăng lên 1 đơn vị thành 12
+                             // D3 nghĩa là định dạng chuỗi luôn có 3 chữ số (012)
+                    return "PNH" + soMoi.ToString("D3");
+                }
+            }
+
+            // Nếu bảng PhieuNhapHang đang trống chưa có dòng nào
+            return "PNH001";
         }
     }
 

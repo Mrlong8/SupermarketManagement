@@ -120,7 +120,7 @@
             this.grpHoaDonNhap.Margin = new System.Windows.Forms.Padding(4);
             this.grpHoaDonNhap.Name = "grpHoaDonNhap";
             this.grpHoaDonNhap.Padding = new System.Windows.Forms.Padding(4);
-            this.grpHoaDonNhap.Size = new System.Drawing.Size(824, 763);
+            this.grpHoaDonNhap.Size = new System.Drawing.Size(899, 763);
             this.grpHoaDonNhap.TabIndex = 0;
             this.grpHoaDonNhap.TabStop = false;
             this.grpHoaDonNhap.Text = "QUẢN LÝ HÓA ĐƠN NHẬP";
@@ -176,7 +176,7 @@
             this.dgvHoaDonNhap.ReadOnly = true;
             this.dgvHoaDonNhap.RowHeadersWidth = 51;
             this.dgvHoaDonNhap.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvHoaDonNhap.Size = new System.Drawing.Size(781, 492);
+            this.dgvHoaDonNhap.Size = new System.Drawing.Size(858, 492);
             this.dgvHoaDonNhap.TabIndex = 18;
             this.dgvHoaDonNhap.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHoaDonNhap_CellClick);
             // 
@@ -375,7 +375,7 @@
             this.grpDanhMuc.Controls.Add(this.txtMaDanhMuc);
             this.grpDanhMuc.Controls.Add(this.lblMaDanhMuc);
             this.grpDanhMuc.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.grpDanhMuc.Location = new System.Drawing.Point(276, 722);
+            this.grpDanhMuc.Location = new System.Drawing.Point(167, 355);
             this.grpDanhMuc.Margin = new System.Windows.Forms.Padding(4);
             this.grpDanhMuc.Name = "grpDanhMuc";
             this.grpDanhMuc.Padding = new System.Windows.Forms.Padding(4);
@@ -445,6 +445,7 @@
             this.btnThemDM.TabIndex = 6;
             this.btnThemDM.Text = "Thêm";
             this.btnThemDM.UseVisualStyleBackColor = false;
+            this.btnThemDM.Click += new System.EventHandler(this.btnThemDM_Click);
             // 
             // txtMoTaDM
             // 
@@ -536,11 +537,11 @@
             this.grpHangHoa.Controls.Add(this.txtMaHangHoa);
             this.grpHangHoa.Controls.Add(this.lblMaHangHoa);
             this.grpHangHoa.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.grpHangHoa.Location = new System.Drawing.Point(867, 15);
+            this.grpHangHoa.Location = new System.Drawing.Point(923, 15);
             this.grpHangHoa.Margin = new System.Windows.Forms.Padding(4);
             this.grpHangHoa.Name = "grpHangHoa";
             this.grpHangHoa.Padding = new System.Windows.Forms.Padding(4);
-            this.grpHangHoa.Size = new System.Drawing.Size(865, 763);
+            this.grpHangHoa.Size = new System.Drawing.Size(861, 763);
             this.grpHangHoa.TabIndex = 1;
             this.grpHangHoa.TabStop = false;
             this.grpHangHoa.Text = "QUẢN LÝ HÀNG HÓA";
@@ -809,7 +810,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.ClientSize = new System.Drawing.Size(1782, 794);
+            this.ClientSize = new System.Drawing.Size(1797, 794);
             this.Controls.Add(this.grpHangHoa);
             this.Controls.Add(this.grpHoaDonNhap);
             this.Margin = new System.Windows.Forms.Padding(4);

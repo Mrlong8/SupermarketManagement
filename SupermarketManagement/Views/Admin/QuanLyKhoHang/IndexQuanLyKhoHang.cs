@@ -93,15 +93,43 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 dgvHoaDonNhap.DataSource = _controller.LoadPhieuNhapHang();
                 if (dgvHoaDonNhap.Columns.Count > 0)
                 {
-
+                    // 1. Cấu hình các cột cơ bản và ép kích thước nhỏ lại (Width)
                     dgvHoaDonNhap.Columns["MaPNH"].HeaderText = "Mã Phiếu";
+                    dgvHoaDonNhap.Columns["MaPNH"].Width = 60;
+
                     dgvHoaDonNhap.Columns["NgayNhap"].HeaderText = "Ngày Nhập";
+                    dgvHoaDonNhap.Columns["NgayNhap"].Width = 100;
+
+                    // 2. Cho cột Mặt Hàng tự động co giãn lấp đầy khoảng trống (Fill)
                     dgvHoaDonNhap.Columns["MatHang"].HeaderText = "Mặt Hàng";
+                    dgvHoaDonNhap.Columns["MatHang"].Width = 100;
+
+                    // 3. Cấu hình 2 cột mới (kiểm tra Contains để tránh lỗi nếu SQL chưa có cột này)
+                    if (dgvHoaDonNhap.Columns.Contains("SoLuongNhap"))
+                    {
+                        dgvHoaDonNhap.Columns["SoLuongNhap"].HeaderText = "Số Lượng";
+                        dgvHoaDonNhap.Columns["SoLuongNhap"].Width = 50;
+                    }
+
+                    if (dgvHoaDonNhap.Columns.Contains("DonGiaNhap"))
+                    {
+                        dgvHoaDonNhap.Columns["DonGiaNhap"].HeaderText = "Đơn Giá Nhập";
+                        dgvHoaDonNhap.Columns["DonGiaNhap"].Width = 80;
+                        dgvHoaDonNhap.Columns["DonGiaNhap"].DefaultCellStyle.Format = "N0";
+                    }
+
                     dgvHoaDonNhap.Columns["NguoiNhap"].HeaderText = "Người Nhập";
+                    dgvHoaDonNhap.Columns["NguoiNhap"].Width = 100;
 
-                    dgvHoaDonNhap.Columns["TongTien"].HeaderText = "Tổng Tiền";
-                    dgvHoaDonNhap.Columns["TongTien"].DefaultCellStyle.Format = "N0";
+                    // 4. Thu nhỏ cột Tổng tiền
+                    if (dgvHoaDonNhap.Columns.Contains("TongTien"))
+                    {
+                        dgvHoaDonNhap.Columns["TongTien"].HeaderText = "Tổng Tiền";
+                        dgvHoaDonNhap.Columns["TongTien"].DefaultCellStyle.Format = "N0";
+                        dgvHoaDonNhap.Columns["TongTien"].Width = 80;
+                    }
 
+                    // 5. Ẩn các cột không cần thiết
                     dgvHoaDonNhap.Columns["MaNCC"].Visible = false;
                     dgvHoaDonNhap.Columns["MaNV"].Visible = false;
                 }
@@ -288,18 +316,12 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             {
                 DataGridViewRow row = dgvHangHoa.Rows[e.RowIndex];
 
-                // 1. Lấy mã và tên mặt hàng đưa sang ComboBox "Mặt hàng" bên trái
                 maSanPhamHienTai = row.Cells[0].Value.ToString();
                 cboMatHang.Text = row.Cells[1].Value.ToString();
-
-                // 2. Lấy giá nhập từ cột "Giá Nhập" để chuẩn bị tính tiền
                 giaNhapHienTai = Convert.ToDecimal(row.Cells[3].Value);
+                txtSoLuongNhap.Text = "0";
 
-                // 3. Xóa trắng ô số lượng hoặc set mặc định là 1 để người dùng nhập
-                txtSoLuongNhap.Text = "1";
 
-                // Gọi hàm tính tiền ngay lập tức
-                TinhTongTien();
             }
         }
 
@@ -320,6 +342,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachHangHoa();
                 LamMoiFormHangHoa();
+                LoadDanhSachHoaDonNhap();
             }
             else
             {
@@ -345,7 +368,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void btnXoaHH_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtMaHangHoa.Text))
+            if (dgvHangHoa.CurrentRow == null || dgvHangHoa.CurrentRow.Index < 0)
             {
                 MessageBox.Show("Vui lòng chọn một hàng hóa từ bảng để xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -355,7 +378,10 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             if (confirm == DialogResult.Yes)
             {
                 string thongBao;
-                if (_controller.XoaSanPham(txtMaHangHoa.Text, out thongBao))
+
+                string maSPDuocChon = dgvHangHoa.CurrentRow.Cells["MaSP"].Value.ToString();
+
+                if (_controller.XoaSanPham(maSPDuocChon, out thongBao))
                 {
                     MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDanhSachHangHoa();
@@ -415,21 +441,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             }
         }
 
-        private void btnThemDM_Click(object sender, EventArgs e)
-        {
-            string thongBao;
-            if (_controller.ThemDanhMuc(txtMaDanhMuc.Text, txtTenDanhMuc.Text, out thongBao))
-            {
-                MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadDanhSachDanhMuc();
-                CapNhatComboBoxDanhMuc();
-                LamMoiFormDanhMuc();
-            }
-            else
-            {
-                MessageBox.Show(thongBao, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
+        
 
         private void btnSuaDM_Click(object sender, EventArgs e)
         {
@@ -584,22 +596,27 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void txtSoLuongNhap_TextChanged(object sender, EventArgs e)
         {
-            TinhTongTien();
+            TinhTongTienPhieuNhap();
         }
-        private void TinhTongTien()
-        {
-            if (int.TryParse(txtSoLuongNhap.Text, out int soLuong) && soLuong > 0)
-            {
-                decimal tongTien = soLuong * giaNhapHienTai;
 
-                txtTongTienHD.Text = tongTien.ToString("N0");
+        private void btnThemDM_Click(object sender, EventArgs e)
+        {
+            string thongBao;
+            // Thêm .Trim() để dọn dẹp khoảng trắng thừa
+            string maDM = txtMaDanhMuc.Text.Trim();
+            string tenDM = txtTenDanhMuc.Text.Trim();
+
+            if (_controller.ThemDanhMuc(maDM, tenDM, out thongBao))
+            {
+                MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadDanhSachDanhMuc();
+                CapNhatComboBoxDanhMuc();
+                LamMoiFormDanhMuc();
             }
             else
             {
-                txtTongTienHD.Text = "0";
+                MessageBox.Show(thongBao, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-
     }
 }
