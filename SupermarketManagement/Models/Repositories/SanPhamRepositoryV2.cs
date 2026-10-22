@@ -1,7 +1,6 @@
 ﻿using SupermarketManagement.Controllers.Repositories;
 using System;
 using System.Data;
-using System.Data.SqlClient;
 using System.Globalization;
 
 namespace SupermarketManagement.Models.Repositories
@@ -69,23 +68,6 @@ namespace SupermarketManagement.Models.Repositories
         {
             string sql = $"Update SanPham SET UrlImage = N'{urlImage}' where MaSP = '{maSP}' ";
             _db.DataChange(sql);
-        }
-        public bool CapNhatSoLuongKhiNhapHang(string maSP, int soLuongNhap)
-        {
-            string query = @"
-                UPDATE SanPham 
-                SET SoLuong = SoLuong + @SoLuongNhap 
-                WHERE MaSP = @MaSP";
-
-            SqlParameter[] parameters = new SqlParameter[]
-            {
-                new SqlParameter("@SoLuongNhap", soLuongNhap),
-                new SqlParameter("@MaSP", maSP)
-            };
-
-            int rowsAffected = DbConection.DBHelper.ExecuteNonQuery(query, parameters);
-
-            return rowsAffected > 0;
         }
     }
 }
