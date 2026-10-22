@@ -109,18 +109,25 @@ namespace SupermarketManagement.Models.Repositories
         {
             string sql = @"
                 SELECT 
-                    pnh.MaPNH,
-                    pnh.NgayNhap,
-                    pnh.MaNCC,
-                    ncc.TenNCC,
-                    pnh.MaNV,
-                    nv.HoTen AS NguoiNhap,
-                    ISNULL(SUM(ct.SoLuongNhap * ct.DonGiaNhap), 0) AS TongTien
-                FROM PhieuNhapHang pnh
-                LEFT JOIN NhaCungCap ncc ON pnh.MaNCC = ncc.MaNCC
-                LEFT JOIN NhanVien nv ON pnh.MaNV = nv.MaNV
+                    pnh.MaPNH,            
+                    pnh.NgayNhap,            
+                    pnh.MaNCC,            
+                    sp.TenSanPham AS MatHang, 
+                    pnh.MaNV,            
+                    nv.HoTen AS NguoiNhap,            
+                    ISNULL(SUM(ct.SoLuongNhap * ct.DonGiaNhap), 0) AS TongTien        
+                FROM PhieuNhapHang pnh        
+                LEFT JOIN NhanVien nv ON pnh.MaNV = nv.MaNV        
                 LEFT JOIN ChiTietPhieuNhapHang ct ON pnh.MaPNH = ct.MaPNH
-                GROUP BY pnh.MaPNH, pnh.NgayNhap, pnh.MaNCC, ncc.TenNCC, pnh.MaNV, nv.HoTen";
+                LEFT JOIN SanPham sp ON ct.MaSP = sp.MaSP 
+                GROUP BY 
+                    pnh.MaPNH, 
+                    pnh.NgayNhap, 
+                    pnh.MaNCC, 
+                    sp.TenSanPham,
+                    pnh.MaNV, 
+                    nv.HoTen";
+
             return _db.GetListData(sql);
         }
 

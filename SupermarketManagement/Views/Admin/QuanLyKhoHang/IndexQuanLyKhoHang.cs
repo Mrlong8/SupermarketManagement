@@ -1,5 +1,6 @@
 ﻿using SupermarketManagement.Controllers;
 using SupermarketManagement.Models.Entities;
+using SupermarketManagement.Models.Repositories;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -8,6 +9,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 {
     public partial class IndexQuanLyKhoHang : Form
     {
+        private decimal giaNhapHienTai = 0;
+        private string maSanPhamHienTai = "";
         private KhoHangController _controller = new KhoHangController();
 
         public IndexQuanLyKhoHang()
@@ -93,7 +96,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
                     dgvHoaDonNhap.Columns["MaPNH"].HeaderText = "Mã Phiếu";
                     dgvHoaDonNhap.Columns["NgayNhap"].HeaderText = "Ngày Nhập";
-                    dgvHoaDonNhap.Columns["TenNCC"].HeaderText = "Nhà Cung Cấp";
+                    dgvHoaDonNhap.Columns["MatHang"].HeaderText = "Mặt Hàng";
                     dgvHoaDonNhap.Columns["NguoiNhap"].HeaderText = "Người Nhập";
 
                     dgvHoaDonNhap.Columns["TongTien"].HeaderText = "Tổng Tiền";
@@ -211,21 +214,23 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void btnLuuHD_Click(object sender, EventArgs e)
         {
-            bool daTonTai = false;
-            foreach (DataGridViewRow row in dgvHoaDonNhap.Rows)
+            if (string.IsNullOrEmpty(maSanPhamHienTai))
             {
-                if (row.Cells["MaPNH"].Value != null &&
-                    row.Cells["MaPNH"].Value.ToString().Equals(txtMaHoaDon.Text.Trim(), StringComparison.OrdinalIgnoreCase))
-                {
-                    daTonTai = true;
-                    break;
-                }
+                MessageBox.Show("Vui lòng chọn một mặt hàng từ danh sách!");
+                return;
             }
 
-            if (daTonTai)
-                btnSuaHD_Click(sender, e);
-            else
-                btnThemHD_Click(sender, e);
+            int soLuong = int.Parse(txtSoLuongNhap.Text);
+
+            // Khởi tạo Repository và thực thi cộng dồn số lượng
+            SanPhamRepositoryV2 repo = new SanPhamRepositoryV2();
+            bool thanhCong = repo.CapNhatSoLuongKhiNhapHang(maSanPhamHienTai, soLuong);
+
+            if (thanhCong)
+            {
+                MessageBox.Show("Cập nhật số lượng nhập hàng thành công!");
+                // Gọi lại hàm Load danh sách hàng hóa tại đây để DataGridView tự làm mới số lượng
+            }
         }
 
         private void btnHuyHD_Click(object sender, EventArgs e)
@@ -278,21 +283,23 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void dgvHangHoa_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Đảm bảo không click vào tiêu đề cột
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvHangHoa.Rows[e.RowIndex];
-                txtMaHangHoa.Text = row.Cells["MaSP"].Value?.ToString();
-                txtTenHangHoa.Text = row.Cells["TenSanPham"].Value?.ToString();
-                txtSoLuong.Text = row.Cells["SoLuong"].Value?.ToString();
-                txtTrongLuong.Text = row.Cells["TrongLuong"].Value?.ToString();
-                txtDonGiaNhap.Text = row.Cells["DonGiaNhap"].Value?.ToString();
-                txtDonGiaBan.Text = row.Cells["DonGiaBan"].Value?.ToString();
-                txtMoTaHH.Text = row.Cells["MoTa"].Value?.ToString();
 
-                if (row.Cells["MaDM"].Value != null && row.Cells["MaDM"].Value != DBNull.Value)
-                {
-                    cboDanhMucHH.SelectedValue = row.Cells["MaDM"].Value;
-                }
+                // 1. Lấy mã và tên mặt hàng đưa sang ComboBox "Mặt hàng" bên trái
+                maSanPhamHienTai = row.Cells[0].Value.ToString();
+                cboMatHang.Text = row.Cells[1].Value.ToString();
+
+                // 2. Lấy giá nhập từ cột "Giá Nhập" để chuẩn bị tính tiền
+                giaNhapHienTai = Convert.ToDecimal(row.Cells[3].Value);
+
+                // 3. Xóa trắng ô số lượng hoặc set mặc định là 1 để người dùng nhập
+                txtSoLuongNhap.Text = "1";
+
+                // Gọi hàm tính tiền ngay lập tức
+                TinhTongTien();
             }
         }
 
@@ -577,9 +584,22 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void txtSoLuongNhap_TextChanged(object sender, EventArgs e)
         {
-            TinhTongTienPhieuNhap();
+            TinhTongTien();
+        }
+        private void TinhTongTien()
+        {
+            if (int.TryParse(txtSoLuongNhap.Text, out int soLuong) && soLuong > 0)
+            {
+                decimal tongTien = soLuong * giaNhapHienTai;
+
+                txtTongTienHD.Text = tongTien.ToString("N0");
+            }
+            else
+            {
+                txtTongTienHD.Text = "0";
+            }
         }
 
-       
+
     }
 }
