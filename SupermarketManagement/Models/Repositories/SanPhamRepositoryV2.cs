@@ -14,6 +14,11 @@ namespace SupermarketManagement.Models.Repositories
             string sql = "SELECT * FROM SanPham WHERE TrangThai = 1";
             return _db.GetListData(sql);
         }
+        public DataTable GetListSanPhamV2()
+        {
+            string sql = "SELECT sp.MaSP, sp.TenSanPham, sp.SoLuong, sp.DonGiaBan FROM SanPham sp WHERE TrangThai = 1";
+            return _db.GetListData(sql);
+        }
 
         public DataTable GetDanhMuc()
         {

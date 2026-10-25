@@ -6,10 +6,10 @@ namespace SupermarketManagement.Models.Repositories
 {
     internal class HoaDonRepository
     {
-        //private readonly string connectionString =
-        //   @"Data Source=localhost;Initial Catalog=SupermarketManagement_New;Integrated Security=True";
         private readonly string connectionString =
-            @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True";
+           @"Data Source=localhost;Initial Catalog=SupermarketManagement_New;Integrated Security=True";
+        //private readonly string connectionString =
+        //    @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True";
 
         //private static string str = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True"; ///của Long
 
@@ -77,13 +77,33 @@ namespace SupermarketManagement.Models.Repositories
                                 "Phải chọn khách hàng mới được sử dụng điểm.");
                         }
 
-                        // 2. Kiểm tra điểm sử dụng và tiền giảm giá.
-                        if (diemSuDung > diemCu + diemMoi)
-                            throw new Exception("Không đủ điểm để đổi.");
 
-                        if (diemSuDung * 1000m > tongTien)
+                        // 2. Kiểm tra điểm sử dụng theo quy tắc mới:
+                        // 10 điểm = 1% giảm giá.
+                        if (diemSuDung > diemCu)
+                            throw new Exception(
+                                $"Không đủ điểm. Điểm hiện có: {diemCu}, " +
+                                $"điểm cần dùng: {diemSuDung}.");
+
+                        int phanTramGiam = diemSuDung / 10;
+
+                        if (diemSuDung % 10 != 0)
+                            throw new Exception(
+                                "Điểm sử dụng phải tương ứng với mức giảm 5%, 10%, 20% hoặc 30%.");
+
+                        if (phanTramGiam != 0 &&
+                            phanTramGiam != 5 &&
+                            phanTramGiam != 10 &&
+                            phanTramGiam != 20 &&
+                            phanTramGiam != 30)
+                            throw new Exception("Mức giảm giá không hợp lệ.");
+
+                        decimal tienGiamGia = tongTien * phanTramGiam / 100m;
+
+                        if (tienGiamGia > tongTien)
                             throw new Exception(
                                 "Tiền giảm giá vượt quá tổng tiền hàng.");
+
 
                         // 3. Gộp số lượng nếu cùng một sản phẩm xuất hiện nhiều dòng.
                         DataTable sanPhamBan = new DataTable();
