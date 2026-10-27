@@ -1,4 +1,4 @@
-﻿using SupermarketManagement.Models.Repositories;
+using SupermarketManagement.Models.Repositories;
 using System;
 using System.Data;
 
@@ -8,7 +8,7 @@ namespace SupermarketManagement.Controllers
     {
         private KhoHangRepository _repo = new KhoHangRepository();
 
-        //phần danh mục
+        #region Danh Mục
 
         public DataTable LoadDanhMuc()
         {
@@ -83,7 +83,14 @@ namespace SupermarketManagement.Controllers
             }
         }
 
-        // phần hàng hóa sản phẩm
+        public string TaoMaDanhMucMoi()
+        {
+            return _repo.GetMaDanhMucMoi();
+        }
+
+        #endregion
+
+        #region Hàng Hóa Sản Phẩm
 
         public DataTable LoadSanPham()
         {
@@ -123,28 +130,25 @@ namespace SupermarketManagement.Controllers
             double trongLuong = 0;
             if (!string.IsNullOrWhiteSpace(trongLuongStr) && (!double.TryParse(trongLuongStr, out trongLuong) || trongLuong < 0))
             {
-                thongBao = "Trọng lượng không hợp lệ!";
-                return false;
+                trongLuong = 0;
             }
 
             decimal giaNhap = 0;
-            if (!decimal.TryParse(giaNhapStr, out giaNhap) || giaNhap < 0)
+            if (!decimal.TryParse(giaNhapStr.Replace(",", "").Replace(".", ""), out giaNhap) || giaNhap < 0)
             {
-                thongBao = "Đơn giá nhập không hợp lệ!";
-                return false;
+                giaNhap = 0;
             }
 
             decimal giaBan = 0;
-            if (!decimal.TryParse(giaBanStr, out giaBan) || giaBan < 0)
+            if (!decimal.TryParse(giaBanStr.Replace(",", "").Replace(".", ""), out giaBan) || giaBan < 0)
             {
-                thongBao = "Đơn giá bán không hợp lệ!";
-                return false;
+                giaBan = 0;
             }
 
             try
             {
                 if (maNV <= 0) maNV = 1;
-                _repo.ThemSanPham(maSP, tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa.Trim(), maDM, maNV);
+                _repo.ThemSanPham(maSP, tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa?.Trim(), maDM, maNV);
                 thongBao = "Thêm hàng hóa thành công!";
                 return true;
             }
@@ -177,14 +181,14 @@ namespace SupermarketManagement.Controllers
             double.TryParse(trongLuongStr, out trongLuong);
 
             decimal giaNhap = 0;
-            decimal.TryParse(giaNhapStr, out giaNhap);
+            decimal.TryParse(giaNhapStr.Replace(",", "").Replace(".", ""), out giaNhap);
 
             decimal giaBan = 0;
-            decimal.TryParse(giaBanStr, out giaBan);
+            decimal.TryParse(giaBanStr.Replace(",", "").Replace(".", ""), out giaBan);
 
             try
             {
-                _repo.SuaSanPham(maSP, tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa.Trim(), maDM);
+                _repo.SuaSanPham(maSP, tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa?.Trim(), maDM);
                 thongBao = "Cập nhật hàng hóa thành công!";
                 return true;
             }
@@ -217,16 +221,49 @@ namespace SupermarketManagement.Controllers
             }
         }
 
-        // Phần hóa đơn nhập hàng
-
-        public DataTable LoadPhieuNhapHang()
+        public string TaoMaSanPhamMoi()
         {
-            return _repo.GetPhieuNhapHang();
+            return _repo.GetMaSanPhamMoi();
         }
+
+        #endregion
+
+        #region Nhà Cung Cấp & Nhân Viên
 
         public DataTable LoadNhaCungCap()
         {
             return _repo.GetNhaCungCap();
+        }
+
+        public string TaoMaNhaCungCapMoi()
+        {
+            return _repo.GetMaNhaCungCapMoi();
+        }
+
+        public bool ThemNhaCungCap(string maNCC, string tenNCC, string diaChi, string sdt, out string thongBao)
+        {
+            if (string.IsNullOrWhiteSpace(tenNCC))
+            {
+                thongBao = "Tên Nhà Cung Cấp không được để trống!";
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(maNCC))
+            {
+                maNCC = _repo.GetMaNhaCungCapMoi();
+            }
+
+            try
+            {
+                _repo.ThemNhaCungCap(maNCC, tenNCC, diaChi, sdt);
+                thongBao = "Thêm Nhà Cung Cấp thành công!";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                thongBao = "Lỗi khi thêm Nhà Cung Cấp: " + ex.Message;
+                return false;
+            }
         }
 
         public DataTable LoadNhanVien()
@@ -234,25 +271,32 @@ namespace SupermarketManagement.Controllers
             return _repo.GetNhanVien();
         }
 
-        public bool ThemPhieuNhap(string maPNH, DateTime ngayNhap, int maNV, int maNCC, out string thongBao)
-        {
-            if (string.IsNullOrWhiteSpace(maPNH))
-            {
-                thongBao = "Vui lòng nhập Mã Hóa Đơn Nhập (VD: PNH006)!";
-                return false;
-            }
+        #endregion
 
-            try
-            {
-                _repo.ThemPhieuNhap(maPNH.Trim(), ngayNhap, maNV, maNCC);
-                thongBao = "Thêm hóa đơn nhập thành công!";
-                return true;
-            }
-            catch (Exception ex)
-            {
-                thongBao = "Lỗi khi thêm hóa đơn nhập (Có thể trùng Mã PNH): " + ex.Message;
-                return false;
-            }
+        #region Đơn Vị Tính & Quy Đổi
+
+        public DataTable LoadDonViTinhTheoSanPham(string maSP)
+        {
+            return _repo.GetDonViTinhTheoSanPham(maSP);
+        }
+
+        public DataTable LoadAllDonViTinh()
+        {
+            return _repo.GetAllDonViTinh();
+        }
+
+        #endregion
+
+        #region Phiếu Nhập Hàng (Nhiều hàng từ 1 NCC, Quy đổi DVT)
+
+        public DataTable LoadPhieuNhapHang()
+        {
+            return _repo.GetPhieuNhapHang();
+        }
+
+        public DataTable LoadChiTietPhieuNhap(string maPNH)
+        {
+            return _repo.GetChiTietPhieuNhap(maPNH);
         }
 
         public bool SuaPhieuNhap(string maPNH, DateTime ngayNhap, int maNV, int maNCC, out string thongBao)
@@ -276,6 +320,55 @@ namespace SupermarketManagement.Controllers
             }
         }
 
+        public string TaoMaPhieuNhapMoi()
+        {
+            return _repo.GetMaPhieuNhapMoi();
+        }
+
+        /// <summary>
+        /// Lưu phiếu nhập gồm nhiều mặt hàng từ 1 nhà cung cấp.
+        /// </summary>
+        public bool LuuPhieuNhap(string maPNH, DateTime ngayNhap, string maNCC, string maNV, DataTable dtChiTiet, out string thongBao)
+        {
+            if (string.IsNullOrWhiteSpace(maPNH))
+            {
+                thongBao = "Mã Phiếu Nhập Hàng không được để trống!";
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(maNCC))
+            {
+                thongBao = "Vui lòng chọn Nhà Cung Cấp!";
+                return false;
+            }
+
+            if (dtChiTiet == null || dtChiTiet.Rows.Count == 0)
+            {
+                thongBao = "Vui lòng thêm ít nhất một mặt hàng vào phiếu nhập trước khi lưu!";
+                return false;
+            }
+
+            try
+            {
+                bool ok = _repo.LuuPhieuNhapVaChiTiet(maPNH, ngayNhap, maNCC, maNV, dtChiTiet);
+                if (ok)
+                {
+                    thongBao = $"Lưu phiếu nhập '{maPNH}' thành công! Đã quy đổi và cập nhật tồn kho.";
+                    return true;
+                }
+                else
+                {
+                    thongBao = "Lưu phiếu nhập thất bại (Rollback transaction)!";
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                thongBao = "Lỗi khi lưu phiếu nhập: " + ex.Message;
+                return false;
+            }
+        }
+
         public bool XoaPhieuNhap(string maPNH, out string thongBao)
         {
             if (string.IsNullOrWhiteSpace(maPNH))
@@ -287,7 +380,7 @@ namespace SupermarketManagement.Controllers
             try
             {
                 _repo.XoaPhieuNhap(maPNH.Trim());
-                thongBao = "Xóa hóa đơn nhập thành công!";
+                thongBao = "Xóa hóa đơn nhập thành công và đã hoàn lại số lượng tồn kho!";
                 return true;
             }
             catch (Exception ex)
@@ -297,21 +390,7 @@ namespace SupermarketManagement.Controllers
             }
         }
 
-        public string TaoMaPhieuNhapMoi()
-        {
-            return _repo.GetMaPhieuNhapMoi();
-        }
-
-        public string TaoMaSanPhamMoi()
-        {
-            return _repo.GetMaSanPhamMoi();
-        }
-
-        public string TaoMaDanhMucMoi()
-        {
-            return _repo.GetMaDanhMucMoi();
-        }
-
+        // Tương thích ngược nếu code cũ gọi ThemHoaDonMoi
         public bool ThemHoaDonMoi(string maPNH, DateTime ngayNhap, int maNCC, int maNV, string maSPStr, string soLuongStr, string tongTienStr, out string thongBao)
         {
             if (!int.TryParse(maSPStr, out int maSP))
@@ -319,7 +398,6 @@ namespace SupermarketManagement.Controllers
 
             if (!int.TryParse(soLuongStr, out int soLuong) || soLuong <= 0)
             { thongBao = "Số lượng nhập phải lớn hơn 0!"; return false; }
-
 
             decimal tongTien = 0;
             if (!string.IsNullOrWhiteSpace(tongTienStr))
@@ -329,25 +407,20 @@ namespace SupermarketManagement.Controllers
 
             decimal donGiaNhap = soLuong > 0 ? (tongTien / soLuong) : 0;
 
-            try
-            {
-                bool ketQua = _repo.ThemHoaDonVaCapNhatKho(maPNH, ngayNhap, maNCC, maNV, maSP, soLuong, donGiaNhap, tongTien);
-                if (ketQua)
-                {
-                    thongBao = "Nhập hàng và cập nhật kho thành công!";
-                    return true;
-                }
-                else
-                {
-                    thongBao = "Lỗi hệ thống khi lưu dữ liệu (Transaction Rollback)!";
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                thongBao = "Lỗi: " + ex.Message;
-                return false;
-            }
+            DataTable dt = new DataTable();
+            dt.Columns.Add("MaSP", typeof(string));
+            dt.Columns.Add("MaDVT", typeof(string));
+            dt.Columns.Add("SoLuongNhap", typeof(int));
+            dt.Columns.Add("SoLuongQuyDoi", typeof(int));
+            dt.Columns.Add("DonGiaNhap", typeof(decimal));
+            dt.Columns.Add("NgaySanXuat", typeof(object));
+            dt.Columns.Add("NgayHetHan", typeof(object));
+
+            dt.Rows.Add(maSP.ToString(), "DV01", soLuong, 1, donGiaNhap, DBNull.Value, DBNull.Value);
+
+            return LuuPhieuNhap(maPNH, ngayNhap, maNCC.ToString(), maNV.ToString(), dt, out thongBao);
         }
+
+        #endregion
     }
 }

@@ -35,12 +35,14 @@ namespace SupermarketManagement.Views.Admin.Product
 
                     string maSP = item["MaSP"]?.ToString();
                     string tenSP = item["TenSanPham"]?.ToString();
+                    // Giá nhập, giá bán, đơn vị: lấy theo đơn vị cơ bản (SanPham_DonViTinh)
                     string giaNhap = item["DonGiaNhap"]?.ToString();
                     string giaBan = item["DonGiaBan"]?.ToString();
-                    string soLuong = item["SoLuong"]?.ToString();
+                    string soLuong = item["SoLuong"]?.ToString();   // = SoLuongTong
                     string urlImage = item["UrlImage"]?.ToString();
+                    string tenDV = item["TenDV"]?.ToString();
 
-                    control.SetData(maSP,tenSP, giaNhap, giaBan, soLuong, urlImage);
+                    control.SetData(maSP, tenSP, giaNhap, giaBan, soLuong, urlImage, tenDV);
                     flpListProduct.Controls.Add(control);
                 }
             }
@@ -76,7 +78,7 @@ namespace SupermarketManagement.Views.Admin.Product
                 return;
             }
 
-         
+
             cbDanhMuc.SelectedIndex = -1;
 
             DataTable dtResult = _repo.TimKiemSanPhamTheoTen(keyword);
@@ -89,7 +91,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
-     
+
         private void txtTimKiem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -100,7 +102,7 @@ namespace SupermarketManagement.Views.Admin.Product
         }
 
 
-   
+
         private void cbDanhMuc_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbDanhMuc.Focused && cbDanhMuc.SelectedValue != null)

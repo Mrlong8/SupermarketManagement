@@ -219,6 +219,7 @@
             this.txtSoLuong.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtSoLuong.Location = new System.Drawing.Point(190, 128);
             this.txtSoLuong.Name = "txtSoLuong";
+            this.txtSoLuong.ReadOnly = true;
             this.txtSoLuong.Size = new System.Drawing.Size(385, 30);
             this.txtSoLuong.TabIndex = 4;
             this.txtSoLuong.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSoLuong_KeyPress);

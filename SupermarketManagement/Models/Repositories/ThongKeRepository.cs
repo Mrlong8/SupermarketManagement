@@ -9,6 +9,8 @@ namespace SupermarketManagement.Models.Repositories
         private DbConection _db = new DbConection();
 
         // 1. Thống kê Doanh Thu theo từng ngày trong Tháng
+        // Giá bán lấy theo đúng đơn vị tính đã bán (SanPham_DonViTinh.DonGiaBanLe),
+        // vì SanPham không còn cột DonGiaBan.
         public DataTable GetDoanhThuTheoNgayInThang(int thang, int nam)
         {
             string sql = $@"
@@ -21,11 +23,11 @@ namespace SupermarketManagement.Models.Repositories
                 )
                 SELECT 
                     DAY(ntt.Ngay) AS [Ngay],
-                    ISNULL(SUM(ct.SoLuongBan * sp.DonGiaBan), 0) AS [DoanhThu]
+                    ISNULL(SUM(ct.SoLuongBan * d.DonGiaBanLe), 0) AS [DoanhThu]
                 FROM NgayTrongThang ntt
                 LEFT JOIN HoaDon hd ON CAST(hd.NgayMua AS DATE) = ntt.Ngay
                 LEFT JOIN ChiTietHoaDon ct ON hd.MaHD = ct.MaHD
-                LEFT JOIN SanPham sp ON ct.MaSP = sp.MaSP
+                LEFT JOIN SanPham_DonViTinh d ON d.MaSP = ct.MaSP AND d.MaDVT = ct.MaDVT
                 GROUP BY ntt.Ngay
                 ORDER BY ntt.Ngay ASC
                 OPTION (MAXRECURSION 31)";
@@ -34,6 +36,8 @@ namespace SupermarketManagement.Models.Repositories
         }
 
         // 2. Thống kê Vốn Nhập Hàng theo từng ngày trong cùng Tháng
+        // DonGiaNhap trong ChiTietPhieuNhapHang là giá của 1 đơn vị nhập (VD: 1 thùng),
+        // nên SoLuongNhap * DonGiaNhap vẫn đúng, không cần nhân quy đổi.
         public DataTable GetVonNhapTheoNgayInThang(int thang, int nam)
         {
             string sql = $@"
