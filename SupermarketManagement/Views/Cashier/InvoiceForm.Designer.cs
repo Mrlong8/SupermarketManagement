@@ -20,13 +20,13 @@ namespace SupermarketManagement.Views.Cashier
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblTieuDe = new System.Windows.Forms.Label();
             this.lblMaHD = new System.Windows.Forms.Label();
             this.lblKhachHang = new System.Windows.Forms.Label();
@@ -35,7 +35,7 @@ namespace SupermarketManagement.Views.Cashier
             this.lblNgayMua = new System.Windows.Forms.Label();
             this.lblTongTien = new System.Windows.Forms.Label();
             this.txtTongTien = new System.Windows.Forms.TextBox();
-            this.txtMaNV = new System.Windows.Forms.TextBox();
+            this.txtTenNV = new System.Windows.Forms.TextBox();
             this.txtKhachHang = new System.Windows.Forms.TextBox();
             this.txtMaHD = new System.Windows.Forms.TextBox();
             this.txtMaKH = new System.Windows.Forms.TextBox();
@@ -109,9 +109,9 @@ namespace SupermarketManagement.Views.Cashier
             this.lblNhanVien.Location = new System.Drawing.Point(4, 142);
             this.lblNhanVien.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNhanVien.Name = "lblNhanVien";
-            this.lblNhanVien.Size = new System.Drawing.Size(133, 28);
+            this.lblNhanVien.Size = new System.Drawing.Size(130, 28);
             this.lblNhanVien.TabIndex = 8;
-            this.lblNhanVien.Text = "Mã Nhân viên";
+            this.lblNhanVien.Text = "Tên nhân viên";
             // 
             // lblMaKH
             // 
@@ -154,30 +154,30 @@ namespace SupermarketManagement.Views.Cashier
             this.txtTongTien.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.txtTongTien.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.txtTongTien.Location = new System.Drawing.Point(169, 34);
-            this.txtTongTien.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTongTien.Margin = new System.Windows.Forms.Padding(4);
             this.txtTongTien.Name = "txtTongTien";
             this.txtTongTien.ReadOnly = true;
             this.txtTongTien.Size = new System.Drawing.Size(352, 39);
             this.txtTongTien.TabIndex = 1;
             this.txtTongTien.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // txtMaNV
+            // txtTenNV
             // 
-            this.txtMaNV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMaNV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.txtMaNV.Location = new System.Drawing.Point(214, 139);
-            this.txtMaNV.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.txtMaNV.Name = "txtMaNV";
-            this.txtMaNV.ReadOnly = true;
-            this.txtMaNV.Size = new System.Drawing.Size(523, 34);
-            this.txtMaNV.TabIndex = 9;
+            this.txtTenNV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtTenNV.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.txtTenNV.Location = new System.Drawing.Point(214, 139);
+            this.txtTenNV.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTenNV.Name = "txtTenNV";
+            this.txtTenNV.ReadOnly = true;
+            this.txtTenNV.Size = new System.Drawing.Size(523, 34);
+            this.txtTenNV.TabIndex = 9;
             // 
             // txtKhachHang
             // 
             this.txtKhachHang.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtKhachHang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.txtKhachHang.Location = new System.Drawing.Point(910, 76);
-            this.txtKhachHang.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtKhachHang.Margin = new System.Windows.Forms.Padding(4);
             this.txtKhachHang.Name = "txtKhachHang";
             this.txtKhachHang.ReadOnly = true;
             this.txtKhachHang.Size = new System.Drawing.Size(524, 34);
@@ -188,7 +188,7 @@ namespace SupermarketManagement.Views.Cashier
             this.txtMaHD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMaHD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.txtMaHD.Location = new System.Drawing.Point(214, 14);
-            this.txtMaHD.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaHD.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaHD.Name = "txtMaHD";
             this.txtMaHD.ReadOnly = true;
             this.txtMaHD.Size = new System.Drawing.Size(523, 34);
@@ -199,7 +199,7 @@ namespace SupermarketManagement.Views.Cashier
             this.txtMaKH.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMaKH.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.txtMaKH.Location = new System.Drawing.Point(214, 76);
-            this.txtMaKH.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaKH.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaKH.Name = "txtMaKH";
             this.txtMaKH.ReadOnly = true;
             this.txtMaKH.Size = new System.Drawing.Size(523, 34);
@@ -209,19 +209,19 @@ namespace SupermarketManagement.Views.Cashier
             // 
             this.dgvInvoiceDetails.AllowUserToAddRows = false;
             this.dgvInvoiceDetails.AllowUserToResizeRows = false;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
-            this.dgvInvoiceDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
+            this.dgvInvoiceDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvInvoiceDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvInvoiceDetails.BackgroundColor = System.Drawing.Color.White;
             this.dgvInvoiceDetails.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvInvoiceDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvInvoiceDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvInvoiceDetails.ColumnHeadersHeight = 34;
             this.dgvInvoiceDetails.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvInvoiceDetails.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -231,19 +231,19 @@ namespace SupermarketManagement.Views.Cashier
             this.colSoLuong,
             this.colDonGia,
             this.colThanhTien});
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvInvoiceDetails.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvInvoiceDetails.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgvInvoiceDetails.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvInvoiceDetails.EnableHeadersVisualStyles = false;
             this.dgvInvoiceDetails.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(225)))), ((int)(((byte)(230)))));
             this.dgvInvoiceDetails.Location = new System.Drawing.Point(12, 39);
-            this.dgvInvoiceDetails.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dgvInvoiceDetails.Margin = new System.Windows.Forms.Padding(4);
             this.dgvInvoiceDetails.MultiSelect = false;
             this.dgvInvoiceDetails.Name = "dgvInvoiceDetails";
             this.dgvInvoiceDetails.ReadOnly = true;
@@ -256,8 +256,8 @@ namespace SupermarketManagement.Views.Cashier
             // 
             // colSTT
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.colSTT.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.colSTT.DefaultCellStyle = dataGridViewCellStyle3;
             this.colSTT.FillWeight = 8F;
             this.colSTT.HeaderText = "STT";
             this.colSTT.MinimumWidth = 8;
@@ -282,9 +282,9 @@ namespace SupermarketManagement.Views.Cashier
             // 
             // colSoLuong
             // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle11.Format = "N0";
-            this.colSoLuong.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Format = "N0";
+            this.colSoLuong.DefaultCellStyle = dataGridViewCellStyle4;
             this.colSoLuong.FillWeight = 12F;
             this.colSoLuong.HeaderText = "Số lượng";
             this.colSoLuong.MinimumWidth = 8;
@@ -293,9 +293,9 @@ namespace SupermarketManagement.Views.Cashier
             // 
             // colDonGia
             // 
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle12.Format = "N0";
-            this.colDonGia.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle5.Format = "N0";
+            this.colDonGia.DefaultCellStyle = dataGridViewCellStyle5;
             this.colDonGia.FillWeight = 14F;
             this.colDonGia.HeaderText = "Đơn giá";
             this.colDonGia.MinimumWidth = 8;
@@ -304,9 +304,9 @@ namespace SupermarketManagement.Views.Cashier
             // 
             // colThanhTien
             // 
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle13.Format = "N0";
-            this.colThanhTien.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.Format = "N0";
+            this.colThanhTien.DefaultCellStyle = dataGridViewCellStyle6;
             this.colThanhTien.FillWeight = 14F;
             this.colThanhTien.HeaderText = "Thành tiền";
             this.colThanhTien.MinimumWidth = 8;
@@ -356,7 +356,7 @@ namespace SupermarketManagement.Views.Cashier
             this.dtpNgayMua.Enabled = false;
             this.dtpNgayMua.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpNgayMua.Location = new System.Drawing.Point(910, 14);
-            this.dtpNgayMua.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtpNgayMua.Margin = new System.Windows.Forms.Padding(4);
             this.dtpNgayMua.Name = "dtpNgayMua";
             this.dtpNgayMua.Size = new System.Drawing.Size(524, 34);
             this.dtpNgayMua.TabIndex = 3;
@@ -367,7 +367,7 @@ namespace SupermarketManagement.Views.Cashier
             this.pnlHeader.Controls.Add(this.lblTieuDe);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(4);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(1500, 84);
             this.pnlHeader.TabIndex = 2;
@@ -380,9 +380,9 @@ namespace SupermarketManagement.Views.Cashier
             this.tlpBody.Controls.Add(this.grpChiTiet, 0, 1);
             this.tlpBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpBody.Location = new System.Drawing.Point(0, 84);
-            this.tlpBody.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tlpBody.Margin = new System.Windows.Forms.Padding(4);
             this.tlpBody.Name = "tlpBody";
-            this.tlpBody.Padding = new System.Windows.Forms.Padding(15, 15, 15, 15);
+            this.tlpBody.Padding = new System.Windows.Forms.Padding(15);
             this.tlpBody.RowCount = 2;
             this.tlpBody.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 248F));
             this.tlpBody.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -397,9 +397,9 @@ namespace SupermarketManagement.Views.Cashier
             this.grpThongTin.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.grpThongTin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
             this.grpThongTin.Location = new System.Drawing.Point(19, 19);
-            this.grpThongTin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpThongTin.Margin = new System.Windows.Forms.Padding(4);
             this.grpThongTin.Name = "grpThongTin";
-            this.grpThongTin.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.grpThongTin.Padding = new System.Windows.Forms.Padding(12);
             this.grpThongTin.Size = new System.Drawing.Size(1462, 240);
             this.grpThongTin.TabIndex = 0;
             this.grpThongTin.TabStop = false;
@@ -421,11 +421,11 @@ namespace SupermarketManagement.Views.Cashier
             this.tlpThongTin.Controls.Add(this.lblKhachHang, 2, 1);
             this.tlpThongTin.Controls.Add(this.txtKhachHang, 3, 1);
             this.tlpThongTin.Controls.Add(this.lblNhanVien, 0, 2);
-            this.tlpThongTin.Controls.Add(this.txtMaNV, 1, 2);
+            this.tlpThongTin.Controls.Add(this.txtTenNV, 1, 2);
             this.tlpThongTin.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpThongTin.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.tlpThongTin.Location = new System.Drawing.Point(12, 39);
-            this.tlpThongTin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tlpThongTin.Margin = new System.Windows.Forms.Padding(4);
             this.tlpThongTin.Name = "tlpThongTin";
             this.tlpThongTin.RowCount = 3;
             this.tlpThongTin.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33F));
@@ -442,9 +442,9 @@ namespace SupermarketManagement.Views.Cashier
             this.grpChiTiet.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.grpChiTiet.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
             this.grpChiTiet.Location = new System.Drawing.Point(19, 267);
-            this.grpChiTiet.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpChiTiet.Margin = new System.Windows.Forms.Padding(4);
             this.grpChiTiet.Name = "grpChiTiet";
-            this.grpChiTiet.Padding = new System.Windows.Forms.Padding(12, 12, 12, 12);
+            this.grpChiTiet.Padding = new System.Windows.Forms.Padding(12);
             this.grpChiTiet.Size = new System.Drawing.Size(1462, 542);
             this.grpChiTiet.TabIndex = 1;
             this.grpChiTiet.TabStop = false;
@@ -456,7 +456,7 @@ namespace SupermarketManagement.Views.Cashier
             this.pnlFooter.Controls.Add(this.tlpFooter);
             this.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlFooter.Location = new System.Drawing.Point(0, 912);
-            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlFooter.Margin = new System.Windows.Forms.Padding(4);
             this.pnlFooter.Name = "pnlFooter";
             this.pnlFooter.Padding = new System.Windows.Forms.Padding(15, 0, 15, 0);
             this.pnlFooter.Size = new System.Drawing.Size(1500, 108);
@@ -476,7 +476,7 @@ namespace SupermarketManagement.Views.Cashier
             this.tlpFooter.Controls.Add(this.btnThoat, 4, 0);
             this.tlpFooter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpFooter.Location = new System.Drawing.Point(15, 0);
-            this.tlpFooter.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tlpFooter.Margin = new System.Windows.Forms.Padding(4);
             this.tlpFooter.Name = "tlpFooter";
             this.tlpFooter.RowCount = 1;
             this.tlpFooter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -493,7 +493,7 @@ namespace SupermarketManagement.Views.Cashier
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(1339, 872);
             this.Name = "InvoiceForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -523,7 +523,7 @@ namespace SupermarketManagement.Views.Cashier
         private Label lblNgayMua;
         private Label lblTongTien;
         private TextBox txtTongTien;
-        private TextBox txtMaNV;
+        private TextBox txtTenNV;
         private TextBox txtKhachHang;
         private TextBox txtMaHD;
         private TextBox txtMaKH;

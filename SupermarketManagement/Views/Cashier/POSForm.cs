@@ -17,6 +17,7 @@ namespace SupermarketManagement
         private const decimal GiaTriMotDiem = 1000m;    // Giữ hằng số cũ để không ảnh hưởng code khác
 
         // ===== DỮ LIỆU =====
+        private readonly NhanVienRepository nhanVienRepository = new NhanVienRepository();
         private readonly KhachHangRepository khachHangRepository = new KhachHangRepository();
         private readonly HoaDonRepository hoaDonRepository = new HoaDonRepository();
         private readonly SanPhamRepositoryV2 sanPhamRepository = new SanPhamRepositoryV2();
@@ -29,7 +30,7 @@ namespace SupermarketManagement
         {
             InitializeComponent();
 
-            lblNhanVien.Text = "Mã NV: " + UserSession.MaNV + "   |   Nhân viên: " + UserSession.HoTen;
+            lblNhanVien.Text = "   Nhân viên: " + UserSession.HoTen;
 
             TaiDanhSachSanPham();
             TaoMaHoaDonMoi();
@@ -400,64 +401,16 @@ namespace SupermarketManagement
             BatDauHoaDonMoi();
         }
 
+
         private void btnTaoHoaDon_Click(object sender, EventArgs e)
         {
-            if (dgvChiTietHoaDon.Rows.Count == 0)
+            // Mở form xem lịch sử hóa đơn
+            using (var form = new SupermarketManagement.Views.Admin.LichSuBan.IndexLichSuBan())
             {
-                HienThongBao("Hóa đơn chưa có sản phẩm.", MessageBoxIcon.Warning);
-                return;
-            }
-
-            string maNV = Convert.ToString(UserSession.MaNV);
-            if (string.IsNullOrWhiteSpace(maNV))
-            {
-                HienThongBao("Không xác định được nhân viên đang đăng nhập. Vui lòng đăng nhập lại.",
-                    MessageBoxIcon.Warning);
-                return;
-            }
-
-            string maKH = string.IsNullOrWhiteSpace(txtMaKH.Text) ? null : txtMaKH.Text.Trim();
-
-            // Điểm sử dụng được tính tự động từ RadioButton: 10 điểm = 1%.
-            int phanTramGiam = LayPhanTramGiam();
-            int diemSuDung = phanTramGiam * 10;
-
-            if (phanTramGiam > 0 && maKH == null)
-            {
-                HienThongBao("Vui lòng chọn khách hàng trước khi sử dụng điểm.", MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (diemSuDung > diemHienCo)
-            {
-                HienThongBao(
-                    $"Không đủ điểm để giảm {phanTramGiam}%.\n" +
-                    $"Cần: {diemSuDung} điểm.\n" +
-                    $"Hiện có: {diemHienCo} điểm.\n" +
-                    $"Còn thiếu: {diemSuDung - diemHienCo} điểm.",
-                    MessageBoxIcon.Warning);
-                return;
-            }
-
-            try
-            {
-                hoaDonRepository.LuuHoaDon(
-                    txtMaHD.Text.Trim(),
-                    tongTienHang,
-                    DateTime.Now,
-                    maKH,
-                    maNV,
-                    LayChiTietHoaDon(),
-                    diemSuDung);
-
-                HienThongBao("Lưu hóa đơn và chi tiết hóa đơn thành công!");
-                BatDauHoaDonMoi();
-            }
-            catch (Exception ex)
-            {
-                HienThongBao("Không thể lưu hóa đơn:\n" + ex.Message, MessageBoxIcon.Error);
+                form.ShowDialog(this);
             }
         }
+
 
         // Chuyển bảng chi tiết hóa đơn thành DataTable để repository lưu
         private DataTable LayChiTietHoaDon()
@@ -487,6 +440,25 @@ namespace SupermarketManagement
             }
 
             string tenKH = string.IsNullOrWhiteSpace(txtTenKH.Text) ? "Khách lẻ" : txtTenKH.Text.Trim();
+            // Lấy thông tin hóa đơn
+            string maHD = txtMaHD.Text.Trim();
+            string maKH = string.IsNullOrWhiteSpace(txtMaKH.Text)
+                ? null
+                : txtMaKH.Text.Trim();
+            string maNV = Convert.ToString(UserSession.MaNV);
+            string tenNV = Convert.ToString(UserSession.HoTen);
+            int diemSuDung = LayDiemCanDung();
+
+            // Lưu hóa đơn vào database
+            hoaDonRepository.LuuHoaDon(
+                maHD,
+                tongTienHang,
+                DateTime.Now,
+                maKH,
+                maNV,
+                LayChiTietHoaDon(),
+                diemSuDung);
+
 
             using (var form = new SupermarketManagement.Views.Cashier.InvoiceForm())
             {
@@ -494,7 +466,7 @@ namespace SupermarketManagement
                     txtMaHD.Text,
                     txtMaKH.Text,
                     tenKH,
-                    Convert.ToString(UserSession.MaNV),
+                    tenNV,
                     DateTime.Now,
                     dgvChiTietHoaDon,
                     txtTongTien.Text,
@@ -504,6 +476,7 @@ namespace SupermarketManagement
 
                 form.ShowDialog(this);
             }
+            
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
@@ -722,6 +695,22 @@ namespace SupermarketManagement
             rdoGiamGia_CheckedChanged(sender, e);
         }
 
-   
+        private void txtSDT_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                btnTimKiemKH.PerformClick();
+            }
+        }
+
+        private void nudSoLuong_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                btnSuaSP.PerformClick();
+            }
+        }
     }
 }

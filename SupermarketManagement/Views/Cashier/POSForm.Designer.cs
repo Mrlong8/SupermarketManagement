@@ -541,6 +541,7 @@ namespace SupermarketManagement
             0,
             0,
             0});
+            this.nudSoLuong.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nudSoLuong_KeyDown);
             // 
             // lblSoLuong
             // 
@@ -700,6 +701,7 @@ namespace SupermarketManagement
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(513, 34);
             this.txtSDT.TabIndex = 6;
+            this.txtSDT.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSDT_KeyDown);
             // 
             // lblEmail
             // 
@@ -1052,7 +1054,7 @@ namespace SupermarketManagement
             this.btnTaoHoaDon.Name = "btnTaoHoaDon";
             this.btnTaoHoaDon.Size = new System.Drawing.Size(340, 66);
             this.btnTaoHoaDon.TabIndex = 1;
-            this.btnTaoHoaDon.Text = "Lưu hóa đơn";
+            this.btnTaoHoaDon.Text = "Xem lịch sử hóa đơn";
             this.btnTaoHoaDon.UseVisualStyleBackColor = false;
             this.btnTaoHoaDon.Click += new System.EventHandler(this.btnTaoHoaDon_Click);
             // 

@@ -84,7 +84,7 @@ namespace SupermarketManagement.Views.Admin
             this.btnBanHang.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.btnBanHang.Size = new System.Drawing.Size(290, 55);
             this.btnBanHang.TabIndex = 11;
-            this.btnBanHang.Text = "Bán Hàng";
+            this.btnBanHang.Text = "   Bán Hàng";
             this.btnBanHang.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnBanHang.UseVisualStyleBackColor = true;
             this.btnBanHang.Click += new System.EventHandler(this.btnBanHang_Click);
