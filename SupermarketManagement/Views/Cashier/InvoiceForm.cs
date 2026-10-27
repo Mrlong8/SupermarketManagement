@@ -14,6 +14,7 @@ namespace SupermarketManagement.Views.Cashier
 {
     public partial class InvoiceForm : Form
     {
+        private decimal _tongTienHang;
         private decimal _tienGiamGia;
         private int _diemSuDung;
         private decimal _tienPhaiTra;
@@ -46,7 +47,8 @@ namespace SupermarketManagement.Views.Cashier
             txtMaNV.Text = tenNhanVien;
             dtpNgayMua.Value = ngayMua;
 
-            decimal tong = ChuyenTien(tongTien);
+            // Lưu riêng tổng tiền hàng để không nhầm với số tiền khách phải trả.
+            _tongTienHang = ChuyenTien(tongTien);
 
             // Lưu thông tin thanh toán để xuất Excel
             _tienGiamGia = ChuyenTien(tienGiamGia);
@@ -54,7 +56,7 @@ namespace SupermarketManagement.Views.Cashier
             int.TryParse(diemSuDung, out _diemSuDung);
 
             _tienPhaiTra = string.IsNullOrWhiteSpace(tienPhaiTra)
-                ? tong - _tienGiamGia
+                ? _tongTienHang - _tienGiamGia
                 : ChuyenTien(tienPhaiTra);
 
             txtTongTien.Text = _tienPhaiTra.ToString("N0");
@@ -83,14 +85,31 @@ namespace SupermarketManagement.Views.Cashier
         private decimal ChuyenTien(string giaTri)
         {
             if (string.IsNullOrWhiteSpace(giaTri))
-                return 0;
+                return 0m;
 
-            string so = giaTri.Replace(",", "").Replace(".", "");
+            string so = giaTri.Trim();
 
-            if (decimal.TryParse(so, out decimal ketQua))
+            // Ưu tiên định dạng Việt Nam, ví dụ: 500.000 hoặc 500.000,50.
+            if (decimal.TryParse(
+                so,
+                NumberStyles.Number,
+                CultureInfo.GetCultureInfo("vi-VN"),
+                out decimal ketQua))
+            {
                 return ketQua;
+            }
 
-            return 0;
+            // Dự phòng cho chuỗi số theo định dạng quốc tế, ví dụ: 500,000.50.
+            if (decimal.TryParse(
+                so,
+                NumberStyles.Number,
+                CultureInfo.InvariantCulture,
+                out ketQua))
+            {
+                return ketQua;
+            }
+
+            return 0m;
         }
 
         private void btnxuatExecl_Click_1(object sender, EventArgs e)
@@ -265,7 +284,7 @@ namespace SupermarketManagement.Views.Cashier
 
                         // Tổng tiền hàng
                         ws.Cell(totalRow, 5).Value = "TỔNG TIỀN HÀNG:";
-                        ws.Cell(totalRow, 6).Value = (double)ChuyenTien(txtTongTien.Text);
+                        ws.Cell(totalRow, 6).Value = (double)_tongTienHang;
 
                         // Tiền giảm giá
                         ws.Cell(totalRow + 1, 5).Value = "TIỀN GIẢM GIÁ:";
@@ -383,6 +402,9 @@ namespace SupermarketManagement.Views.Cashier
                 label.ForeColor = chu;
                 label.Font = new Font("Segoe UI", 10F);
             }
+
+            // Ô txtTongTien đang hiển thị số tiền cuối cùng khách phải trả.
+            lblTongTien.Text = "Khách phải trả:";
 
             // Các ô thông tin
             TextBox[] textBoxes =
