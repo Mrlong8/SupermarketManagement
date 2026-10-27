@@ -21,6 +21,16 @@ namespace SupermarketManagement.Views.Cashier
         public InvoiceForm()
         {
             InitializeComponent();
+            this.dgvInvoiceDetails.AutoSizeColumnsMode =
+    System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+
+            this.dgvInvoiceDetails.AllowUserToResizeColumns = false;
+            this.dgvInvoiceDetails.AllowUserToResizeRows = false;
+            this.dgvInvoiceDetails.RowHeadersVisible = false;
+            this.dgvInvoiceDetails.ScrollBars =
+                System.Windows.Forms.ScrollBars.Vertical;
+
+         
         }
 
         public void HienThiHoaDon(
@@ -64,11 +74,16 @@ namespace SupermarketManagement.Views.Cashier
                 if (row.IsNewRow)
                     continue;
 
+                object donViTinh = "";
+                if (bangSanPham.Columns.Contains("colDonViTinh"))
+                    donViTinh = row.Cells["colDonViTinh"].Value ?? "";
+
                 dgvInvoiceDetails.Rows.Add(
                     stt++,
                     row.Cells["colMaSP"].Value,
                     row.Cells["colTenSP"].Value,
                     row.Cells["colSoLuong"].Value,
+                    donViTinh,
                     row.Cells["colDonGia"].Value,
                     row.Cells["colThanhTien"].Value
                 );
@@ -128,7 +143,7 @@ namespace SupermarketManagement.Views.Cashier
 
                         // 1. TIÊU ĐỀ HÓA ĐƠN
                         ws.Cell("A1").Value = "HÓA ĐƠN BÁN HÀNG";
-                        ws.Range("A1:F1").Merge();
+                        ws.Range("A1:G1").Merge();
 
                         ws.Cell("A1").Style.Font.Bold = true;
                         ws.Cell("A1").Style.Font.FontSize = 18;
@@ -171,6 +186,7 @@ namespace SupermarketManagement.Views.Cashier
                             "Mã SP",
                             "Tên sản phẩm",
                             "Số lượng",
+                            "Đơn vị tính",
                             "Đơn giá",
                             "Thành tiền"
                         };
@@ -180,7 +196,7 @@ namespace SupermarketManagement.Views.Cashier
                             ws.Cell(7, i + 1).Value = headers[i];
                         }
 
-                        var headerRange = ws.Range("A7:F7");
+                        var headerRange = ws.Range("A7:G7");
                         headerRange.Style.Font.Bold = true;
                         headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
                         headerRange.Style.Alignment.Horizontal =
@@ -198,7 +214,7 @@ namespace SupermarketManagement.Views.Cashier
                             if (r.IsNewRow)
                                 continue;
 
-                            for (int col = 0; col < 6; col++)
+                            for (int col = 0; col < 7; col++)
                             {
                                 object value = r.Cells[col].Value;
                                 var cell = ws.Cell(row, col + 1);
@@ -243,7 +259,7 @@ namespace SupermarketManagement.Views.Cashier
 
                         if (lastDataRow >= 7)
                         {
-                            var tableRange = ws.Range(7, 1, lastDataRow, 6);
+                            var tableRange = ws.Range(7, 1, lastDataRow, 7);
 
                             tableRange.Style.Border.OutsideBorder =
                                 XLBorderStyleValues.Thin;
@@ -256,11 +272,11 @@ namespace SupermarketManagement.Views.Cashier
                             if (lastDataRow >= 8)
                             {
                                 // Định dạng đơn giá và thành tiền
-                                ws.Range(8, 5, lastDataRow, 6)
+                                ws.Range(8, 6, lastDataRow, 7)
                                   .Style.NumberFormat.Format = "#,##0";
 
                                 // Căn phải các cột số
-                                ws.Range(8, 4, lastDataRow, 6)
+                                ws.Range(8, 4, lastDataRow, 7)
                                   .Style.Alignment.Horizontal =
                                     XLAlignmentHorizontalValues.Right;
                                 // Căn phải Mã SP và Tên sản phẩm
@@ -277,44 +293,45 @@ namespace SupermarketManagement.Views.Cashier
                         int totalRow = Math.Max(8, row) + 1;
 
                         // Tổng tiền hàng
-                        ws.Cell(totalRow, 5).Value = "TỔNG TIỀN HÀNG:";
-                        ws.Cell(totalRow, 6).Value = (double)_tongTienHang;
+                        ws.Cell(totalRow, 6).Value = "TỔNG TIỀN HÀNG:";
+                        ws.Cell(totalRow, 7).Value = (double)_tongTienHang;
 
                         // Tiền giảm giá
-                        ws.Cell(totalRow + 1, 5).Value = "TIỀN GIẢM GIÁ:";
-                        ws.Cell(totalRow + 1, 6).Value = (double)_tienGiamGia;
+                        ws.Cell(totalRow + 1, 6).Value = "TIỀN GIẢM GIÁ:";
+                        ws.Cell(totalRow + 1, 7).Value = (double)_tienGiamGia;
 
                         // Điểm sử dụng
-                        ws.Cell(totalRow + 2, 5).Value = "ĐIỂM SỬ DỤNG:";
-                        ws.Cell(totalRow + 2, 6).Value = _diemSuDung;
+                        ws.Cell(totalRow + 2, 6).Value = "ĐIỂM SỬ DỤNG:";
+                        ws.Cell(totalRow + 2, 7).Value = _diemSuDung;
 
                         // Khách phải trả
-                        ws.Cell(totalRow + 3, 5).Value = "KHÁCH PHẢI TRẢ:";
-                        ws.Cell(totalRow + 3, 6).Value = (double)_tienPhaiTra;
+                        ws.Cell(totalRow + 3, 7).Value = "KHÁCH PHẢI TRẢ:";
+                        ws.Cell(totalRow + 3, 7).Value = (double)_tienPhaiTra;
 
                         // Định dạng tiền
-                        ws.Range(totalRow, 6, totalRow + 1, 6)
+                        ws.Range(totalRow, 7, totalRow + 1, 7)
                             .Style.NumberFormat.Format = "#,##0";
 
-                        ws.Cell(totalRow + 3, 6)
+                        ws.Cell(totalRow + 3, 7)
                             .Style.NumberFormat.Format = "#,##0";
 
                         // In đậm số tiền phải trả
-                        ws.Range(totalRow + 3, 5, totalRow + 3, 6)
+                        ws.Range(totalRow + 3, 6, totalRow + 3, 7)
                             .Style.Font.Bold = true;
 
                         // Kẻ viền khu vực thanh toán
-                        ws.Range(totalRow, 5, totalRow + 3, 6)
+                        ws.Range(totalRow, 6, totalRow + 3, 7)
                             .Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         // 7. CĂN CHỈNH CỘT
-                        ws.Columns(1, 6).AdjustToContents();
+                        ws.Columns(1, 7).AdjustToContents();
 
                         ws.Column(1).Width = 16;
                         ws.Column(2).Width = 22;
                         ws.Column(3).Width = 28;
-                        ws.Column(4).Width = 15;
-                        ws.Column(5).Width = 18;
-                        ws.Column(6).Width = 20;
+                        ws.Column(4).Width = 12;
+                        ws.Column(5).Width = 16;
+                        ws.Column(6).Width = 18;
+                        ws.Column(7).Width = 20;
 
 
                         // Lặp tiêu đề khi in nhiều trang
@@ -332,6 +349,7 @@ namespace SupermarketManagement.Views.Cashier
                         "Thông báo",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
@@ -342,6 +360,8 @@ namespace SupermarketManagement.Views.Cashier
                         MessageBoxIcon.Error);
                 }
             }
+
+
 
         }
 

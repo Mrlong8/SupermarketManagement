@@ -44,6 +44,7 @@ namespace SupermarketManagement.Views.Cashier
             this.colMaSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTenSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSoLuong = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDonViTinh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDonGia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colThanhTien = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnxuatExecl = new System.Windows.Forms.Button();
@@ -209,6 +210,8 @@ namespace SupermarketManagement.Views.Cashier
             // 
             this.dgvInvoiceDetails.AllowUserToAddRows = false;
             this.dgvInvoiceDetails.AllowUserToResizeRows = false;
+            this.dgvInvoiceDetails.AllowUserToResizeColumns = false;
+            this.dgvInvoiceDetails.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
             this.dgvInvoiceDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvInvoiceDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
@@ -229,6 +232,7 @@ namespace SupermarketManagement.Views.Cashier
             this.colMaSP,
             this.colTenSP,
             this.colSoLuong,
+            this.colDonViTinh,
             this.colDonGia,
             this.colThanhTien});
             dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -258,25 +262,25 @@ namespace SupermarketManagement.Views.Cashier
             // 
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.colSTT.DefaultCellStyle = dataGridViewCellStyle3;
-            this.colSTT.FillWeight = 8F;
+            this.colSTT.FillWeight = 7F;
             this.colSTT.HeaderText = "STT";
-            this.colSTT.MinimumWidth = 8;
+            this.colSTT.MinimumWidth = 45;
             this.colSTT.Name = "colSTT";
             this.colSTT.ReadOnly = true;
             // 
             // colMaSP
             // 
-            this.colMaSP.FillWeight = 14F;
+            this.colMaSP.FillWeight = 12F;
             this.colMaSP.HeaderText = "Mã SP";
-            this.colMaSP.MinimumWidth = 8;
+            this.colMaSP.MinimumWidth = 90;
             this.colMaSP.Name = "colMaSP";
             this.colMaSP.ReadOnly = true;
             // 
             // colTenSP
             // 
-            this.colTenSP.FillWeight = 38F;
+            this.colTenSP.FillWeight = 32F;
             this.colTenSP.HeaderText = "Tên sản phẩm";
-            this.colTenSP.MinimumWidth = 8;
+            this.colTenSP.MinimumWidth = 220;
             this.colTenSP.Name = "colTenSP";
             this.colTenSP.ReadOnly = true;
             // 
@@ -285,11 +289,20 @@ namespace SupermarketManagement.Views.Cashier
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle4.Format = "N0";
             this.colSoLuong.DefaultCellStyle = dataGridViewCellStyle4;
-            this.colSoLuong.FillWeight = 12F;
+            this.colSoLuong.FillWeight = 10F;
             this.colSoLuong.HeaderText = "Số lượng";
-            this.colSoLuong.MinimumWidth = 8;
+            this.colSoLuong.MinimumWidth = 90;
             this.colSoLuong.Name = "colSoLuong";
             this.colSoLuong.ReadOnly = true;
+            // 
+            // colDonViTinh
+            // 
+            this.colDonViTinh.FillWeight = 14F;
+            this.colDonViTinh.HeaderText = "Đơn vị tính";
+            this.colDonViTinh.MinimumWidth = 70;
+            this.colDonViTinh.Name = "colDonViTinh";
+            this.colDonViTinh.ReadOnly = true;
+            this.colDonViTinh.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
             // colDonGia
             // 
@@ -298,7 +311,7 @@ namespace SupermarketManagement.Views.Cashier
             this.colDonGia.DefaultCellStyle = dataGridViewCellStyle5;
             this.colDonGia.FillWeight = 14F;
             this.colDonGia.HeaderText = "Đơn giá";
-            this.colDonGia.MinimumWidth = 8;
+            this.colDonGia.MinimumWidth = 130;
             this.colDonGia.Name = "colDonGia";
             this.colDonGia.ReadOnly = true;
             // 
@@ -307,9 +320,9 @@ namespace SupermarketManagement.Views.Cashier
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle6.Format = "N0";
             this.colThanhTien.DefaultCellStyle = dataGridViewCellStyle6;
-            this.colThanhTien.FillWeight = 14F;
+            this.colThanhTien.FillWeight = 15F;
             this.colThanhTien.HeaderText = "Thành tiền";
-            this.colThanhTien.MinimumWidth = 8;
+            this.colThanhTien.MinimumWidth = 150;
             this.colThanhTien.Name = "colThanhTien";
             this.colThanhTien.ReadOnly = true;
             // 
@@ -532,6 +545,7 @@ namespace SupermarketManagement.Views.Cashier
         private DataGridViewTextBoxColumn colMaSP;
         private DataGridViewTextBoxColumn colTenSP;
         private DataGridViewTextBoxColumn colSoLuong;
+        private DataGridViewTextBoxColumn colDonViTinh;
         private DataGridViewTextBoxColumn colDonGia;
         private DataGridViewTextBoxColumn colThanhTien;
         private Button btnxuatExecl;
