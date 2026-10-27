@@ -6,12 +6,12 @@ namespace SupermarketManagement.Models.Repositories
 {
     internal class HoaDonRepository
     {
-        private readonly string connectionString =
-           @"Data Source=localhost;Initial Catalog=SupermarketManagement_New;Integrated Security=True";
+        //private readonly string connectionString =
+        //   @"Data Source=localhost;Initial Catalog=SupermarketManagement_New;Integrated Security=True";
         //private readonly string connectionString =
         //    @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True";
 
-        //private static string str = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True"; ///của Long
+        private static string connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True"; ///của Long
 
 
         /// <summary>

@@ -19,13 +19,14 @@ namespace SupermarketManagement.Views.Admin.Product
             InitializeComponent();
         }
 
-        public void SetData(string maSP, string TenSP, string GiaNhap, string GiaBan, string SoLuong, string UrlImage)
+        // TenDV là tham số tùy chọn: tên đơn vị cơ bản (Cái, Chai, ...) để hiển thị cạnh số lượng
+        public void SetData(string maSP, string TenSP, string GiaNhap, string GiaBan, string SoLuong, string UrlImage, string TenDV = "")
         {
             _maSP = maSP;
             lblTenSP.Text = TenSP;
             lblGiaNhap.Text = "Giá Nhập: " + GiaNhap;
             lblGiaBan.Text = "Giá Bán: " + GiaBan;
-            lblSoLuong.Text = "Số Lượng: " + SoLuong;
+            lblSoLuong.Text = "Số Lượng: " + SoLuong + (string.IsNullOrEmpty(TenDV) ? "" : " " + TenDV);
             if (!string.IsNullOrEmpty(UrlImage))
             {
                 // Chuyển / thành \ để phù hợp với đường dẫn Windows
@@ -56,7 +57,7 @@ namespace SupermarketManagement.Views.Admin.Product
                 try
                 {
                     SanPhamRepositoryV2 repo = new SanPhamRepositoryV2();
-                    repo.Delete(_maSP); 
+                    repo.Delete(_maSP);
 
                     MessageBox.Show("Xóa sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

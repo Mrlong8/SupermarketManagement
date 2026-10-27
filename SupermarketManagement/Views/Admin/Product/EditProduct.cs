@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using Org.BouncyCastle.Asn1.Cmp;
 namespace SupermarketManagement.Views.Admin.Product
 {
     public partial class EditProduct : Form
@@ -29,15 +28,22 @@ namespace SupermarketManagement.Views.Admin.Product
             LoadData();
         }
 
+        // Giá nhập/giá bán là của đơn vị cơ bản; có thể NULL nếu sản phẩm chưa có đơn vị tính
+        private string LayGia(object value)
+        {
+            if (value == null || value == DBNull.Value) return "0";
+            return Convert.ToDecimal(value).ToString("0.##");
+        }
+
         public void LoadData()
         {
             cbDanhMuc.DataSource = _repo.GetDanhMuc();
             cbDanhMuc.DisplayMember = "TenDanhMuc";
             cbDanhMuc.ValueMember = "MaDM";
 
-            DataRow row = _repo.GetSanPhamById(_maSP).Rows[0];
+            DataTable dt = _repo.GetSanPhamById(_maSP);
 
-            if (row == null)
+            if (dt == null || dt.Rows.Count == 0)
             {
                 MessageBox.Show("Không tìm thấy sản phẩm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 DialogResult = DialogResult.Cancel;
@@ -45,18 +51,19 @@ namespace SupermarketManagement.Views.Admin.Product
                 return;
             }
 
+            DataRow row = dt.Rows[0];
+
             txtTenSP.Text = row["TenSanPham"].ToString();
-            txtDonGiaNhap.Text = Convert.ToDecimal(row["DonGiaNhap"]).ToString("0.##");
-            txtDonGiaBan.Text = Convert.ToDecimal(row["DonGiaBan"]).ToString("0.##");
-            txtSoLuong.Text = row["SoLuong"].ToString();
+            txtDonGiaNhap.Text = LayGia(row["DonGiaNhap"]);   // giá nhập của đơn vị cơ bản
+            txtDonGiaBan.Text = LayGia(row["DonGiaBan"]);     // giá bán của đơn vị cơ bản
+            txtSoLuong.Text = row["SoLuong"].ToString();      // SoLuongTong (tính theo đơn vị nhỏ nhất)
             cbDanhMuc.SelectedValue = row["MaDM"].ToString();
-            txtTrongLuong.Text = row["TrongLuong"].ToString();
             txtMaSP.Text = row["MaSP"].ToString();
             txtGhiChu.Text = row["MoTa"].ToString();
 
             _urlImage = row["UrlImage"]?.ToString();
             HienThiAnh();
-          
+
         }
 
         private void HienThiAnh()
@@ -64,8 +71,8 @@ namespace SupermarketManagement.Views.Admin.Product
 
             if (!string.IsNullOrEmpty(_urlImage))
             {
-                _urlImage = _urlImage.TrimStart('/','\\');
-                string fullPath = Path.Combine(Application.StartupPath,_urlImage);
+                _urlImage = _urlImage.TrimStart('/', '\\');
+                string fullPath = Path.Combine(Application.StartupPath, _urlImage);
                 if (File.Exists(fullPath))
                 {
                     picImage.ImageLocation = fullPath;
@@ -82,7 +89,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
-     
+
         private void btnLuu_Click(object sender, EventArgs e)
         {
             try
@@ -123,6 +130,7 @@ namespace SupermarketManagement.Views.Admin.Product
                 }
 
                 // 3. Cập nhật thông tin sản phẩm
+                // (giá được ghi vào đơn vị cơ bản trong SanPham_DonViTinh, số lượng ghi vào SoLuongTong)
                 _repo.Update(
                     maSP,
                     tenSP,
