@@ -17,7 +17,16 @@ namespace SupermarketManagement.Models.Repositories
                 FROM SanPham_DonViTinh d
                 JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
                 WHERE d.MaSP = sp.MaSP
-                ORDER BY d.SoLuongQuyDoi ASC, d.MaDVT
+                ORDER BY
+                    CASE
+                        WHEN sp.MaSP IN (1, 6, 12) AND d.MaDVT = 'DV08' THEN 0 -- Táo: Kg
+                        WHEN sp.MaSP IN (2, 7) AND d.MaDVT = 'DV03' THEN 0 -- Sữa: Hộp
+                        WHEN sp.MaSP IN (3, 8) AND d.MaDVT = 'DV07' THEN 0 -- Oreo: Gói
+                        WHEN sp.MaSP IN (4, 5, 10, 13) AND d.MaDVT = 'DV05' THEN 0 -- Chai
+                        WHEN sp.MaSP = 11 AND d.MaDVT = 'DV01' THEN 0 -- Bánh mì: Cái
+                        ELSE 1
+                    END,
+                    d.SoLuongQuyDoi ASC, d.MaDVT
             ) u";
 
         // Đặt alias SoLuong, DonGiaNhap, DonGiaBan để code giao diện cũ vẫn dùng được tên cột cũ.
@@ -72,7 +81,14 @@ namespace SupermarketManagement.Models.Repositories
                 FROM SanPham_DonViTinh d
                 JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
                 WHERE d.MaSP = '{Esc(maSP)}'
-                ORDER BY d.SoLuongQuyDoi";
+                  AND (
+                       (d.MaSP IN (1, 6, 12) AND d.MaDVT IN ('DV08', 'DV02'))
+                    OR (d.MaSP IN (2, 7) AND d.MaDVT IN ('DV03', 'DV04', 'DV02'))
+                    OR (d.MaSP IN (3, 8) AND d.MaDVT IN ('DV07', 'DV03'))
+                    OR (d.MaSP IN (4, 5, 10, 13) AND d.MaDVT IN ('DV05', 'DV02'))
+                    OR (d.MaSP = 11 AND d.MaDVT = 'DV01')
+                  )
+                ORDER BY d.SoLuongQuyDoi, d.MaDVT";
             return _db.GetListData(sql);
         }
 

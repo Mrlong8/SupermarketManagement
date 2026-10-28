@@ -104,6 +104,23 @@ namespace SupermarketManagement.Models.Repositories
             DataTable dt = _db.GetListData(sql);
             return dt.Rows.Count > 0 && Convert.ToInt32(dt.Rows[0][0]) > 0;
         }
+        // Lấy tên nhân viên theo mã nhân viên
+        public string GetTenNhanVien(string maNV)
+        {
+            string maAnToan = (maNV ?? "").Replace("'", "''");
+
+            string sql = $@"
+        SELECT nv.HoTen
+        FROM dbo.NhanVien AS nv
+        WHERE nv.MaNV = N'{maAnToan}'";
+
+            DataTable dt = _db.GetListData(sql);
+
+            if (dt.Rows.Count == 0)
+                return "";
+
+            return Convert.ToString(dt.Rows[0]["HoTen"]);
+        }
 
     }
 }

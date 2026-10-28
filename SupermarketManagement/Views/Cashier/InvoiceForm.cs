@@ -21,12 +21,16 @@ namespace SupermarketManagement.Views.Cashier
         public InvoiceForm()
         {
             InitializeComponent();
-            ApDungGiaoDien();
+            this.dgvInvoiceDetails.AutoSizeColumnsMode =
+    System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 
-            this.Resize += (sender, e) =>
-            {
-                BoTriGiaoDien();
-            };
+            this.dgvInvoiceDetails.AllowUserToResizeColumns = false;
+            this.dgvInvoiceDetails.AllowUserToResizeRows = false;
+            this.dgvInvoiceDetails.RowHeadersVisible = false;
+            this.dgvInvoiceDetails.ScrollBars =
+                System.Windows.Forms.ScrollBars.Vertical;
+
+         
         }
 
         public void HienThiHoaDon(
@@ -44,7 +48,7 @@ namespace SupermarketManagement.Views.Cashier
             txtMaHD.Text = maHD;
             txtMaKH.Text = maKH;
             txtKhachHang.Text = tenKH;
-            txtMaNV.Text = tenNhanVien;
+            txtTenNV.Text = tenNhanVien;
             dtpNgayMua.Value = ngayMua;
 
             // Lưu riêng tổng tiền hàng để không nhầm với số tiền khách phải trả.
@@ -70,11 +74,16 @@ namespace SupermarketManagement.Views.Cashier
                 if (row.IsNewRow)
                     continue;
 
+                object donViTinh = "";
+                if (bangSanPham.Columns.Contains("colDonViTinh"))
+                    donViTinh = row.Cells["colDonViTinh"].Value ?? "";
+
                 dgvInvoiceDetails.Rows.Add(
                     stt++,
                     row.Cells["colMaSP"].Value,
                     row.Cells["colTenSP"].Value,
                     row.Cells["colSoLuong"].Value,
+                    donViTinh,
                     row.Cells["colDonGia"].Value,
                     row.Cells["colThanhTien"].Value
                 );
@@ -134,7 +143,7 @@ namespace SupermarketManagement.Views.Cashier
 
                         // 1. TIÊU ĐỀ HÓA ĐƠN
                         ws.Cell("A1").Value = "HÓA ĐƠN BÁN HÀNG";
-                        ws.Range("A1:F1").Merge();
+                        ws.Range("A1:G1").Merge();
 
                         ws.Cell("A1").Style.Font.Bold = true;
                         ws.Cell("A1").Style.Font.FontSize = 18;
@@ -167,7 +176,7 @@ namespace SupermarketManagement.Views.Cashier
                         ws.Cell("E4").Value = txtKhachHang.Text;
 
                         ws.Cell("A5").Value = "Nhân viên:";
-                        ws.Cell("B5").Value = txtMaNV.Text;
+                        ws.Cell("B5").Value = txtTenNV.Text;
 
 
                         // 3. TIÊU ĐỀ BẢNG SẢN PHẨM
@@ -177,6 +186,7 @@ namespace SupermarketManagement.Views.Cashier
                             "Mã SP",
                             "Tên sản phẩm",
                             "Số lượng",
+                            "Đơn vị tính",
                             "Đơn giá",
                             "Thành tiền"
                         };
@@ -186,7 +196,7 @@ namespace SupermarketManagement.Views.Cashier
                             ws.Cell(7, i + 1).Value = headers[i];
                         }
 
-                        var headerRange = ws.Range("A7:F7");
+                        var headerRange = ws.Range("A7:G7");
                         headerRange.Style.Font.Bold = true;
                         headerRange.Style.Fill.BackgroundColor = XLColor.LightBlue;
                         headerRange.Style.Alignment.Horizontal =
@@ -204,7 +214,7 @@ namespace SupermarketManagement.Views.Cashier
                             if (r.IsNewRow)
                                 continue;
 
-                            for (int col = 0; col < 6; col++)
+                            for (int col = 0; col < 7; col++)
                             {
                                 object value = r.Cells[col].Value;
                                 var cell = ws.Cell(row, col + 1);
@@ -249,7 +259,7 @@ namespace SupermarketManagement.Views.Cashier
 
                         if (lastDataRow >= 7)
                         {
-                            var tableRange = ws.Range(7, 1, lastDataRow, 6);
+                            var tableRange = ws.Range(7, 1, lastDataRow, 7);
 
                             tableRange.Style.Border.OutsideBorder =
                                 XLBorderStyleValues.Thin;
@@ -262,11 +272,11 @@ namespace SupermarketManagement.Views.Cashier
                             if (lastDataRow >= 8)
                             {
                                 // Định dạng đơn giá và thành tiền
-                                ws.Range(8, 5, lastDataRow, 6)
+                                ws.Range(8, 6, lastDataRow, 7)
                                   .Style.NumberFormat.Format = "#,##0";
 
                                 // Căn phải các cột số
-                                ws.Range(8, 4, lastDataRow, 6)
+                                ws.Range(8, 4, lastDataRow, 7)
                                   .Style.Alignment.Horizontal =
                                     XLAlignmentHorizontalValues.Right;
                                 // Căn phải Mã SP và Tên sản phẩm
@@ -283,44 +293,45 @@ namespace SupermarketManagement.Views.Cashier
                         int totalRow = Math.Max(8, row) + 1;
 
                         // Tổng tiền hàng
-                        ws.Cell(totalRow, 5).Value = "TỔNG TIỀN HÀNG:";
-                        ws.Cell(totalRow, 6).Value = (double)_tongTienHang;
+                        ws.Cell(totalRow, 6).Value = "TỔNG TIỀN HÀNG:";
+                        ws.Cell(totalRow, 7).Value = (double)_tongTienHang;
 
                         // Tiền giảm giá
-                        ws.Cell(totalRow + 1, 5).Value = "TIỀN GIẢM GIÁ:";
-                        ws.Cell(totalRow + 1, 6).Value = (double)_tienGiamGia;
+                        ws.Cell(totalRow + 1, 6).Value = "TIỀN GIẢM GIÁ:";
+                        ws.Cell(totalRow + 1, 7).Value = (double)_tienGiamGia;
 
                         // Điểm sử dụng
-                        ws.Cell(totalRow + 2, 5).Value = "ĐIỂM SỬ DỤNG:";
-                        ws.Cell(totalRow + 2, 6).Value = _diemSuDung;
+                        ws.Cell(totalRow + 2, 6).Value = "ĐIỂM SỬ DỤNG:";
+                        ws.Cell(totalRow + 2, 7).Value = _diemSuDung;
 
                         // Khách phải trả
-                        ws.Cell(totalRow + 3, 5).Value = "KHÁCH PHẢI TRẢ:";
-                        ws.Cell(totalRow + 3, 6).Value = (double)_tienPhaiTra;
+                        ws.Cell(totalRow + 3, 7).Value = "KHÁCH PHẢI TRẢ:";
+                        ws.Cell(totalRow + 3, 7).Value = (double)_tienPhaiTra;
 
                         // Định dạng tiền
-                        ws.Range(totalRow, 6, totalRow + 1, 6)
+                        ws.Range(totalRow, 7, totalRow + 1, 7)
                             .Style.NumberFormat.Format = "#,##0";
 
-                        ws.Cell(totalRow + 3, 6)
+                        ws.Cell(totalRow + 3, 7)
                             .Style.NumberFormat.Format = "#,##0";
 
                         // In đậm số tiền phải trả
-                        ws.Range(totalRow + 3, 5, totalRow + 3, 6)
+                        ws.Range(totalRow + 3, 6, totalRow + 3, 7)
                             .Style.Font.Bold = true;
 
                         // Kẻ viền khu vực thanh toán
-                        ws.Range(totalRow, 5, totalRow + 3, 6)
+                        ws.Range(totalRow, 6, totalRow + 3, 7)
                             .Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         // 7. CĂN CHỈNH CỘT
-                        ws.Columns(1, 6).AdjustToContents();
+                        ws.Columns(1, 7).AdjustToContents();
 
                         ws.Column(1).Width = 16;
                         ws.Column(2).Width = 22;
                         ws.Column(3).Width = 28;
-                        ws.Column(4).Width = 15;
-                        ws.Column(5).Width = 18;
-                        ws.Column(6).Width = 20;
+                        ws.Column(4).Width = 12;
+                        ws.Column(5).Width = 16;
+                        ws.Column(6).Width = 18;
+                        ws.Column(7).Width = 20;
 
 
                         // Lặp tiêu đề khi in nhiều trang
@@ -338,6 +349,7 @@ namespace SupermarketManagement.Views.Cashier
                         "Thông báo",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
@@ -349,208 +361,13 @@ namespace SupermarketManagement.Views.Cashier
                 }
             }
 
+
+
         }
 
         private void btnThoat_Click_1(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
-        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                UserSession.DangXuat(this);
-            }
+            this.Close();
         }
-
-        private void ApDungGiaoDien()
-        {
-            // Màu sắc đồng bộ với POSForm
-            Color xanhChuDao = Color.FromArgb(0, 181, 232);
-            Color nen = Color.FromArgb(244, 246, 249);
-            Color chu = Color.FromArgb(33, 37, 41);
-            Color xanhNut = Color.FromArgb(0, 123, 255);
-            Color xanhLa = Color.FromArgb(40, 167, 69);
-
-            // Cấu hình cửa sổ
-            this.Text = "Hóa đơn bán hàng";
-            this.BackColor = nen;
-            this.Font = new Font("Segoe UI", 10F);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.WindowState = FormWindowState.Maximized;
-            this.MinimumSize = new Size(900, 600);
-
-            // Tiêu đề
-            lblTieuDe.AutoSize = false;
-            lblTieuDe.Text = "HÓA ĐƠN BÁN HÀNG";
-            lblTieuDe.BackColor = xanhChuDao;
-            lblTieuDe.ForeColor = Color.White;
-            lblTieuDe.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTieuDe.TextAlign = ContentAlignment.MiddleCenter;
-            lblTieuDe.Location = new Point(0, 0);
-            lblTieuDe.Size = new Size(this.ClientSize.Width, 55);
-            lblTieuDe.Anchor = AnchorStyles.Top
-                             | AnchorStyles.Left
-                             | AnchorStyles.Right;
-
-            // Các nhãn thông tin
-            Label[] labels =
-            {
-        lblMaHD, lblMaKH, lblNhanVien,
-        lblKhachHang, lblNgayMua, lblTongTien
-    };
-
-            foreach (Label label in labels)
-            {
-                label.ForeColor = chu;
-                label.Font = new Font("Segoe UI", 10F);
-            }
-
-            // Ô txtTongTien đang hiển thị số tiền cuối cùng khách phải trả.
-            lblTongTien.Text = "Khách phải trả:";
-
-            // Các ô thông tin
-            TextBox[] textBoxes =
-            {
-        txtMaHD, txtMaKH, txtMaNV,
-        txtKhachHang, txtTongTien
-    };
-
-            foreach (TextBox txt in textBoxes)
-            {
-                txt.Font = new Font("Segoe UI", 10F);
-                txt.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            }
-
-            txtMaHD.ReadOnly = true;
-            txtMaKH.ReadOnly = true;
-            txtMaNV.ReadOnly = true;
-            txtKhachHang.ReadOnly = true;
-            txtTongTien.ReadOnly = true;
-
-            dtpNgayMua.Enabled = false;
-            dtpNgayMua.Font = new Font("Segoe UI", 10F);
-
-            // Bảng chi tiết hóa đơn
-            dgvInvoiceDetails.BackgroundColor = Color.White;
-            dgvInvoiceDetails.BorderStyle = BorderStyle.FixedSingle;
-            dgvInvoiceDetails.Font = new Font("Segoe UI", 10F);
-            dgvInvoiceDetails.ColumnHeadersDefaultCellStyle.BackColor =
-                xanhChuDao;
-            dgvInvoiceDetails.ColumnHeadersDefaultCellStyle.ForeColor =
-                Color.White;
-            dgvInvoiceDetails.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 10F, FontStyle.Bold);
-            dgvInvoiceDetails.EnableHeadersVisualStyles = false;
-            dgvInvoiceDetails.RowTemplate.Height = 32;
-            dgvInvoiceDetails.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.Fill;
-            dgvInvoiceDetails.ReadOnly = true;
-            dgvInvoiceDetails.AllowUserToAddRows = false;
-            dgvInvoiceDetails.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
-            dgvInvoiceDetails.Anchor = AnchorStyles.Top
-                                     | AnchorStyles.Left
-                                     | AnchorStyles.Right
-                                     | AnchorStyles.Bottom;
-
-            // Nút xuất Excel
-            btnxuatExecl.Text = "Xuất ra Excel";
-            btnxuatExecl.BackColor = xanhLa;
-            btnxuatExecl.ForeColor = Color.White;
-            btnxuatExecl.FlatStyle = FlatStyle.Flat;
-            btnxuatExecl.FlatAppearance.BorderSize = 0;
-            btnxuatExecl.Font = new Font("Segoe UI", 10F,
-                                          FontStyle.Bold);
-            btnxuatExecl.Size = new Size(150, 42);
-            btnxuatExecl.Anchor = AnchorStyles.Bottom;
-
-            // Nút thoát
-            btnThoat.Text = "Thoát";
-            btnThoat.BackColor = Color.FromArgb(108, 117, 125);
-            btnThoat.ForeColor = Color.White;
-            btnThoat.FlatStyle = FlatStyle.Flat;
-            btnThoat.FlatAppearance.BorderSize = 0;
-            btnThoat.Font = new Font("Segoe UI", 10F,
-                                      FontStyle.Bold);
-            btnThoat.Size = new Size(130, 42);
-            btnThoat.Anchor = AnchorStyles.Bottom;
-
-            // Bố trí lại theo kích thước cửa sổ
-            BoTriGiaoDien();
-        }
-
-        private void BoTriGiaoDien()
-        {
-            int w = this.ClientSize.Width;
-            int h = this.ClientSize.Height;
-
-            int margin = 24;
-            int labelWidth = 125;
-            int gap = 16;
-            int top = 75;
-
-            // Chia thông tin hóa đơn thành hai cột
-            int columnWidth = (w - margin * 2 - gap) / 2;
-            int leftX = margin;
-            int rightX = margin + columnWidth + gap;
-
-            int inputWidth = columnWidth - labelWidth - 20;
-            int rowHeight = 42;
-
-            // Cột trái
-            lblMaHD.Location = new Point(leftX, top + 5);
-            txtMaHD.Location = new Point(leftX + labelWidth,
-                                         top);
-            txtMaHD.Size = new Size(inputWidth, 30);
-
-            lblMaKH.Location = new Point(leftX, top + rowHeight + 5);
-            txtMaKH.Location = new Point(leftX + labelWidth,
-                                         top + rowHeight);
-            txtMaKH.Size = new Size(inputWidth, 30);
-
-            lblNhanVien.Location = new Point(leftX,
-                                             top + rowHeight * 2 + 5);
-            txtMaNV.Location = new Point(leftX + labelWidth,
-                                         top + rowHeight * 2);
-            txtMaNV.Size = new Size(inputWidth, 30);
-
-            // Cột phải
-            lblNgayMua.Location = new Point(rightX, top + 5);
-            dtpNgayMua.Location = new Point(rightX + labelWidth, top);
-            dtpNgayMua.Size = new Size(inputWidth, 30);
-
-            lblKhachHang.Location = new Point(rightX,
-                                              top + rowHeight + 5);
-            txtKhachHang.Location = new Point(rightX + labelWidth,
-                                              top + rowHeight);
-            txtKhachHang.Size = new Size(inputWidth, 30);
-
-            // Bảng chi tiết
-            int tableY = top + rowHeight * 3 + 25;
-            int bottomHeight = 100;
-            int buttonY = h - 62;
-
-            dgvInvoiceDetails.Location = new Point(
-                margin, tableY);
-
-            dgvInvoiceDetails.Size = new Size(
-                w - margin * 2,
-                Math.Max(150, buttonY - tableY - bottomHeight));
-
-            // Tổng tiền
-            lblTongTien.Location = new Point(
-                w - margin - 300, h - 105);
-
-            txtTongTien.Location = new Point(
-                w - margin - 190, h - 110);
-
-            txtTongTien.Size = new Size(190, 30);
-
-            // Hai nút cuối form
-            btnxuatExecl.Location = new Point(
-                w / 2 - 160, buttonY);
-
-            btnThoat.Location = new Point(
-                w / 2 + 30, buttonY);
-        }
-
     }
 }
