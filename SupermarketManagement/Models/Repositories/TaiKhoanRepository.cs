@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -20,13 +20,18 @@ namespace SupermarketManagement.Controllers.Repositories
         }
 
         // ===== CỦA NAM: lấy họ tên + chức vụ để hiển thị (nếu tên cột khác thì sửa ở câu SQL này) =====
-        public DataTable GetHoTenChucVu(int maNV)
+        public DataTable GetHoTenChucVu(string maNV)
         {
             string sql = @"SELECT nv.HoTen, cv.TenChucVu
                            FROM NhanVien nv
                            LEFT JOIN ChucVu cv ON nv.MaCV = cv.MaCV
-                           WHERE nv.MaNV = @nv";
-            return _db.GetTable(sql, new SqlParameter("@nv", maNV));
+                           WHERE CAST(nv.MaNV AS VARCHAR(50)) = @nv";
+            return _db.GetTable(sql, new SqlParameter("@nv", SqlDbType.VarChar) { Value = (maNV ?? "").Trim() });
+        }
+
+        public DataTable GetHoTenChucVu(int maNV)
+        {
+            return GetHoTenChucVu(maNV.ToString());
         }
 
 

@@ -277,6 +277,16 @@ namespace SupermarketManagement.Controllers
             return _repo.GetNhanVien();
         }
 
+        public DataTable LayThongTinNhanVien(string userName, string maNV)
+        {
+            return _repo.GetThongTinNhanVienTheoTaiKhoan(userName, maNV);
+        }
+
+        public string LayHoTenNhanVien(string userName, string maNV)
+        {
+            return _repo.GetHoTenNhanVienTheoTaiKhoan(userName, maNV);
+        }
+
         #endregion
 
         #region Đơn Vị Tính & Quy Đổi

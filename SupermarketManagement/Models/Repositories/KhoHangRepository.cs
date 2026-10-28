@@ -337,6 +337,35 @@ namespace SupermarketManagement.Models.Repositories
             return _db.GetListData(sql);
         }
 
+        public DataTable GetThongTinNhanVienTheoTaiKhoan(string userName, string maNV)
+        {
+            string sql = @"
+                SELECT TOP 1 nv.MaNV, nv.HoTen 
+                FROM NhanVien nv
+                LEFT JOIN TaiKhoan tk ON CAST(nv.MaNV AS VARCHAR(50)) = CAST(tk.MaNV AS VARCHAR(50))
+                WHERE (tk.UserName = @UserName AND @UserName <> '')
+                   OR (CAST(nv.MaNV AS VARCHAR(50)) = @MaNV AND @MaNV <> '')";
+            using (SqlConnection conn = _db.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            {
+                cmd.Parameters.Add(new SqlParameter("@UserName", SqlDbType.VarChar) { Value = (userName ?? "").Trim() });
+                cmd.Parameters.Add(new SqlParameter("@MaNV", SqlDbType.VarChar) { Value = (maNV ?? "").Trim() });
+                DataTable dt = new DataTable();
+                new SqlDataAdapter(cmd).Fill(dt);
+                return dt;
+            }
+        }
+
+        public string GetHoTenNhanVienTheoTaiKhoan(string userName, string maNV)
+        {
+            DataTable dt = GetThongTinNhanVienTheoTaiKhoan(userName, maNV);
+            if (dt != null && dt.Rows.Count > 0 && dt.Rows[0]["HoTen"] != DBNull.Value)
+            {
+                return dt.Rows[0]["HoTen"].ToString().Trim();
+            }
+            return "";
+        }
+
         #endregion
 
         #region Đơn Vị Tính & Quy Đổi
@@ -349,35 +378,112 @@ namespace SupermarketManagement.Models.Repositories
 
         public DataTable GetDonViTinhTheoSanPham(string maSP)
         {
+            // Truy vấn trực tiếp từ bảng SanPham_DonViTinh của sản phẩm đó để đảm bảo khớp chính xác với CSDL
             string sql = @"
-                SELECT d.MaDVT, dv.TenDV, d.SoLuongQuyDoi, 
-                       ISNULL(d.DonGiaNhapLe, 0) AS DonGiaNhapLe, 
-                       ISNULL(d.DonGiaBanLe, 0) AS DonGiaBanLe
+                SELECT 
+                    d.MaDVT, 
+                    dv.TenDV, 
+                    d.SoLuongQuyDoi, 
+                    d.DonGiaNhapLe, 
+                    d.DonGiaBanLe
                 FROM SanPham_DonViTinh d
-                JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
+                JOIN DonViTinh dv ON d.MaDVT = dv.MaDVT
                 WHERE d.MaSP = @MaSP
-                ORDER BY d.SoLuongQuyDoi ASC";
+                ORDER BY d.SoLuongQuyDoi ASC, d.MaDVT ASC";
 
             using (SqlConnection conn = _db.CreateConnection())
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
-                cmd.Parameters.AddWithValue("@MaSP", maSP.Trim());
+                cmd.Parameters.Add(new SqlParameter("@MaSP", SqlDbType.VarChar) { Value = (maSP ?? "").Trim() });
                 DataTable dt = new DataTable();
                 new SqlDataAdapter(cmd).Fill(dt);
 
+                // Nếu sản phẩm chưa có đơn vị tính nào trong SanPham_DonViTinh, tự động gợi ý các đơn vị tính phù hợp thực tế
                 if (dt.Rows.Count == 0)
                 {
-                    // Fallback nếu sản phẩm chưa có DVT nào được cấu hình
-                    DataTable dtFallback = new DataTable();
-                    dtFallback.Columns.Add("MaDVT", typeof(string));
-                    dtFallback.Columns.Add("TenDV", typeof(string));
-                    dtFallback.Columns.Add("SoLuongQuyDoi", typeof(int));
-                    dtFallback.Columns.Add("DonGiaNhapLe", typeof(decimal));
-                    dtFallback.Columns.Add("DonGiaBanLe", typeof(decimal));
+                    string sqlSP = @"
+                        SELECT sp.TenSanPham, dm.TenDanhMuc 
+                        FROM SanPham sp 
+                        LEFT JOIN DanhMuc dm ON sp.MaDM = dm.MaDM 
+                        WHERE sp.MaSP = @MaSP";
+                    using (SqlCommand cmdSP = new SqlCommand(sqlSP, conn))
+                    {
+                        cmdSP.Parameters.Add(new SqlParameter("@MaSP", SqlDbType.VarChar) { Value = (maSP ?? "").Trim() });
+                        DataTable dtSP = new DataTable();
+                        new SqlDataAdapter(cmdSP).Fill(dtSP);
 
-                    dtFallback.Rows.Add("DV01", "Cái", 1, 0, 0);
-                    return dtFallback;
+                        string tenSP = dtSP.Rows.Count > 0 ? (dtSP.Rows[0]["TenSanPham"]?.ToString() ?? "") : "";
+                        string tenDM = dtSP.Rows.Count > 0 ? (dtSP.Rows[0]["TenDanhMuc"]?.ToString() ?? "") : "";
+                        string text = (tenSP + " " + tenDM).ToLower();
+
+                        string listDVT;
+                        if (text.Contains("bánh") || text.Contains("kẹo") || text.Contains("snack"))
+                        {
+                            listDVT = "('DV07', 'DV03')"; // Gói, Hộp
+                        }
+                        else if (text.Contains("sữa") || text.Contains("uống") || text.Contains("giải khát"))
+                        {
+                            listDVT = "('DV03', 'DV04', 'DV02')"; // Hộp, Lốc, Thùng
+                        }
+                        else if (text.Contains("táo") || text.Contains("quả") || text.Contains("tươi sống") || text.Contains("thịt") || text.Contains("cá"))
+                        {
+                            listDVT = "('DV08', 'DV02')"; // Kg, Thùng
+                        }
+                        else if (text.Contains("dầu gội") || text.Contains("rửa chén") || text.Contains("hóa") || text.Contains("rượu"))
+                        {
+                            listDVT = "('DV05', 'DV02')"; // Chai, Thùng
+                        }
+                        else
+                        {
+                            listDVT = "('DV01', 'DV02')"; // Cái, Thùng
+                        }
+
+                        string sqlFallback = $@"
+                            SELECT MaDVT, TenDV, 1 AS SoLuongQuyDoi, CAST(0 AS DECIMAL(18,2)) AS DonGiaNhapLe, CAST(0 AS DECIMAL(18,2)) AS DonGiaBanLe
+                            FROM DonViTinh
+                            WHERE MaDVT IN {listDVT}
+                            ORDER BY MaDVT";
+                        DataTable dtFallback = _db.GetListData(sqlFallback);
+                        return dtFallback;
+                    }
                 }
+
+                // Đảm bảo nguyên tắc giá nhất quán: Đơn giá của đơn vị quy đổi = Đơn giá cơ sở x Số lượng quy đổi
+                // Ví dụ khi mua 1 item giá 15.000đ thì mua 10 item giá phải đúng bằng 150.000đ (đơn giá mỗi item không đổi)
+                decimal giaNhapCoSo = 0;
+                foreach (DataRow r in dt.Rows)
+                {
+                    int q = Convert.ToInt32(r["SoLuongQuyDoi"]);
+                    decimal g = Convert.ToDecimal(r["DonGiaNhapLe"]);
+                    if (q == 1 && g > 0)
+                    {
+                        giaNhapCoSo = g;
+                        break;
+                    }
+                }
+                if (giaNhapCoSo == 0 && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        int q = Convert.ToInt32(r["SoLuongQuyDoi"]);
+                        decimal g = Convert.ToDecimal(r["DonGiaNhapLe"]);
+                        if (q > 0 && g > 0)
+                        {
+                            giaNhapCoSo = g / q;
+                            break;
+                        }
+                    }
+                }
+
+                if (giaNhapCoSo > 0)
+                {
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        int q = Convert.ToInt32(r["SoLuongQuyDoi"]);
+                        r["DonGiaNhapLe"] = giaNhapCoSo * (q > 0 ? q : 1);
+                    }
+                }
+
                 return dt;
             }
         }

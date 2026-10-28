@@ -1,4 +1,4 @@
-﻿using SupermarketManagement.Controllers.Repositories;
+using SupermarketManagement.Controllers.Repositories;
 using SupermarketManagement.Utils;
 using System;
 using System.Data;
@@ -21,7 +21,10 @@ namespace SupermarketManagement.Controllers
             UserSession.MaTK = Convert.ToString(r["MaTK"]);
             UserSession.UserName = r["UserName"].ToString();
             UserSession.Role = r["Role"].ToString().Trim();
-            UserSession.MaNV = r["MaNV"] == DBNull.Value ? 0 : Convert.ToInt32(r["MaNV"]);
+            string maNVStr = r["MaNV"] != DBNull.Value ? r["MaNV"].ToString() : "";
+            int maNVInt = 0;
+            int.TryParse(maNVStr, out maNVInt);
+            UserSession.MaNV = maNVInt;
             UserSession.UrlImage = dt.Columns.Contains("UrlImage") && r["UrlImage"] != DBNull.Value
                                    ? r["UrlImage"].ToString() : "";
 
@@ -30,12 +33,12 @@ namespace SupermarketManagement.Controllers
             UserSession.ChucVu = UserSession.Role;
             try
             {
-                DataTable info = repo.GetHoTenChucVu(UserSession.MaNV);
+                DataTable info = repo.GetHoTenChucVu(maNVStr);
                 if (info.Rows.Count > 0)
                 {
-                    if (info.Rows[0]["HoTen"] != DBNull.Value)
+                    if (info.Rows[0]["HoTen"] != DBNull.Value && !string.IsNullOrWhiteSpace(info.Rows[0]["HoTen"].ToString()))
                         UserSession.HoTen = info.Rows[0]["HoTen"].ToString();
-                    if (info.Rows[0]["TenChucVu"] != DBNull.Value)
+                    if (info.Rows[0]["TenChucVu"] != DBNull.Value && !string.IsNullOrWhiteSpace(info.Rows[0]["TenChucVu"].ToString()))
                         UserSession.ChucVu = info.Rows[0]["TenChucVu"].ToString();
                 }
             }
