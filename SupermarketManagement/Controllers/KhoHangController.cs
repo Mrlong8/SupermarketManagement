@@ -25,7 +25,7 @@ namespace SupermarketManagement.Controllers
 
             try
             {
-                _repo.ThemDanhMuc(maDM.Trim(), tenDanhMuc.Trim());
+                _repo.ThemDanhMuc(maDM?.Trim(), tenDanhMuc.Trim());
                 thongBao = "Thêm danh mục thành công!";
                 return true;
             }
@@ -72,13 +72,19 @@ namespace SupermarketManagement.Controllers
 
             try
             {
+                if (_repo.KiemTraDanhMucCoSanPham(maDM.Trim()))
+                {
+                    thongBao = "Không thể xóa danh mục này vì đang có hàng hóa thuộc danh mục! Vui lòng chuyển hoặc xóa hàng hóa liên quan trước.";
+                    return false;
+                }
+
                 _repo.XoaDanhMuc(maDM.Trim());
                 thongBao = "Xóa danh mục thành công!";
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                thongBao = "Không thể xóa danh mục này vì đang có hàng hóa thuộc danh mục!";
+                thongBao = "Lỗi khi xóa danh mục: " + ex.Message;
                 return false;
             }
         }

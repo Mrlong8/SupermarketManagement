@@ -23,6 +23,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         {
             grpDanhMuc.Visible = false;
 
+            CauHinhGiaoDienKhongDoiMauHeader();
+
             KhoiTaoBangChiTietNhap();
             LoadComboBoxData();
             LoadComboBoxMatHang();
@@ -33,6 +35,65 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             LamMoiPhieuNhap();
             LamMoiFormHangHoa();
         }
+
+        #region Cấu hình Header DataGridView (Tắt hiệu ứng trắng khi click và tắt lọc/sort)
+
+        private void CauHinhGiaoDienKhongDoiMauHeader()
+        {
+            DataGridView[] dsGrid = new DataGridView[]
+            {
+                dgvChiTietNhap,
+                dgvHoaDonNhap,
+                dgvChiTietPhieuCu,
+                dgvHangHoa,
+                dgvDanhMuc
+            };
+
+            foreach (var dgv in dsGrid)
+            {
+                if (dgv == null) continue;
+
+                // Tắt visual styles mặc định của Windows để nhận định dạng style riêng
+                dgv.EnableHeadersVisualStyles = false;
+
+                // Đồng bộ màu chọn của header trùng với màu nền ban đầu để tránh hiệu ứng trắng/xanh nhạt khi click
+                Color headerBg = dgv.ColumnHeadersDefaultCellStyle.BackColor;
+                Color headerFg = dgv.ColumnHeadersDefaultCellStyle.ForeColor;
+                if (headerBg.IsEmpty) headerBg = Color.FromArgb(50, 52, 77);
+                if (headerFg.IsEmpty) headerFg = Color.White;
+
+                dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = headerBg;
+                dgv.ColumnHeadersDefaultCellStyle.SelectionForeColor = headerFg;
+
+                // Khóa tính năng sort / lọc khi click vào tiêu đề cột
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    col.HeaderCell.Style.SelectionBackColor = headerBg;
+                    col.HeaderCell.Style.SelectionForeColor = headerFg;
+                }
+
+                // Tự động cấu hình các cột được tạo động khi gán DataSource
+                dgv.ColumnAdded += (s, e) =>
+                {
+                    e.Column.SortMode = DataGridViewColumnSortMode.NotSortable;
+                    e.Column.HeaderCell.Style.SelectionBackColor = headerBg;
+                    e.Column.HeaderCell.Style.SelectionForeColor = headerFg;
+                };
+
+                dgv.DataBindingComplete += (s, e) =>
+                {
+                    foreach (DataGridViewColumn col in dgv.Columns)
+                    {
+                        col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                        col.HeaderCell.Style.SelectionBackColor = headerBg;
+                        col.HeaderCell.Style.SelectionForeColor = headerFg;
+                    }
+                };
+            }
+        }
+
+        #endregion
 
         #region Khởi tạo cấu trúc bảng Chi Tiết Nhập (Giỏ hàng nhập)
 
@@ -159,18 +220,24 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void CapNhatComboBoxDanhMuc()
         {
+            // 1. Data cho cboDanhMucHH (nhập liệu sản phẩm - chỉ chứa danh mục thực tế)
             DataTable dtDM = _controller.LoadDanhMuc();
-
-            DataRow row = dtDM.NewRow();
-            row["MaDM"] = 0;
-            row["TenDanhMuc"] = "Tất cả danh mục";
-            dtDM.Rows.InsertAt(row, 0);
-
-            cboDanhMucHH.SelectedIndexChanged -= cboDanhMucHH_SelectedIndexChanged;
             cboDanhMucHH.DisplayMember = "TenDanhMuc";
             cboDanhMucHH.ValueMember = "MaDM";
             cboDanhMucHH.DataSource = dtDM;
-            cboDanhMucHH.SelectedIndexChanged += cboDanhMucHH_SelectedIndexChanged;
+
+            // 2. Data cho cboLocDanhMuc (lọc bảng hàng hóa - có thêm mục "Tất cả danh mục")
+            DataTable dtLocDM = dtDM.Copy();
+            DataRow row = dtLocDM.NewRow();
+            row["MaDM"] = "";
+            row["TenDanhMuc"] = "-- Tất cả danh mục --";
+            dtLocDM.Rows.InsertAt(row, 0);
+
+            cboLocDanhMuc.SelectedIndexChanged -= cboLocDanhMuc_SelectedIndexChanged;
+            cboLocDanhMuc.DisplayMember = "TenDanhMuc";
+            cboLocDanhMuc.ValueMember = "MaDM";
+            cboLocDanhMuc.DataSource = dtLocDM;
+            cboLocDanhMuc.SelectedIndexChanged += cboLocDanhMuc_SelectedIndexChanged;
         }
 
         #endregion
@@ -825,17 +892,28 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
                 if (row.Cells["MaDM"].Value != null && row.Cells["MaDM"].Value != DBNull.Value)
                 {
-                    cboDanhMucHH.SelectedValue = row.Cells["MaDM"].Value;
+                    cboDanhMucHH.SelectedValue = row.Cells["MaDM"].Value.ToString();
                 }
             }
         }
 
         private void btnThemHH_Click(object sender, EventArgs e)
         {
-            int maDM = cboDanhMucHH.SelectedValue != null ? Convert.ToInt32(cboDanhMucHH.SelectedValue) : 0;
-            if (maDM == 0)
+            if (cboDanhMucHH.SelectedValue == null)
             {
-                MessageBox.Show("Vui lòng chọn một Danh mục cụ thể (không chọn 'Tất cả danh mục') trước khi Thêm!", "Nhắc nhở", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một Danh mục sản phẩm!", "Nhắc nhở", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maDMStr = cboDanhMucHH.SelectedValue.ToString();
+            if (cboDanhMucHH.SelectedValue is DataRowView drv)
+            {
+                maDMStr = drv["MaDM"].ToString();
+            }
+
+            if (!int.TryParse(maDMStr, out int maDM) || maDM <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một Danh mục hợp lệ!", "Nhắc nhở", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -857,8 +935,23 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void btnSuaHH_Click(object sender, EventArgs e)
         {
-            int maDM = cboDanhMucHH.SelectedValue != null ? Convert.ToInt32(cboDanhMucHH.SelectedValue) : 1;
-            if (maDM == 0) maDM = 1;
+            if (cboDanhMucHH.SelectedValue == null)
+            {
+                MessageBox.Show("Vui lòng chọn một Danh mục sản phẩm!", "Nhắc nhở", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maDMStr = cboDanhMucHH.SelectedValue.ToString();
+            if (cboDanhMucHH.SelectedValue is DataRowView drv)
+            {
+                maDMStr = drv["MaDM"].ToString();
+            }
+
+            if (!int.TryParse(maDMStr, out int maDM) || maDM <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn một Danh mục hợp lệ!", "Nhắc nhở", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             string thongBao;
             if (_controller.SuaSanPham(txtMaHangHoa.Text, txtTenHangHoa.Text, txtSoLuong.Text, "0", txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, out thongBao))
@@ -904,41 +997,46 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void txtTimKiemHH_TextChanged(object sender, EventArgs e)
         {
-            dgvHangHoa.DataSource = _controller.TimKiemSanPham(txtTimKiemHH.Text);
+            LocDanhSachHangHoa();
         }
 
-        private void cboDanhMucHH_SelectedIndexChanged(object sender, EventArgs e)
+        private void cboLocDanhMuc_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                DataTable dtSP = dgvHangHoa.DataSource as DataTable;
-                if (dtSP == null) return;
+            LocDanhSachHangHoa();
+        }
 
-                if (cboDanhMucHH.SelectedValue != null)
-                {
-                    string giaTri = cboDanhMucHH.SelectedValue.ToString();
-                    if (cboDanhMucHH.SelectedValue is DataRowView rowView)
-                    {
-                        giaTri = rowView["MaDM"].ToString();
-                    }
+        private void LocDanhSachHangHoa()
+        {
+            DataTable dt = dgvHangHoa.DataSource as DataTable;
+            if (dt == null) return;
 
-                    if (int.TryParse(giaTri, out int maDM))
-                    {
-                        if (maDM == 0)
-                        {
-                            dtSP.DefaultView.RowFilter = "";
-                        }
-                        else
-                        {
-                            dtSP.DefaultView.RowFilter = $"MaDM = {maDM}";
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
+            string tuKhoa = txtTimKiemHH.Text.Trim().Replace("'", "''");
+            string maDM = cboLocDanhMuc.SelectedValue?.ToString() ?? "";
+            if (cboLocDanhMuc.SelectedValue is DataRowView drv)
             {
-                MessageBox.Show("Lỗi khi lọc danh mục: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                maDM = drv["MaDM"].ToString();
             }
+
+            string filter = "";
+            if (!string.IsNullOrEmpty(tuKhoa))
+            {
+                filter += $"(TenSanPham LIKE '%{tuKhoa}%' OR MaSP LIKE '%{tuKhoa}%')";
+            }
+            if (!string.IsNullOrEmpty(maDM) && maDM != "0")
+            {
+                if (filter.Length > 0) filter += " AND ";
+                filter += $"MaDM = '{maDM.Replace("'", "''")}'";
+            }
+
+            dt.DefaultView.RowFilter = filter;
+        }
+
+        private void btnLamMoiHH_Click(object sender, EventArgs e)
+        {
+            txtTimKiemHH.Clear();
+            if (cboLocDanhMuc.Items.Count > 0) cboLocDanhMuc.SelectedIndex = 0;
+            LamMoiFormHangHoa();
+            LoadDanhSachHangHoa();
         }
 
         private void LamMoiFormHangHoa()
@@ -949,6 +1047,11 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             txtDonGiaNhap.Text = "0";
             txtDonGiaBan.Text = "0";
             txtMoTaHH.Clear();
+            if (cboDanhMucHH.Items.Count > 0)
+            {
+                cboDanhMucHH.SelectedIndex = 0;
+            }
+            dgvHangHoa.ClearSelection();
         }
 
         #endregion
@@ -994,6 +1097,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachDanhMuc();
                 CapNhatComboBoxDanhMuc();
+                LoadDanhSachHangHoa();
                 LamMoiFormDanhMuc();
             }
             else
@@ -1010,6 +1114,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachDanhMuc();
                 CapNhatComboBoxDanhMuc();
+                LoadDanhSachHangHoa();
             }
             else
             {
@@ -1021,11 +1126,11 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         {
             if (string.IsNullOrWhiteSpace(txtMaDanhMuc.Text))
             {
-                MessageBox.Show("Vui lòng chọn một danh mục để xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một danh mục từ bảng để xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show("Bạn có chắc chắn muốn xóa danh mục này không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult confirm = MessageBox.Show($"Bạn có chắc chắn muốn xóa danh mục '{txtTenDanhMuc.Text}' (Mã {txtMaDanhMuc.Text}) không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm == DialogResult.Yes)
             {
                 string thongBao;
@@ -1034,13 +1139,20 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                     MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadDanhSachDanhMuc();
                     CapNhatComboBoxDanhMuc();
+                    LoadDanhSachHangHoa();
                     LamMoiFormDanhMuc();
                 }
                 else
                 {
-                    MessageBox.Show(thongBao, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(thongBao, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
+        }
+
+        private void btnLamMoiDM_Click(object sender, EventArgs e)
+        {
+            LamMoiFormDanhMuc();
+            txtTenDanhMuc.Focus();
         }
 
         private void LamMoiFormDanhMuc()
@@ -1048,6 +1160,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             txtMaDanhMuc.Text = _controller.TaoMaDanhMucMoi();
             txtTenDanhMuc.Clear();
             txtMoTaDM.Clear();
+            dgvDanhMuc.ClearSelection();
         }
 
         private void BtnMoQLDM_Click(object sender, EventArgs e)
@@ -1068,6 +1181,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             {
                 this.tabHangHoa.Controls.Add(grpDanhMuc);
                 grpDanhMuc.Visible = false;
+                CapNhatComboBoxDanhMuc();
+                LoadDanhSachHangHoa();
             };
 
             LamMoiFormDanhMuc();
