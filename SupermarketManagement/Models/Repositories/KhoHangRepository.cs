@@ -13,12 +13,45 @@ namespace SupermarketManagement.Models.Repositories
 
         public DataTable GetDanhMuc()
         {
-            string sql = "SELECT MaDM, TenDanhMuc FROM DanhMuc ORDER BY MaDM";
+            string sql = "SELECT MaDM, TenDanhMuc FROM DanhMuc ORDER BY TRY_CAST(MaDM AS INT), MaDM";
             return _db.GetListData(sql);
+        }
+
+        public bool KiemTraMaDMTonTai(string maDM)
+        {
+            if (string.IsNullOrWhiteSpace(maDM)) return false;
+            string sql = "SELECT COUNT(*) FROM DanhMuc WHERE MaDM = @MaDM";
+            using (SqlConnection conn = _db.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@MaDM", maDM.Trim());
+                conn.Open();
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count > 0;
+            }
+        }
+
+        public bool KiemTraDanhMucCoSanPham(string maDM)
+        {
+            if (string.IsNullOrWhiteSpace(maDM)) return false;
+            string sql = "SELECT COUNT(*) FROM SanPham WHERE MaDM = @MaDM AND TrangThai = 1";
+            using (SqlConnection conn = _db.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@MaDM", maDM.Trim());
+                conn.Open();
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count > 0;
+            }
         }
 
         public void ThemDanhMuc(string maDM, string tenDanhMuc)
         {
+            if (string.IsNullOrWhiteSpace(maDM) || KiemTraMaDMTonTai(maDM))
+            {
+                maDM = GetMaDanhMucMoi();
+            }
+
             string sql = "INSERT INTO DanhMuc (MaDM, TenDanhMuc) VALUES (@MaDM, @TenDM)";
             using (SqlConnection conn = _db.CreateConnection())
             using (SqlCommand cmd = new SqlCommand(sql, conn))
