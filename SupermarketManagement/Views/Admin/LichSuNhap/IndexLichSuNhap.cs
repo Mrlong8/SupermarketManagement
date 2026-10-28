@@ -15,24 +15,27 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             InitializeComponent();
         }
 
+        // Khởi tạo dữ liệu, đăng ký sự kiện tìm kiếm tự động và nạp danh sách ban đầu
         private void IndexLichSuNhap_Load(object sender, EventArgs e)
         {
             GetDataPH();
             ConfigComboBoxAutoComplete();
             LoadComboBoxData();
+
         }
 
+        // Lấy danh sách tất cả phiếu nhập hàng hiển thị lên DataGridView
         public void GetDataPH()
         {
             dgvListPhieuNhap.DataSource = _repo.GetDanhSachPNH();
         }
 
+        // Hiển thị chi tiết phiếu nhập khi click vào một dòng trong danh sách phiếu nhập
         private void dgvListPhieuNhap_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dgvListPhieuNhap.Rows[e.RowIndex];
-                // Lấy mã phiếu nhập theo tên cột hoặc chỉ số 0
                 string mapn = row.Cells[0].Value?.ToString();
 
                 if (!string.IsNullOrEmpty(mapn))
@@ -42,34 +45,14 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             }
         }
 
-        private void btnTimKiem_Click(object sender, EventArgs e)
-        {
-            string keyword = txtTimKiem.Text.Trim();
-
-            if (string.IsNullOrEmpty(keyword))
-            {
-                MessageBox.Show("Vui lòng nhập mã phiếu nhập cần tìm!", "Thông báo",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTimKiem.Focus();
-                return;
-            }
-
-            DataTable dtResult = _repo.TimKiemPhieuNhapByMa(keyword);
-            dgvListPhieuNhap.DataSource = dtResult;
-
-            if (dtResult.Rows.Count == 0 && dgvChiTietPhieuNhap.DataSource != null)
-            {
-                MessageBox.Show("Không tìm thấy phiếu nhập nào khớp với mã đã nhập!", "Thông báo",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ((DataTable)dgvChiTietPhieuNhap.DataSource).Clear();
-            }
-        }
-
+        // Tự động lọc danh sách phiếu nhập ngay khi thay đổi ký tự trong ô tìm kiếm
+   
+        // Thực hiện tìm kiếm phiếu nhập khi người dùng nhấn nút Tìm kiếm
+     
+        // Đưa tất cả các ô nhập liệu và bộ lọc về trạng thái ban đầu
         private void btnReset_Click(object sender, EventArgs e)
         {
-            txtTimKiem.Clear();
 
-            // Hủy đăng ký sự kiện tạm thời
             cbNhanVien.SelectedIndexChanged -= cbNhanVien_SelectedIndexChanged;
             cbNhaCungCap.SelectedIndexChanged -= cbKhachHang_SelectedIndexChanged;
             dtpNgayNhap.ValueChanged -= dtpNgayMua_ValueChanged;
@@ -78,7 +61,6 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             cbNhaCungCap.SelectedIndex = -1;
             dtpNgayNhap.Value = DateTime.Now;
 
-            // Đăng ký lại sự kiện
             cbNhanVien.SelectedIndexChanged += cbNhanVien_SelectedIndexChanged;
             cbNhaCungCap.SelectedIndexChanged += cbKhachHang_SelectedIndexChanged;
             dtpNgayNhap.ValueChanged += dtpNgayMua_ValueChanged;
@@ -89,9 +71,9 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
                 ((DataTable)dgvChiTietPhieuNhap.DataSource).Clear();
             }
 
-            txtTimKiem.Focus();
         }
 
+        // Thiết lập tính năng tự động gợi ý danh sách khi gõ chữ vào ComboBox
         private void ConfigComboBoxAutoComplete()
         {
             cbNhanVien.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
@@ -101,16 +83,15 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             cbNhaCungCap.AutoCompleteSource = AutoCompleteSource.ListItems;
         }
 
+        // Nạp danh sách Nhân viên và Nhà cung cấp vào danh sách lựa chọn
         private void LoadComboBoxData()
         {
-            // 1. Load Nhân Viên
             DataTable dtNV = _repo.GetNhanVienList();
             cbNhanVien.DataSource = dtNV;
             cbNhanVien.DisplayMember = "HoTen";
             cbNhanVien.ValueMember = "MaNV";
             cbNhanVien.SelectedIndex = -1;
 
-            // 2. Load Nhà Cung Cấp
             DataTable dtNCC = _repo.GetNhaCungCapList();
             cbNhaCungCap.DataSource = dtNCC;
             cbNhaCungCap.DisplayMember = "TenNCC";
@@ -118,7 +99,7 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             cbNhaCungCap.SelectedIndex = -1;
         }
 
-        // 1. Sự kiện Lọc riêng theo Nhân Viên
+        // Lọc danh sách phiếu nhập hàng theo nhân viên được chọn
         private void cbNhanVien_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbNhanVien.Focused && cbNhanVien.SelectedValue != null)
@@ -134,7 +115,7 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             }
         }
 
-        // 2. Sự kiện Lọc riêng theo Nhà Cung Cấp
+        // Lọc danh sách phiếu nhập hàng theo nhà cung cấp được chọn
         private void cbKhachHang_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbNhaCungCap.Focused && cbNhaCungCap.SelectedValue != null)
@@ -150,7 +131,7 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             }
         }
 
-        // 3. Sự kiện Lọc riêng theo Ngày Nhập
+        // Lọc danh sách phiếu nhập hàng theo ngày chọn
         private void dtpNgayMua_ValueChanged(object sender, EventArgs e)
         {
             DateTime ngayNhap = dtpNgayNhap.Value.Date;
@@ -163,6 +144,7 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             }
         }
 
+        // Mở cửa sổ xem trước và thực hiện in phiếu nhập hàng đang chọn
         private void btnXemTruocHD_Click(object sender, EventArgs e)
         {
             if (dgvListPhieuNhap.SelectedRows.Count > 0)
@@ -171,7 +153,6 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
 
                 if (!string.IsNullOrEmpty(mapn))
                 {
-                    // Mở Form Xem & In Phiếu Nhập Hàng
                     SupermarketManagement.Views.Admin.PhieuNhapHang.IndexPhieuNhapHang frmPrint =
                         new SupermarketManagement.Views.Admin.PhieuNhapHang.IndexPhieuNhapHang(mapn);
                     frmPrint.ShowDialog();
@@ -181,6 +162,40 @@ namespace SupermarketManagement.Views.Admin.LichSuNhap
             {
                 MessageBox.Show("Vui lòng chọn 1 phiếu nhập trong danh sách để xem chi tiết!", "Thông báo",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // Thực hiện xóa phiếu nhập khỏi hệ thống
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            if (dgvListPhieuNhap.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn phiếu nhập cần xóa!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maPNH = dgvListPhieuNhap.CurrentRow.Cells["Mã PNH"].Value?.ToString();
+            if (string.IsNullOrEmpty(maPNH)) return;
+
+            DialogResult hoi = MessageBox.Show(
+                $"Bạn có chắc muốn xóa phiếu nhập {maPNH}?\nToàn bộ chi tiết của phiếu cũng sẽ bị xóa và không thể khôi phục.",
+                "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (hoi != DialogResult.Yes) return;
+
+            try
+            {
+                _repo.XoaPhieuNhap(maPNH);
+
+                MessageBox.Show("Xóa phiếu nhập thành công!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                GetDataPH();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể xóa phiếu nhập này!\nLỗi: " + ex.Message, "Lỗi",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

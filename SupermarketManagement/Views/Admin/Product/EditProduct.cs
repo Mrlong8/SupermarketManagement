@@ -26,6 +26,7 @@ namespace SupermarketManagement.Views.Admin.Product
         private void EditProduct_Load(object sender, EventArgs e)
         {
             LoadData();
+            loadDonVi();
         }
 
         // Giá nhập/giá bán là của đơn vị cơ bản; có thể NULL nếu sản phẩm chưa có đơn vị tính
@@ -229,6 +230,75 @@ namespace SupermarketManagement.Views.Admin.Product
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        private string _maDVTQDCu = "";
+
+        private void loadDonVi()
+        {
+            DataTable dtDonVi = _repo.GetDonVi();
+
+            cboDVLT.DataSource = dtDonVi;
+            cboDVLT.DisplayMember = "TenDV";
+            cboDVLT.ValueMember = "MaDVT";
+
+            ccboDVQD.DataSource = dtDonVi.Copy();
+            ccboDVQD.DisplayMember = "TenDV";
+            ccboDVQD.ValueMember = "MaDVT";
+
+            _maDVTQDCu = "";   // reset trước khi load
+
+            DataTable dtSP = _repo.GetDonViByMaSP(_maSP.ToString());
+            if (dtSP != null && dtSP.Rows.Count > 0)
+            {
+                cboDVLT.SelectedValue = dtSP.Rows[0]["MaDVT"].ToString();
+
+                if (dtSP.Rows.Count > 1)
+                {
+                    _maDVTQDCu = dtSP.Rows[1]["MaDVT"].ToString();   // lưu đơn vị cũ
+                    ccboDVQD.SelectedValue = _maDVTQDCu;
+                    txtDVQD.Text = dtSP.Rows[1]["SoLuongQuyDoi"].ToString();
+                    txtDonGiaNhap.Text = dtSP.Rows[1]["DonGiaNhapLe"].ToString();
+                    txtDonGiaBan.Text = dtSP.Rows[1]["DonGiaBanLe"].ToString();
+                }
+            }
+        }
+
+
+        private void btnTaoDonVi_Click(object sender, EventArgs e)
+        {
+            ThemDonVi frm = new ThemDonVi();
+            frm.ShowDialog();
+        }
+
+        private void btnThenDVT_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (ccboDVQD.SelectedValue == null)
+                {
+                    MessageBox.Show("Vui lòng chọn đơn vị tính quy đổi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                string maDVT = ccboDVQD.SelectedValue.ToString();
+
+                int slQuyDoi = int.Parse(txtDVQD.Text.Trim());
+                decimal donGiaBan = decimal.Parse(txtDonGiaBan.Text.Trim());
+                decimal donGiaNhap = string.IsNullOrEmpty(txtDonGiaNhap.Text) ? 0 : decimal.Parse(txtDonGiaNhap.Text.Trim());
+
+                _repo.ThemQuyDoiDonViChoSanPham(_maSP.ToString(), maDVT, slQuyDoi, donGiaNhap, donGiaBan);
+
+                MessageBox.Show("Lưu dữ liệu đơn vị tính thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                loadDonVi();
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Số lượng quy đổi hoặc đơn giá phải là chữ số hợp lệ!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Thao tác thất bại! Lỗi SQL/Hệ thống: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -135,5 +135,37 @@ namespace SupermarketManagement.Models.Repositories
             DataTable dt = _db.GetListData(sql);
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
+        // 10. Xóa Phiếu Nhập Hàng (xóa chi tiết trước, rồi xóa phiếu)
+        public void XoaPhieuNhap(string maPNH)
+        {
+            string ma = Esc(maPNH);
+            string sql = $@"
+                SET XACT_ABORT ON;
+                BEGIN TRAN;
+
+                -- Tổng số lượng cần trừ lại theo từng sản phẩm (quy đổi về đơn vị cơ bản)
+                SELECT ct.MaSP, SUM(ct.SoLuongNhap * ISNULL(d.SoLuongQuyDoi, 1)) AS TongTru
+                INTO #Tru
+                FROM ChiTietPhieuNhapHang ct
+                LEFT JOIN SanPham_DonViTinh d ON d.MaSP = ct.MaSP AND d.MaDVT = ct.MaDVT
+                WHERE ct.MaPNH = '{ma}'
+                GROUP BY ct.MaSP;
+
+                -- Không cho xóa nếu tồn kho hiện tại không đủ để hoàn trừ
+                IF EXISTS (SELECT 1 FROM SanPham sp JOIN #Tru t ON t.MaSP = sp.MaSP
+                           WHERE ISNULL(sp.SoLuongTong, 0) < t.TongTru)
+                    THROW 50001, N'Không thể xóa: hàng của phiếu này đã được bán/xuất, tồn kho hiện tại không đủ để hoàn trừ.', 1;
+
+                UPDATE sp
+                SET sp.SoLuongTong = ISNULL(sp.SoLuongTong, 0) - t.TongTru
+                FROM SanPham sp JOIN #Tru t ON t.MaSP = sp.MaSP;
+
+                DELETE FROM ChiTietPhieuNhapHang WHERE MaPNH = '{ma}';
+                DELETE FROM PhieuNhapHang WHERE MaPNH = '{ma}';
+
+                COMMIT TRAN;";
+
+            _db.DataChange(sql);
+        }
     }
 }

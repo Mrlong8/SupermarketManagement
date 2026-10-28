@@ -38,32 +38,11 @@ namespace SupermarketManagement.Views.Admin.LichSuBan
             }
         }
 
-        private void btnTimKiem_Click(object sender, EventArgs e)
-        {
-            string keyword = txtTimKiem.Text.Trim();
-
-            if (string.IsNullOrEmpty(keyword))
-            {
-                MessageBox.Show("Vui lòng nhập mã hóa đơn cần tìm!", "Thông báo",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTimKiem.Focus();
-                return;
-            }
-
-            DataTable dtResult = _repo.TimKiemHoaDonByMa(keyword);
-            dgvListHoaDonMua.DataSource = dtResult;
-
-            if (dtResult.Rows.Count == 0 && dgvChiTiet.DataSource != null)
-            {
-                MessageBox.Show("Không tìm thấy hóa đơn nào khớp với mã đã nhập!", "Thông báo",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ((DataTable)dgvChiTiet.DataSource).Clear();
-            }
-        }
+    
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            txtTimKiem.Clear();
+    
 
             // Hủy đăng ký sự kiện tạm thời để tránh tự kích hoạt khi gán SelectedIndex = -1
             cbNhanVien.SelectedIndexChanged -= cbNhanVien_SelectedIndexChanged;
@@ -85,7 +64,6 @@ namespace SupermarketManagement.Views.Admin.LichSuBan
                 ((DataTable)dgvChiTiet.DataSource).Clear();
             }
 
-            txtTimKiem.Focus();
         }
 
         private void ConfigComboBoxAutoComplete()
