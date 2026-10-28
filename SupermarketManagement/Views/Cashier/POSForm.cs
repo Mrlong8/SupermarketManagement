@@ -3,6 +3,7 @@ using SupermarketManagement.Models.Repositories;
 using SupermarketManagement.Utils;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
@@ -668,8 +669,11 @@ namespace SupermarketManagement
                 return;
             }
 
-            string tenKH = string.IsNullOrWhiteSpace(txtTenKH.Text) ? "Khách lẻ" : txtTenKH.Text.Trim();
-            // Lấy thông tin hóa đơn
+            string tenKH = string.IsNullOrWhiteSpace(txtTenKH.Text)
+                ? "Khách lẻ"
+                : txtTenKH.Text.Trim();
+
+            // Lấy thông tin hóa đơn hiện tại
             string maHD = txtMaHD.Text.Trim();
             string maKH = string.IsNullOrWhiteSpace(txtMaKH.Text)
                 ? null
@@ -678,34 +682,92 @@ namespace SupermarketManagement
             string tenNV = Convert.ToString(UserSession.HoTen);
             int diemSuDung = LayDiemCanDung();
 
-            // Lưu hóa đơn vào database
-            hoaDonRepository.LuuHoaDon(
-                maHD,
-                tongTienHang,
-                DateTime.Now,
-                maKH,
-                maNV,
-                LayChiTietHoaDon(),
-                diemSuDung);
+            // Lưu thông tin để hiển thị hóa đơn trước khi làm mới
+            DateTime ngayMua = DateTime.Now;
 
-
-            using (var form = new SupermarketManagement.Views.Cashier.InvoiceForm())
+            try
             {
-                form.HienThiHoaDon(
-                    txtMaHD.Text,
-                    txtMaKH.Text,
-                    tenKH,
-                    tenNV,
-                    DateTime.Now,
-                    dgvChiTietHoaDon,
-                    txtTongTien.Text,
-                    txtTienGiamGia.Text,
-                    LayDiemCanDung().ToString(),
-                    txtTienPhaiTra.Text);
+                // 1. Lưu hóa đơn vào database
+                hoaDonRepository.LuuHoaDon(
+                    maHD,
+                    tongTienHang,
+                    ngayMua,
+                    maKH,
+                    maNV,
+                    LayChiTietHoaDon(),
+                    diemSuDung);
 
-                form.ShowDialog(this);
+                // 2. Chỉ mở hóa đơn khi lưu thành công
+                using (var form = new SupermarketManagement.Views.Cashier.InvoiceForm())
+                {
+                    form.HienThiHoaDon(
+                        maHD,
+                        txtMaKH.Text,
+                        tenKH,
+                        tenNV,
+                        ngayMua,
+                        dgvChiTietHoaDon,
+                        txtTongTien.Text,
+                        txtTienGiamGia.Text,
+                        diemSuDung.ToString(),
+                        txtTienPhaiTra.Text);
+
+                    form.ShowDialog(this);
+                }
+
+                // 3. Làm mới sau khi đã lưu thành công
+                dgvChiTietHoaDon.Rows.Clear();
+
+                tongTienHang = 0;
+
+                txtMaHD.Text = "HD" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                txtTongTien.Text = "0";
+                txtTienGiamGia.Text = "0";
+                txtTienPhaiTra.Text = "0";
+
+                // Xóa thông tin khách hàng để chuẩn bị hóa đơn mới
+                txtMaKH.Clear();
+                txtTenKH.Clear();
+                txtSDT.Clear();
+                txtEmail.Clear();
+
+                // Đưa mức giảm giá về 0%
+                foreach (Control control in this.Controls)
+                {
+                    if (control is GroupBox group)
+                    {
+                        foreach (Control child in group.Controls)
+                        {
+                            if (child is RadioButton radio)
+                            {
+                                if (radio.Text.Contains("0%"))
+                                {
+                                    radio.Checked = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                HienThongBao(
+                    "Xuất hóa đơn thành công! Đã tạo hóa đơn mới.",
+                    MessageBoxIcon.Information);
             }
-
+            catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
+            {
+                HienThongBao(
+                    "Hóa đơn này đã được lưu trước đó, không thể xuất trùng mã hóa đơn. " +
+                    "Vui lòng kiểm tra lịch sử hóa đơn.",
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                HienThongBao(
+                    "Không thể xuất hóa đơn. Dữ liệu trên màn hình được giữ lại.\nChi tiết: "
+                    + ex.Message,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private void btnThoat_Click(object sender, EventArgs e)
