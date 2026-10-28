@@ -45,85 +45,110 @@ namespace SupermarketManagement.Views.Admin.ThongKe
             // 3. Tính Lợi Nhuận và hiển thị tổng số của Tháng
             decimal tongLoiNhuan = tongDoanhThu - tongVonNhap;
 
-            lblTongDoanhThu.Text = $"Tổng Doanh Thu: {tongDoanhThu:N0} VNĐ";
-            lblTongVonNhap.Text = $"Tổng Vốn Nhập: {tongVonNhap:N0} VNĐ";
-            lblTongLoiNhuan.Text = $"Tổng Lợi Nhuận: {tongLoiNhuan:N0} VNĐ";
+            lblTongDoanhThuThang.Text = $"Tổng Doanh Thu: {tongDoanhThu:N0} VNĐ";
+            lblTongVonNhapThang.Text = $"Tổng Vốn Nhập: {tongVonNhap:N0} VNĐ";
+            lblTongLoiNhuanThang.Text = $"Tổng Lợi Nhuận: {tongLoiNhuan:N0} VNĐ";
+
+            // 4. Thống kê cả năm
+            LoadThongKeNam(nam);
+        }
+
+        private void LoadThongKeNam(int nam)
+        {
+            decimal doanhThuNam = _repo.GetTongDoanhThuNam(nam);
+            decimal vonNhapNam = _repo.GetTongVonNhapNam(nam);
+            decimal loiNhuanNam = doanhThuNam - vonNhapNam;
+
+            groupBox2.Text = $"Doanh thu theo năm {nam}";
+            lblTongDoanhThuNam.Text = $"Tổng Doanh Thu: {doanhThuNam:N0} VNĐ";
+            lblTongVonNhapNam.Text = $"Tổng Vốn Nhập: {vonNhapNam:N0} VNĐ";
+            lblTongLoiNhuanNam.Text = $"Tổng Lợi Nhuận: {loiNhuanNam:N0} VNĐ";
+        }
+
+        private decimal VeBieuDoCot(Chart chart, DataTable dt, string cotGiaTri, string tenSeries,
+                            string tieuDe, Color mauTieuDe, Color mauCot)
+        {
+            decimal tong = 0;
+            double max = 0;
+
+            chart.Series.Clear();
+            chart.Titles.Clear();
+            chart.Legends.Clear();   // bỏ chú thích "Vốn Nhập"/"Doanh Thu" vì đã có tiêu đề
+
+            chart.Titles.Add(new Title(tieuDe, Docking.Top,
+                                       new Font("Segoe UI", 10, FontStyle.Bold), mauTieuDe));
+
+            Series s = new Series(tenSeries);
+            s.ChartType = SeriesChartType.Column;
+            s.Color = mauCot;
+            s["PointWidth"] = "0.7";                       // độ rộng cột
+
+            // Hiện số tiền trên đầu cột
+            s.IsValueShownAsLabel = true;
+            s.LabelFormat = "#,##0";
+            s.Font = new Font("Segoe UI", 8, FontStyle.Bold);
+            s.LabelForeColor = Color.FromArgb(60, 60, 60);
+            s.SmartLabelStyle.Enabled = false;
+            s["LabelStyle"] = "Top";
+            s.LabelAngle = -90;                            // xoay dọc để 31 cột không đè chữ lên nhau
+
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    decimal giaTri = Convert.ToDecimal(row[cotGiaTri]);
+                    tong += giaTri;
+
+                    int idx = s.Points.AddXY(row["Ngay"].ToString(), (double)giaTri);
+                    if (giaTri == 0)
+                        s.Points[idx].IsValueShownAsLabel = false;   // ngày không có tiền thì không hiện số 0
+
+                    max = Math.Max(max, (double)giaTri);
+                }
+            }
+
+            chart.Series.Add(s);
+
+            // --- Giao diện vùng vẽ ---
+            ChartArea area = chart.ChartAreas[0];
+            area.BackColor = Color.White;
+
+            area.AxisX.Interval = 1;
+            area.AxisX.LabelStyle.IsStaggered = false;     // nhãn ngày nằm trên 1 hàng
+            area.AxisX.LabelStyle.Font = new Font("Segoe UI", 8);
+            area.AxisX.MajorGrid.Enabled = false;          // bỏ các đường dọc đen
+            area.AxisX.LineColor = Color.Gray;
+            area.AxisX.Title = "Ngày";
+            area.AxisX.TitleFont = new Font("Segoe UI", 8, FontStyle.Italic);
+
+            area.AxisY.LabelStyle.Format = "#,##0";
+            area.AxisY.LabelStyle.Font = new Font("Segoe UI", 8);
+            area.AxisY.MajorGrid.LineColor = Color.Gainsboro;      // lưới ngang mờ
+            area.AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+            area.AxisY.LineColor = Color.Gray;
+            area.AxisY.Minimum = 0;
+
+            // Chừa chỗ phía trên để số tiền của cột cao nhất không bị cắt
+            area.AxisY.Maximum = max > 0 ? max * 1.4 : double.NaN;
+
+            return tong;
         }
 
         // --- VẼ BIỂU ĐỒ 1: DOANH THU BÁN HÀNG THEO NGÀY ---
         private decimal LoadChartDoanhThuTheoNgay(int thang, int nam)
         {
-            DataTable dtData = _repo.GetDoanhThuTheoNgayInThang(thang, nam);
-            decimal tongDoanhThu = 0;
-
-            chartNgay.Series.Clear();
-            chartNgay.Titles.Clear();
-
-            Title title = new Title($"THỐNG KÊ DOANH THU THEO NGÀY (THÁNG {thang}/{nam})",
-                                    Docking.Top, new Font("Segoe UI", 10, FontStyle.Bold), Color.DarkBlue);
-            chartNgay.Titles.Add(title);
-
-            Series seriesDoanhThu = new Series("Doanh Thu");
-            seriesDoanhThu.ChartType = SeriesChartType.Column;
-            seriesDoanhThu.Color = Color.FromArgb(0, 122, 204);
-
-            if (dtData != null && dtData.Rows.Count > 0)
-            {
-                foreach (DataRow row in dtData.Rows)
-                {
-                    string ngayLabel = "D" + row["Ngay"].ToString();
-                    decimal doanhThu = Convert.ToDecimal(row["DoanhThu"]);
-                    tongDoanhThu += doanhThu;
-
-                    seriesDoanhThu.Points.AddXY(ngayLabel, (double)doanhThu);
-                }
-            }
-
-            chartNgay.Series.Add(seriesDoanhThu);
-
-            ChartArea area = chartNgay.ChartAreas[0];
-            area.AxisY.LabelStyle.Format = "#,##0";
-            area.AxisX.Interval = 1;
-
-            return tongDoanhThu;
+            DataTable dt = _repo.GetDoanhThuTheoNgayInThang(thang, nam);
+            return VeBieuDoCot(chartNgay, dt, "DoanhThu", "Doanh Thu",
+                               $"THỐNG KÊ DOANH THU THEO NGÀY (THÁNG {thang}/{nam})",
+                               Color.DarkBlue, Color.FromArgb(0, 122, 204));
         }
 
-        // --- VẼ BIỂU ĐỒ 2: VỐN NHẬP HÀNG THEO NGÀY ---
         private decimal LoadChartVonNhapTheoNgay(int thang, int nam)
         {
-            DataTable dtData = _repo.GetVonNhapTheoNgayInThang(thang, nam);
-            decimal tongVonNhap = 0;
-
-            chartThang.Series.Clear();
-            chartThang.Titles.Clear();
-
-            Title title = new Title($"THỐNG KÊ VỐN NHẬP HÀNG THEO NGÀY (THÁNG {thang}/{nam})",
-                                    Docking.Top, new Font("Segoe UI", 10, FontStyle.Bold), Color.DarkRed);
-            chartThang.Titles.Add(title);
-
-            Series seriesVonNhap = new Series("Vốn Nhập");
-            seriesVonNhap.ChartType = SeriesChartType.Column;
-            seriesVonNhap.Color = Color.FromArgb(220, 53, 69);
-
-            if (dtData != null && dtData.Rows.Count > 0)
-            {
-                foreach (DataRow row in dtData.Rows)
-                {
-                    string ngayLabel = "D" + row["Ngay"].ToString();
-                    decimal vonNhap = Convert.ToDecimal(row["VonNhap"]);
-                    tongVonNhap += vonNhap;
-
-                    seriesVonNhap.Points.AddXY(ngayLabel, (double)vonNhap);
-                }
-            }
-
-            chartThang.Series.Add(seriesVonNhap);
-
-            ChartArea area = chartThang.ChartAreas[0];
-            area.AxisY.LabelStyle.Format = "#,##0";
-            area.AxisX.Interval = 1;
-
-            return tongVonNhap;
+            DataTable dt = _repo.GetVonNhapTheoNgayInThang(thang, nam);
+            return VeBieuDoCot(chartThang, dt, "VonNhap", "Vốn Nhập",
+                               $"THỐNG KÊ VỐN NHẬP HÀNG THEO NGÀY (THÁNG {thang}/{nam})",
+                               Color.DarkRed, Color.FromArgb(220, 53, 69));
         }
 
         // Sự kiện khi chọn lại Tháng/Năm trên DateTimePicker
@@ -142,7 +167,14 @@ namespace SupermarketManagement.Views.Admin.ThongKe
             DataTable dtDoanhThu = _repo.GetDoanhThuTheoNgayInThang(thang, nam);
             DataTable dtVonNhap = _repo.GetVonNhapTheoNgayInThang(thang, nam);
 
-            if (dtDoanhThu == null || dtDoanhThu.Rows.Count == 0)
+            // Repository luôn trả về đủ các ngày trong tháng nên phải kiểm tra tổng tiền mới biết có dữ liệu hay không
+            decimal tongDT = 0, tongVN = 0;
+            if (dtDoanhThu != null)
+                foreach (DataRow r in dtDoanhThu.Rows) tongDT += Convert.ToDecimal(r["DoanhThu"]);
+            if (dtVonNhap != null)
+                foreach (DataRow r in dtVonNhap.Rows) tongVN += Convert.ToDecimal(r["VonNhap"]);
+
+            if (dtDoanhThu == null || dtVonNhap == null || dtDoanhThu.Rows.Count == 0 || (tongDT == 0 && tongVN == 0))
             {
                 MessageBox.Show("Không có dữ liệu thống kê để xuất file Excel!", "Thông báo",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -170,13 +202,14 @@ namespace SupermarketManagement.Views.Admin.ThongKe
             }
         }
 
+        // Xuất Excel đơn giản, KHÔNG dùng màu: chỉ có chữ đậm, căn lề, định dạng số và viền.
         private void XuatBaoCaoThongKeRaExcel(string filePath, DataTable dtDoanhThu, DataTable dtVonNhap, int thang, int nam)
         {
-            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;// Cấu hình bản quyền EPPlus miễn phí
+            // EPPlus 8+: khai báo giấy phép phi thương mại (dùng cho học tập / cá nhân)
+            ExcelPackage.License.SetNonCommercialPersonal("SupermarketManagement");
 
             using (ExcelPackage package = new ExcelPackage())
             {
-                // Tạo một Worksheet mới
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add($"ThongKe_T{thang}_{nam}");
 
                 // --- 1. TIÊU ĐỀ BÁO CÁO ---
@@ -184,7 +217,6 @@ namespace SupermarketManagement.Views.Admin.ThongKe
                 worksheet.Cells["A1"].Value = $"BÁO CÁO THỐNG KÊ DOANH THU & VỐN NHẬP (THÁNG {thang}/{nam})";
                 worksheet.Cells["A1"].Style.Font.Size = 16;
                 worksheet.Cells["A1"].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.DarkBlue);
                 worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                 worksheet.Cells["A2:D2"].Merge = true;
@@ -201,9 +233,6 @@ namespace SupermarketManagement.Views.Admin.ThongKe
                 using (var range = worksheet.Cells["A4:D4"])
                 {
                     range.Style.Font.Bold = true;
-                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 122, 204)); // Màu xanh chủ đạo
-                    range.Style.Font.Color.SetColor(Color.White);
                     range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 }
@@ -248,13 +277,8 @@ namespace SupermarketManagement.Views.Admin.ThongKe
                 worksheet.Cells[currentRow, 3].Value = tongVonNhap;
                 worksheet.Cells[currentRow, 4].Value = tongDoanhThu - tongVonNhap;
 
-                using (var range = worksheet.Cells[currentRow, 1, currentRow, 4])
-                {
-                    range.Style.Font.Bold = true;
-                    range.Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    range.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(230, 230, 230));
-                }
-
+                worksheet.Cells[currentRow, 1, currentRow, 4].Style.Font.Bold = true;
+                worksheet.Cells[currentRow, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells[currentRow, 2].Style.Numberformat.Format = "#,##0";
                 worksheet.Cells[currentRow, 3].Style.Numberformat.Format = "#,##0";
                 worksheet.Cells[currentRow, 4].Style.Numberformat.Format = "#,##0";

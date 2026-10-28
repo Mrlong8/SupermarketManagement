@@ -6,8 +6,10 @@ namespace SupermarketManagement.Models.Repositories
 {
     internal class HoaDonRepository
     {
+        //private readonly string connectionString =
+        //    @"Data Source=localhost;Initial Catalog=SupermarketManagement;Integrated Security=True";
         private readonly string connectionString =
-            @"Data Source=localhost;Initial Catalog=SupermarketManagement;Integrated Security=True";
+            @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True";
         // Nếu SQL Server của bạn dùng SQLEXPRESS, đổi connectionString theo cấu hình đang hoạt động.
 
         /// <summary>
