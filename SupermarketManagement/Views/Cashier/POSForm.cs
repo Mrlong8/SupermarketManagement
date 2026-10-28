@@ -1,6 +1,7 @@
 ﻿using SupermarketManagement.Controllers.Repositories;
 using SupermarketManagement.Models.Repositories;
 using SupermarketManagement.Utils;
+using SupermarketManagement.Views.Cashier;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -1033,6 +1034,14 @@ namespace SupermarketManagement
         private void cboDonViTinh_SelectedIndexChanged_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnTraHang_Click(object sender, EventArgs e)
+        {
+            using (TraHangForm form = new TraHangForm())
+            {
+                form.ShowDialog(this);
+            }
         }
     }
 }

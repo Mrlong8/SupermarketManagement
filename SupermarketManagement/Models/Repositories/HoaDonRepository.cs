@@ -1,14 +1,14 @@
-﻿using System;
+﻿using SupermarketManagement.Controllers.Repositories;
+using System;
 using System.Data;
 using System.Data.SqlClient;
+using SupermarketManagement.Models.Repositories;
 
 namespace SupermarketManagement.Models.Repositories
 {
     internal class HoaDonRepository
     {
-        private readonly string connectionString =
-            @"Data Source=localhost;Initial Catalog=SupermarketManagement;Integrated Security=True";
-        // Nếu SQL Server của bạn dùng SQLEXPRESS, đổi connectionString theo cấu hình đang hoạt động.
+        private readonly DbConection db = new DbConection();
 
         /// <summary>
         /// Lưu hóa đơn, chi tiết hóa đơn, trừ tồn kho theo đơn vị quy đổi
@@ -41,7 +41,7 @@ namespace SupermarketManagement.Models.Repositories
 
             int diemMoi = (int)(tongTien / 10000m);
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = db.CreateConnection())
             {
                 conn.Open();
                 using (SqlTransaction transaction = conn.BeginTransaction())
