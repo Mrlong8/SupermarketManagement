@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chartNgay = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartThang = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnXuatExcel = new System.Windows.Forms.Button();
@@ -49,6 +52,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.chartThongKeTraHang = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.chartNgay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartThang)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -56,39 +61,41 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chartThongKeTraHang)).BeginInit();
             this.SuspendLayout();
             // 
             // chartNgay
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartNgay.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            this.chartNgay.ChartAreas.Add(chartArea1);
             this.chartNgay.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.chartNgay.Legends.Add(legend3);
+            legend1.Name = "Legend1";
+            this.chartNgay.Legends.Add(legend1);
             this.chartNgay.Location = new System.Drawing.Point(3, 18);
             this.chartNgay.Name = "chartNgay";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chartNgay.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartNgay.Series.Add(series1);
             this.chartNgay.Size = new System.Drawing.Size(1202, 212);
             this.chartNgay.TabIndex = 0;
             this.chartNgay.Text = "chart1";
             // 
             // chartThang
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartThang.ChartAreas.Add(chartArea4);
+            chartArea2.Name = "ChartArea1";
+            this.chartThang.ChartAreas.Add(chartArea2);
             this.chartThang.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Name = "Legend1";
-            this.chartThang.Legends.Add(legend4);
-            this.chartThang.Location = new System.Drawing.Point(3, 18);
+            legend2.Name = "Legend1";
+            this.chartThang.Legends.Add(legend2);
+            this.chartThang.Location = new System.Drawing.Point(3, 3);
             this.chartThang.Name = "chartThang";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.chartThang.Series.Add(series4);
-            this.chartThang.Size = new System.Drawing.Size(1202, 211);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.chartThang.Series.Add(series2);
+            this.chartThang.Size = new System.Drawing.Size(595, 205);
             this.chartThang.TabIndex = 4;
             this.chartThang.Text = "chart4";
             // 
@@ -101,7 +108,7 @@
             this.btnXuatExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXuatExcel.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnXuatExcel.ForeColor = System.Drawing.Color.White;
-            this.btnXuatExcel.Location = new System.Drawing.Point(30, 620);
+            this.btnXuatExcel.Location = new System.Drawing.Point(30, 569);
             this.btnXuatExcel.Name = "btnXuatExcel";
             this.btnXuatExcel.Size = new System.Drawing.Size(180, 45);
             this.btnXuatExcel.TabIndex = 9;
@@ -113,7 +120,7 @@
             // 
             this.dtpThoiGian.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dtpThoiGian.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dtpThoiGian.Location = new System.Drawing.Point(30, 560);
+            this.dtpThoiGian.Location = new System.Drawing.Point(30, 519);
             this.dtpThoiGian.Name = "dtpThoiGian";
             this.dtpThoiGian.Size = new System.Drawing.Size(260, 30);
             this.dtpThoiGian.TabIndex = 11;
@@ -217,7 +224,7 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.chartThang);
+            this.groupBox3.Controls.Add(this.tableLayoutPanel2);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
@@ -254,6 +261,38 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1214, 477);
             this.tableLayoutPanel1.TabIndex = 19;
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.chartThongKeTraHang, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.chartThang, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 18);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1202, 211);
+            this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // chartThongKeTraHang
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.chartThongKeTraHang.ChartAreas.Add(chartArea3);
+            this.chartThongKeTraHang.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend3.Name = "Legend1";
+            this.chartThongKeTraHang.Legends.Add(legend3);
+            this.chartThongKeTraHang.Location = new System.Drawing.Point(604, 3);
+            this.chartThongKeTraHang.Name = "chartThongKeTraHang";
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.chartThongKeTraHang.Series.Add(series3);
+            this.chartThongKeTraHang.Size = new System.Drawing.Size(595, 205);
+            this.chartThongKeTraHang.TabIndex = 5;
+            this.chartThongKeTraHang.Text = "chart4";
+            // 
             // IndexThongKe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -277,6 +316,8 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chartThongKeTraHang)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -298,5 +339,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartThongKeTraHang;
     }
 }

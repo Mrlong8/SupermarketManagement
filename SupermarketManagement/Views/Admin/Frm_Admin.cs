@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SupermarketManagement.Views.Admin.LichSuTraHang;
 
 namespace SupermarketManagement.Views.Admin
 {
@@ -179,6 +180,11 @@ namespace SupermarketManagement.Views.Admin
             {
                 UserSession.DangXuat(this);
             }
+        }
+
+        private void btnLichSuTraHang_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexLichSuTraHang(),sender);
         }
     }
 }

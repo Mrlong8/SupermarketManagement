@@ -152,6 +152,7 @@
     <Compile Include="Models\Repositories\KhoHangRepository.cs" />
     <Compile Include="Models\Repositories\LichSuMuaRepository.cs" />
     <Compile Include="Models\Repositories\LichSuNhapRepository.cs" />
+    <Compile Include="Models\Repositories\LichSuTraHangRepostory.cs" />
     <Compile Include="Models\Repositories\NhanVienRepository.cs" />
     <Compile Include="Models\Repositories\SanPhamRepositoryV2.cs" />
     <Compile Include="Models\Repositories\ThongKeRepository.cs" />
@@ -185,6 +186,12 @@
     </Compile>
     <Compile Include="Views\Admin\LichSuNhap\IndexLichSuNhap.Designer.cs">
       <DependentUpon>IndexLichSuNhap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuTraHang\IndexLichSuTraHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuTraHang\IndexLichSuTraHang.Designer.cs">
+      <DependentUpon>IndexLichSuTraHang.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Admin\NhanVien\IndexNhanVien.cs">
       <SubType>UserControl</SubType>
@@ -320,6 +327,9 @@
     <EmbeddedResource Include="Views\Admin\LichSuNhap\IndexLichSuNhap.resx">
       <DependentUpon>IndexLichSuNhap.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\LichSuTraHang\IndexLichSuTraHang.resx">
+      <DependentUpon>IndexLichSuTraHang.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\NhanVien\IndexNhanVien.resx">
       <DependentUpon>IndexNhanVien.cs</DependentUpon>
     </EmbeddedResource>
@@ -352,6 +362,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\ChonSanPhamTraHangForm.resx">
       <DependentUpon>ChonSanPhamTraHangForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Auth\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -398,6 +409,7 @@
     <Content Include="Resources\Icon\customer.png" />
     <Content Include="Resources\Icon\stop.png" />
     <Content Include="Resources\Icon\user.png" />
+    <None Include="Resources\money.png" />
     <Content Include="Resources\Product\b7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
