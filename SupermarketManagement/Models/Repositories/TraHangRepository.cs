@@ -190,5 +190,22 @@ namespace SupermarketManagement.Models.Repositories
                 }
             }
         }
+        public DataTable LayDanhSachHoaDonTrongNgay()
+        {
+            string sql = @"
+                SELECT DISTINCT MaHD
+                FROM HoaDon
+                WHERE NgayMua >= CAST(GETDATE() AS date)
+                  AND NgayMua < DATEADD(day, 1, CAST(GETDATE() AS date))
+                ORDER BY MaHD DESC;";
+
+            using (var conn = db.CreateConnection())
+            using (var adapter = new SqlDataAdapter(sql, conn))
+            {
+                DataTable result = new DataTable();
+                adapter.Fill(result);
+                return result;
+            }
+        }
     }
 }
