@@ -350,6 +350,9 @@
     <EmbeddedResource Include="Views\Admin\ThongKe\IndexThongKe.resx">
       <DependentUpon>IndexThongKe.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Auth\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\InvoiceForm.resx">
       <DependentUpon>InvoiceForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -396,6 +399,9 @@
     <Content Include="Resources\Product\b7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\supermarket2.jpg" />
+    <None Include="Resources\supermarket1.jpg" />
+    <None Include="Resources\supermarket.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

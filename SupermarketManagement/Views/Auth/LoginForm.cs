@@ -58,5 +58,15 @@ namespace SupermarketManagement.Views.Auth
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
+        private void lblWelcome_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblBrand_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
