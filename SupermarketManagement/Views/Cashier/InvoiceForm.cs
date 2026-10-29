@@ -21,18 +21,13 @@ namespace SupermarketManagement.Views.Cashier
         public InvoiceForm()
         {
             InitializeComponent();
-            this.dgvInvoiceDetails.AutoSizeColumnsMode =
-    System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvInvoiceDetails.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
 
             this.dgvInvoiceDetails.AllowUserToResizeColumns = false;
             this.dgvInvoiceDetails.AllowUserToResizeRows = false;
             this.dgvInvoiceDetails.RowHeadersVisible = false;
-            this.dgvInvoiceDetails.ScrollBars =
-                System.Windows.Forms.ScrollBars.Vertical;
-
-         
+            this.dgvInvoiceDetails.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
         }
-
         public void HienThiHoaDon(
             string maHD,
             string maKH,
@@ -91,29 +86,62 @@ namespace SupermarketManagement.Views.Cashier
         }
 
 
+
         private decimal ChuyenTien(string giaTri)
         {
             if (string.IsNullOrWhiteSpace(giaTri))
                 return 0m;
 
-            string so = giaTri.Trim();
+            string so = giaTri.Trim()
+                .Replace("₫", "")
+                .Replace("đ", "")
+                .Replace("Đ", "")
+                .Replace(" ", "");
 
-            // Ưu tiên định dạng Việt Nam, ví dụ: 500.000 hoặc 500.000,50.
-            if (decimal.TryParse(
-                so,
-                NumberStyles.Number,
-                CultureInfo.GetCultureInfo("vi-VN"),
-                out decimal ketQua))
+            int viTriPhay = so.LastIndexOf(',');
+            int viTriCham = so.LastIndexOf('.');
+
+            // Trường hợp có cả dấu phẩy và dấu chấm:
+            // Dấu xuất hiện cuối cùng được xem là dấu thập phân.
+            if (viTriPhay >= 0 && viTriCham >= 0)
             {
-                return ketQua;
+                if (viTriPhay > viTriCham)
+                {
+                    // Ví dụ: 30.000,50
+                    so = so.Replace(".", "").Replace(',', '.');
+                }
+                else
+                {
+                    // Ví dụ: 30,000.50
+                    so = so.Replace(",", "");
+                }
+            }
+            else if (viTriPhay >= 0)
+            {
+                // Nếu có đúng 3 chữ số sau dấu phẩy,
+                // xem dấu phẩy là dấu phân cách hàng nghìn.
+                int soChuSoSauDau = so.Length - viTriPhay - 1;
+
+                if (soChuSoSauDau == 3)
+                    so = so.Replace(",", "");
+                else
+                    so = so.Replace(',', '.');
+            }
+            else if (viTriCham >= 0)
+            {
+                // Nếu có đúng 3 chữ số sau dấu chấm,
+                // xem dấu chấm là dấu phân cách hàng nghìn.
+                int soChuSoSauDau = so.Length - viTriCham - 1;
+
+                if (soChuSoSauDau == 3)
+                    so = so.Replace(".", "");
             }
 
-            // Dự phòng cho chuỗi số theo định dạng quốc tế, ví dụ: 500,000.50.
             if (decimal.TryParse(
                 so,
                 NumberStyles.Number,
                 CultureInfo.InvariantCulture,
-                out ketQua))
+                out decimal ketQua))
             {
                 return ketQua;
             }
