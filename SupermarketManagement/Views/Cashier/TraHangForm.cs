@@ -18,6 +18,60 @@ namespace SupermarketManagement.Views.Cashier
             repository = new TraHangRepository();
             TaoBangChiTiet();
             TaoMaPhieuMoi();
+            NapDanhSachHoaDonTrongNgay();
+        }
+        private void NapDanhSachHoaDonTrongNgay()
+        {
+            try
+            {
+                DataTable data = repository.LayDanhSachHoaDonTrongNgay();
+
+                cboMaHD.DataSource = data;
+                cboMaHD.DisplayMember = "MaHD";
+                cboMaHD.ValueMember = "MaHD";
+                cboMaHD.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Không tải được danh sách hóa đơn: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnCapNhatSoLuongTra_Click(object sender, EventArgs e)
+        {
+            if (dgv.CurrentRow == null ||
+                dgv.CurrentRow.Index < 0 ||
+                dgv.CurrentRow.Index >= bangChiTiet.Rows.Count)
+            {
+                MessageBox.Show("Vui lòng chọn sản phẩm trong bảng.");
+                return;
+            }
+
+            int index = dgv.CurrentRow.Index;
+            DataRow row = bangChiTiet.Rows[index];
+
+            int daMua = Convert.ToInt32(row["SoLuongDaMua"]);
+            int daTra = Convert.ToInt32(row["SoLuongDaTra"]);
+            int soLuongTra = Convert.ToInt32(numSoLuongTra.Value);
+
+            int soLuongConDuocTra = daMua - daTra;
+
+            if (soLuongTra < 0 || soLuongTra > soLuongConDuocTra)
+            {
+                MessageBox.Show(
+                    "Số lượng trả không được vượt quá số lượng đã mua còn lại.");
+                return;
+            }
+
+            row["SoLuongTra"] = soLuongTra;
+            row["ThanhTien"] = soLuongTra *
+                Convert.ToDecimal(row["DonGia"]);
+
+            dgv.Refresh();
         }
 
         private void TaoMaPhieuMoi()
@@ -45,24 +99,33 @@ namespace SupermarketManagement.Views.Cashier
 
         private void BtnTim_Click(object sender, EventArgs e)
         {
-            string maHD = txtMaHD.Text.Trim();
-            if (maHD.Length == 0)
+            // Lấy mã hóa đơn được chọn trong ComboBox
+            string maHD = cboMaHD.Text.Trim();
+
+            if (string.IsNullOrEmpty(maHD))
             {
-                MessageBox.Show("Vui lòng nhập mã hóa đơn.");
+                MessageBox.Show("Vui lòng chọn mã hóa đơn.");
                 return;
             }
 
             try
             {
                 DataTable result = repository.TimHoaDon(maHD);
+
                 if (result.Rows.Count == 0)
                 {
-                    MessageBox.Show("Không tìm thấy hóa đơn hoặc hóa đơn không có chi tiết.", "Thông báo",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(
+                        "Không tìm thấy hóa đơn hoặc hóa đơn không có chi tiết.",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                     return;
                 }
 
+                // Xóa dữ liệu hóa đơn trước đó
                 bangChiTiet.Rows.Clear();
+
+                // Hiển thị chi tiết hóa đơn được chọn
                 foreach (DataRow row in result.Rows)
                 {
                     bangChiTiet.Rows.Add(
@@ -75,54 +138,26 @@ namespace SupermarketManagement.Views.Cashier
                         0,
                         Convert.ToDecimal(row["DonGia"]),
                         Convert.ToInt32(row["SoLuongQuyDoi"]),
-                        0m);
+                        0m
+                    );
                 }
 
+                // Hiển thị tên khách hàng
                 string tenKhachHang = repository.LayTenKhachHang(maHD);
                 lblKhachHang.Text = "Khách hàng: " + tenKhachHang;
+
+                // Cập nhật thành tiền
                 CapNhatThanhTien();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể tìm hóa đơn. Hãy kiểm tra kết nối database và các bảng phiếu trả hàng.\n" + ex.Message,
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Không thể tìm hóa đơn. Hãy kiểm tra kết nối database và các bảng phiếu trả hàng.\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
-
-        private void BtnThem_Click(object sender, EventArgs e)
-        {
-            using (var form = new ChonSanPhamTraHangForm(repository))
-            {
-                if (form.ShowDialog(this) != DialogResult.OK || form.SanPham == null)
-                    return;
-
-                DataRow sanPham = form.SanPham;
-                foreach (DataRow row in bangChiTiet.Rows)
-                {
-                    if (Convert.ToString(row["MaSP"]) == Convert.ToString(sanPham["MaSP"]) &&
-                        Convert.ToString(row["MaDVT"]) == Convert.ToString(sanPham["MaDVT"]))
-                    {
-                        MessageBox.Show("Sản phẩm và đơn vị tính này đã có trong phiếu.");
-                        return;
-                    }
-                }
-
-                DataRow dongMoi = bangChiTiet.NewRow();
-                dongMoi["MaSP"] = Convert.ToString(sanPham["MaSP"]);
-                dongMoi["MaDVT"] = Convert.ToString(sanPham["MaDVT"]);
-                dongMoi["TenSanPham"] = Convert.ToString(sanPham["TenSanPham"]);
-                dongMoi["TenDV"] = Convert.ToString(sanPham["TenDV"]);
-                dongMoi["SoLuongDaMua"] = 0;
-                dongMoi["SoLuongDaTra"] = 0;
-                dongMoi["SoLuongTra"] = 0;
-                dongMoi["DonGia"] = Convert.ToDecimal(sanPham["DonGiaBanLe"]);
-                dongMoi["SoLuongQuyDoi"] = Convert.ToInt32(sanPham["SoLuongQuyDoi"]);
-                dongMoi["ThanhTien"] = 0m;
-                bangChiTiet.Rows.Add(dongMoi);
-                dgv.Refresh();
-            }
-        }
-
         private void CapNhatThanhTien()
         {
             if (bangChiTiet == null) return;
@@ -137,12 +172,15 @@ namespace SupermarketManagement.Views.Cashier
 
         private void BtnLuu_Click(object sender, EventArgs e)
         {
-            string maHD = txtMaHD.Text.Trim();
-            if (maHD.Length == 0 || bangChiTiet.Rows.Count == 0)
+            // Lấy mã hóa đơn được chọn từ ComboBox
+            string maHD = cboMaHD.Text.Trim();
+
+            if (string.IsNullOrEmpty(maHD) || bangChiTiet.Rows.Count == 0)
             {
-                MessageBox.Show("Hãy tìm hóa đơn và chọn sản phẩm trả.");
+                MessageBox.Show("Hãy chọn hóa đơn và tìm hóa đơn trước khi lập phiếu trả.");
                 return;
             }
+
             if (string.IsNullOrWhiteSpace(txtLyDo.Text))
             {
                 MessageBox.Show("Vui lòng nhập lý do trả hàng.");
@@ -152,7 +190,10 @@ namespace SupermarketManagement.Views.Cashier
 
             try
             {
+                // Cập nhật thành tiền trước khi lưu
                 CapNhatThanhTien();
+
+                // Lưu phiếu trả hàng
                 repository.LuuPhieuTraHang(
                     maPhieu,
                     maHD,
@@ -160,14 +201,21 @@ namespace SupermarketManagement.Views.Cashier
                     txtLyDo.Text.Trim(),
                     bangChiTiet);
 
-                MessageBox.Show("Đã lập phiếu trả hàng " + maPhieu + " thành công.", "Thành công",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Đã lập phiếu trả hàng " + maPhieu + " thành công.",
+                    "Thành công",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Không thể lập phiếu trả hàng. Dữ liệu chưa được xác nhận.\n" + ex.Message,
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Không thể lập phiếu trả hàng. Dữ liệu chưa được xác nhận.\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -177,16 +225,6 @@ namespace SupermarketManagement.Views.Cashier
             CapNhatThanhTien();
         }
 
-        private void btnXoa_Click(object sender, EventArgs e)
-        {
-            if (dgv.CurrentRow != null &&
-                dgv.CurrentRow.Index >= 0 &&
-                dgv.CurrentRow.Index < bangChiTiet.Rows.Count)
-            {
-                bangChiTiet.Rows.RemoveAt(dgv.CurrentRow.Index);
-                CapNhatThanhTien();
-            }
-        }
 
         private void btnDong_Click(object sender, EventArgs e)
         {
@@ -200,6 +238,39 @@ namespace SupermarketManagement.Views.Cashier
 
             btnDong.Left = pnlBottom.ClientSize.Width - btnDong.Width - 12;
             btnLuu.Left = btnDong.Left - btnLuu.Width - 10;
+        }
+        private void numSoLuongTra_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                BtnCapNhatSoLuongTra_Click(btnCapNhatSoLuong, EventArgs.Empty);
+            }
+        }
+        private void cboMaHD_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                BtnTim_Click(btnTim, EventArgs.Empty);
+            }
+        }
+        private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            DataRowView view = dgv.Rows[e.RowIndex].DataBoundItem as DataRowView;
+
+            if (view == null)
+                return;
+
+            int soLuongHienTai = Convert.ToInt32(view["SoLuongTra"]);
+
+            numSoLuongTra.Value = Math.Max(
+                (int)numSoLuongTra.Minimum,
+                Math.Min(soLuongHienTai, (int)numSoLuongTra.Maximum)
+            );
         }
     }
 }

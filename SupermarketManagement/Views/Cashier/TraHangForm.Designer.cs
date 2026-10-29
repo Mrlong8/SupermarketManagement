@@ -7,7 +7,10 @@ namespace SupermarketManagement.Views.Cashier
     partial class TraHangForm
     {
         private System.ComponentModel.IContainer components = null;
-
+        private Label lblSoLuongTra;
+        private Button btnCapNhatSoLuong;
+        private NumericUpDown numSoLuongTra;
+        private ComboBox cboMaHD;
         private Panel pnlHeader;
         private Panel pnlInfo;
         private Panel pnlBottom;
@@ -16,7 +19,6 @@ namespace SupermarketManagement.Views.Cashier
         private Label lblNgay;
         private Label lblMaHD;
         private Label lblLyDo;
-        private TextBox txtMaHD;
         private TextBox txtLyDo;
         private Label lblKhachHang;
         private Button btnTim;
@@ -29,8 +31,6 @@ namespace SupermarketManagement.Views.Cashier
         private DataGridViewTextBoxColumn colSoLuongTra;
         private DataGridViewTextBoxColumn colDonGia;
         private DataGridViewTextBoxColumn colThanhTien;
-        private Button btnThem;
-        private Button btnXoa;
         private Button btnLuu;
         private Button btnDong;
 
@@ -49,21 +49,23 @@ namespace SupermarketManagement.Views.Cashier
             this.lblMaPhieu = new System.Windows.Forms.Label();
             this.lblNgay = new System.Windows.Forms.Label();
             this.lblMaHD = new System.Windows.Forms.Label();
-            this.txtMaHD = new System.Windows.Forms.TextBox();
+            this.cboMaHD = new System.Windows.Forms.ComboBox();
             this.btnTim = new System.Windows.Forms.Button();
             this.lblKhachHang = new System.Windows.Forms.Label();
             this.lblLyDo = new System.Windows.Forms.Label();
             this.txtLyDo = new System.Windows.Forms.TextBox();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.pnlBottom = new System.Windows.Forms.Panel();
-            this.btnThem = new System.Windows.Forms.Button();
-            this.btnXoa = new System.Windows.Forms.Button();
             this.btnLuu = new System.Windows.Forms.Button();
             this.btnDong = new System.Windows.Forms.Button();
+            this.lblSoLuongTra = new System.Windows.Forms.Label();
+            this.numSoLuongTra = new System.Windows.Forms.NumericUpDown();
+            this.btnCapNhatSoLuong = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.pnlBottom.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSoLuongTra)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlHeader
@@ -94,7 +96,7 @@ namespace SupermarketManagement.Views.Cashier
             this.pnlInfo.Controls.Add(this.lblMaPhieu);
             this.pnlInfo.Controls.Add(this.lblNgay);
             this.pnlInfo.Controls.Add(this.lblMaHD);
-            this.pnlInfo.Controls.Add(this.txtMaHD);
+            this.pnlInfo.Controls.Add(this.cboMaHD);
             this.pnlInfo.Controls.Add(this.btnTim);
             this.pnlInfo.Controls.Add(this.lblKhachHang);
             this.pnlInfo.Controls.Add(this.lblLyDo);
@@ -130,12 +132,15 @@ namespace SupermarketManagement.Views.Cashier
             this.lblMaHD.Text = "Mã hóa đơn gốc:";
             this.lblMaHD.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // txtMaHD
+            // cboMaHD
             // 
-            this.txtMaHD.Location = new System.Drawing.Point(145, 53);
-            this.txtMaHD.Name = "txtMaHD";
-            this.txtMaHD.Size = new System.Drawing.Size(240, 31);
-            this.txtMaHD.TabIndex = 3;
+            this.cboMaHD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMaHD.FormattingEnabled = true;
+            this.cboMaHD.Location = new System.Drawing.Point(145, 53);
+            this.cboMaHD.Name = "cboMaHD";
+            this.cboMaHD.Size = new System.Drawing.Size(240, 33);
+            this.cboMaHD.TabIndex = 3;
+            this.cboMaHD.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboMaHD_KeyDown);
             // 
             // btnTim
             // 
@@ -148,6 +153,7 @@ namespace SupermarketManagement.Views.Cashier
             this.btnTim.TabIndex = 4;
             this.btnTim.Text = "Tìm hóa đơn";
             this.btnTim.UseVisualStyleBackColor = false;
+            this.btnTim.Click += new System.EventHandler(this.BtnTim_Click);
             // 
             // lblKhachHang
             // 
@@ -155,7 +161,7 @@ namespace SupermarketManagement.Views.Cashier
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblKhachHang.Location = new System.Drawing.Point(535, 53);
             this.lblKhachHang.Name = "lblKhachHang";
-            this.lblKhachHang.Size = new System.Drawing.Size(650, 28);   // 1200 - 535 (vị trí trái) - 15 (lề phải)
+            this.lblKhachHang.Size = new System.Drawing.Size(650, 28);
             this.lblKhachHang.TabIndex = 5;
             this.lblKhachHang.Text = "Khách hàng: chưa chọn hóa đơn";
             this.lblKhachHang.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -164,7 +170,7 @@ namespace SupermarketManagement.Views.Cashier
             // 
             this.lblLyDo.Location = new System.Drawing.Point(15, 88);
             this.lblLyDo.Name = "lblLyDo";
-            this.txtLyDo.Size = new System.Drawing.Size(1040, 31);       // 1200 - 145 (vị trí trái) - 15 (lề phải)
+            this.lblLyDo.Size = new System.Drawing.Size(100, 23);
             this.lblLyDo.TabIndex = 6;
             this.lblLyDo.Text = "Lý do trả:";
             // 
@@ -181,6 +187,7 @@ namespace SupermarketManagement.Views.Cashier
             // 
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.AllowUserToResizeColumns = false;
             this.dgv.AllowUserToResizeRows = false;
             this.dgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv.BackgroundColor = System.Drawing.Color.White;
@@ -189,41 +196,30 @@ namespace SupermarketManagement.Views.Cashier
             this.dgv.Location = new System.Drawing.Point(0, 183);
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
+            this.dgv.ReadOnly = true;
             this.dgv.RowHeadersVisible = false;
             this.dgv.RowHeadersWidth = 62;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1200, 463);
             this.dgv.TabIndex = 0;
+            this.dgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellEndEdit);
+            this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
             // 
             // pnlBottom
             // 
             this.pnlBottom.BackColor = System.Drawing.Color.White;
-            this.pnlBottom.Controls.Add(this.btnThem);
-            this.pnlBottom.Controls.Add(this.btnXoa);
             this.pnlBottom.Controls.Add(this.btnLuu);
             this.pnlBottom.Controls.Add(this.btnDong);
+            this.pnlBottom.Controls.Add(this.lblSoLuongTra);
+            this.pnlBottom.Controls.Add(this.numSoLuongTra);
+            this.pnlBottom.Controls.Add(this.btnCapNhatSoLuong);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 646);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Padding = new System.Windows.Forms.Padding(12);
             this.pnlBottom.Size = new System.Drawing.Size(1200, 104);
             this.pnlBottom.TabIndex = 1;
-            // 
-            // btnThem
-            // 
-            this.btnThem.Location = new System.Drawing.Point(12, 13);
-            this.btnThem.Name = "btnThem";
-            this.btnThem.Size = new System.Drawing.Size(125, 36);
-            this.btnThem.TabIndex = 0;
-            this.btnThem.Text = "Thêm sản phẩm";
-            // 
-            // btnXoa
-            // 
-            this.btnXoa.Location = new System.Drawing.Point(145, 13);
-            this.btnXoa.Name = "btnXoa";
-            this.btnXoa.Size = new System.Drawing.Size(100, 36);
-            this.btnXoa.TabIndex = 1;
-            this.btnXoa.Text = "Xóa dòng";
+            this.pnlBottom.Resize += new System.EventHandler(this.pnlBottom_Resize);
             // 
             // btnLuu
             // 
@@ -231,21 +227,55 @@ namespace SupermarketManagement.Views.Cashier
             this.btnLuu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(164)))), ((int)(((byte)(71)))));
             this.btnLuu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLuu.ForeColor = System.Drawing.Color.White;
-            this.btnLuu.Location = new System.Drawing.Point(958, 13);
+            this.btnLuu.Location = new System.Drawing.Point(900, 13);
             this.btnLuu.Name = "btnLuu";
             this.btnLuu.Size = new System.Drawing.Size(130, 36);
             this.btnLuu.TabIndex = 2;
             this.btnLuu.Text = "Lập phiếu trả";
             this.btnLuu.UseVisualStyleBackColor = false;
+            this.btnLuu.Click += new System.EventHandler(this.BtnLuu_Click);
             // 
             // btnDong
             // 
             this.btnDong.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDong.Location = new System.Drawing.Point(1098, 13);
+            this.btnDong.Location = new System.Drawing.Point(1050, 13);
             this.btnDong.Name = "btnDong";
-            this.btnDong.Size = new System.Drawing.Size(90, 36);
+            this.btnDong.Size = new System.Drawing.Size(110, 36);
             this.btnDong.TabIndex = 3;
             this.btnDong.Text = "Đóng";
+            this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
+            // 
+            // lblSoLuongTra
+            // 
+            this.lblSoLuongTra.AutoSize = true;
+            this.lblSoLuongTra.Location = new System.Drawing.Point(400, 20);
+            this.lblSoLuongTra.Name = "lblSoLuongTra";
+            this.lblSoLuongTra.Size = new System.Drawing.Size(115, 25);
+            this.lblSoLuongTra.TabIndex = 4;
+            this.lblSoLuongTra.Text = "Số lượng trả:";
+            // 
+            // numSoLuongTra
+            // 
+            this.numSoLuongTra.Location = new System.Drawing.Point(530, 18);
+            this.numSoLuongTra.Maximum = new decimal(new int[] {100000,0,0,0});
+            this.numSoLuongTra.Minimum = new decimal(new int[] {1,0,0,0});
+            this.numSoLuongTra.Name = "numSoLuongTra";
+            this.numSoLuongTra.Size = new System.Drawing.Size(100, 31);
+            this.numSoLuongTra.TabIndex = 5;
+            this.numSoLuongTra.Value = new decimal(new int[] {1,0,0, 0});
+            this.numSoLuongTra.KeyDown +=new System.Windows.Forms.KeyEventHandler(this.numSoLuongTra_KeyDown);
+            // 
+            // btnCapNhatSoLuong
+            // 
+            this.btnCapNhatSoLuong.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnCapNhatSoLuong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCapNhatSoLuong.Location = new System.Drawing.Point(645, 13);
+            this.btnCapNhatSoLuong.Name = "btnCapNhatSoLuong";
+            this.btnCapNhatSoLuong.Size = new System.Drawing.Size(200, 36);
+            this.btnCapNhatSoLuong.TabIndex = 6;
+            this.btnCapNhatSoLuong.Text = "Cập nhật số lượng trả";
+            this.btnCapNhatSoLuong.UseVisualStyleBackColor = false;
+            this.btnCapNhatSoLuong.Click +=  new System.EventHandler(this.BtnCapNhatSoLuongTra_Click);
             // 
             // TraHangForm
             // 
@@ -262,18 +292,13 @@ namespace SupermarketManagement.Views.Cashier
             this.Name = "TraHangForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "LẬP PHIẾU TRẢ HÀNG";
-            this.btnTim.Click += new System.EventHandler(this.BtnTim_Click);
-            this.btnThem.Click += new System.EventHandler(this.BtnThem_Click);
-            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
-            this.btnLuu.Click += new System.EventHandler(this.BtnLuu_Click);
-            this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
-            this.dgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellEndEdit);
-            this.pnlBottom.Resize += new System.EventHandler(this.pnlBottom_Resize);
             this.pnlHeader.ResumeLayout(false);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).EndInit();
             this.pnlBottom.ResumeLayout(false);
+            this.pnlBottom.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numSoLuongTra)).EndInit();
             this.ResumeLayout(false);
 
         }

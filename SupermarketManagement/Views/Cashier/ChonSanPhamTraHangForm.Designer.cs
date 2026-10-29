@@ -25,9 +25,9 @@
             this.pnlNut.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // pnlNut
-            //
+            // 
             this.pnlNut.BackColor = System.Drawing.Color.White;
             this.pnlNut.Controls.Add(this.btnChon);
             this.pnlNut.Controls.Add(this.btnHuy);
@@ -37,9 +37,9 @@
             this.pnlNut.Size = new System.Drawing.Size(800, 58);
             this.pnlNut.TabIndex = 1;
             this.pnlNut.Resize += new System.EventHandler(this.pnlNut_Resize);
-            //
+            // 
             // btnChon
-            //
+            // 
             this.btnChon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnChon.Location = new System.Drawing.Point(588, 12);
             this.btnChon.Name = "btnChon";
@@ -47,9 +47,9 @@
             this.btnChon.TabIndex = 0;
             this.btnChon.Text = "Chọn";
             this.btnChon.Click += new System.EventHandler(this.btnChon_Click);
-            //
+            // 
             // btnHuy
-            //
+            // 
             this.btnHuy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHuy.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnHuy.Location = new System.Drawing.Point(698, 12);
@@ -57,28 +57,32 @@
             this.btnHuy.Size = new System.Drawing.Size(90, 32);
             this.btnHuy.TabIndex = 1;
             this.btnHuy.Text = "Hủy";
-            //
+            // 
             // grid
-            //
+            // 
             this.grid.AllowUserToAddRows = false;
             this.grid.AllowUserToDeleteRows = false;
+            this.grid.AllowUserToResizeColumns = false;
+            this.grid.AllowUserToResizeRows = false;
             this.grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grid.BackgroundColor = System.Drawing.Color.White;
+            this.grid.ColumnHeadersHeight = 34;
             this.grid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grid.Location = new System.Drawing.Point(0, 0);
             this.grid.MultiSelect = false;
             this.grid.Name = "grid";
             this.grid.ReadOnly = true;
             this.grid.RowHeadersVisible = false;
+            this.grid.RowHeadersWidth = 62;
             this.grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grid.Size = new System.Drawing.Size(800, 442);
             this.grid.TabIndex = 0;
             this.grid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grid_CellDoubleClick);
-            //
+            // 
             // ChonSanPhamTraHangForm
-            //
+            // 
             this.AcceptButton = this.btnChon;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnHuy;
             this.ClientSize = new System.Drawing.Size(800, 500);
@@ -92,6 +96,7 @@
             this.pnlNut.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             this.ResumeLayout(false);
+
         }
     }
 }
