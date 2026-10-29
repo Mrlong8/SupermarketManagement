@@ -99,6 +99,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.lblLocNCC = new System.Windows.Forms.Label();
             this.cboLocNCC = new System.Windows.Forms.ComboBox();
             this.btnLamMoiLichSu = new System.Windows.Forms.Button();
+            this.btnInPhieuNhap = new System.Windows.Forms.Button();
             this.btnXoaHD = new System.Windows.Forms.Button();
             this.tlpLichSu = new System.Windows.Forms.TableLayoutPanel();
             this.grpDSHoaDon = new System.Windows.Forms.GroupBox();
@@ -807,6 +808,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.pnlTopLichSu.Controls.Add(this.lblLocNCC);
             this.pnlTopLichSu.Controls.Add(this.cboLocNCC);
             this.pnlTopLichSu.Controls.Add(this.btnLamMoiLichSu);
+            this.pnlTopLichSu.Controls.Add(this.btnInPhieuNhap);
             this.pnlTopLichSu.Controls.Add(this.btnXoaHD);
             this.pnlTopLichSu.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTopLichSu.Location = new System.Drawing.Point(8, 8);
@@ -857,6 +859,21 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.btnLamMoiLichSu.UseVisualStyleBackColor = false;
             this.btnLamMoiLichSu.Click += new System.EventHandler(this.btnLamMoiLichSu_Click);
 
+            this.btnInPhieuNhap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnInPhieuNhap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this.btnInPhieuNhap.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInPhieuNhap.FlatAppearance.BorderSize = 0;
+            this.btnInPhieuNhap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInPhieuNhap.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnInPhieuNhap.ForeColor = System.Drawing.Color.White;
+            this.btnInPhieuNhap.Location = new System.Drawing.Point(925, 9);
+            this.btnInPhieuNhap.Name = "btnInPhieuNhap";
+            this.btnInPhieuNhap.Size = new System.Drawing.Size(165, 30);
+            this.btnInPhieuNhap.TabIndex = 5;
+            this.btnInPhieuNhap.Text = "Xem && In Phiếu Nhập";
+            this.btnInPhieuNhap.UseVisualStyleBackColor = false;
+            this.btnInPhieuNhap.Click += new System.EventHandler(this.btnInPhieuNhap_Click);
+
             this.btnXoaHD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnXoaHD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnXoaHD.FlatAppearance.BorderSize = 0;
@@ -866,7 +883,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.btnXoaHD.Location = new System.Drawing.Point(1100, 9);
             this.btnXoaHD.Name = "btnXoaHD";
             this.btnXoaHD.Size = new System.Drawing.Size(140, 30);
-            this.btnXoaHD.TabIndex = 5;
+            this.btnXoaHD.TabIndex = 6;
             this.btnXoaHD.Text = "Xóa Phiếu Nhập";
             this.btnXoaHD.UseVisualStyleBackColor = false;
             this.btnXoaHD.Click += new System.EventHandler(this.btnXoaHD_Click);
@@ -1008,6 +1025,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.tabHangHoa.Size = new System.Drawing.Size(1272, 625);
             this.tabHangHoa.TabIndex = 2;
             this.tabHangHoa.Text = "🏷️ Quản Lý Kho Hàng Hóa";
+            this.tabHangHoa.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabHangHoa_MouseDown);
 
             // grpHangHoa
             this.grpHangHoa.BackColor = System.Drawing.Color.White;
@@ -1044,6 +1062,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.grpHangHoa.TabIndex = 0;
             this.grpHangHoa.TabStop = false;
             this.grpHangHoa.Text = "THÔNG TIN HÀNG HÓA VÀ TỒN KHO";
+            this.grpHangHoa.MouseDown += new System.Windows.Forms.MouseEventHandler(this.grpHangHoa_MouseDown);
 
             // Mã HH
             this.lblMaHangHoa.AutoSize = true;
@@ -1272,6 +1291,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.dgvHangHoa.Size = new System.Drawing.Size(1215, 435);
             this.dgvHangHoa.TabIndex = 20;
             this.dgvHangHoa.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHangHoa_CellClick);
+            this.dgvHangHoa.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dgvHangHoa_MouseDown);
 
             // grpDanhMuc (Quản lý danh mục modal)
             this.grpDanhMuc.BackColor = System.Drawing.Color.White;
@@ -1535,6 +1555,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         private System.Windows.Forms.Label lblLocNCC;
         private System.Windows.Forms.ComboBox cboLocNCC;
         private System.Windows.Forms.Button btnLamMoiLichSu;
+        private System.Windows.Forms.Button btnInPhieuNhap;
         private System.Windows.Forms.Button btnXoaHD;
         private System.Windows.Forms.TableLayoutPanel tlpLichSu;
         private System.Windows.Forms.GroupBox grpDSHoaDon;

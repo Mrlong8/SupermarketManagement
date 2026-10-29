@@ -60,5 +60,37 @@ namespace SupermarketManagement.Models.Repositories
 
             return _db.GetListData(sql);
         }
+
+        // 3. Tổng Doanh Thu cả năm
+        public decimal GetTongDoanhThuNam(int nam)
+        {
+            string sql = $@"
+                SELECT ISNULL(SUM(ct.SoLuongBan * d.DonGiaBanLe), 0) AS TongDoanhThu
+                FROM HoaDon hd
+                INNER JOIN ChiTietHoaDon ct ON hd.MaHD = ct.MaHD
+                INNER JOIN SanPham_DonViTinh d ON d.MaSP = ct.MaSP AND d.MaDVT = ct.MaDVT
+                WHERE hd.NgayMua >= '{nam}-01-01' AND hd.NgayMua < '{nam + 1}-01-01'";
+
+            return LayGiaTriDau(_db.GetListData(sql));
+        }
+
+        // 4. Tổng Vốn Nhập cả năm
+        public decimal GetTongVonNhapNam(int nam)
+        {
+            string sql = $@"
+                SELECT ISNULL(SUM(ctpn.SoLuongNhap * ctpn.DonGiaNhap), 0) AS TongVonNhap
+                FROM PhieuNhapHang pn
+                INNER JOIN ChiTietPhieuNhapHang ctpn ON pn.MaPNH = ctpn.MaPNH
+                WHERE pn.NgayNhap >= '{nam}-01-01' AND pn.NgayNhap < '{nam + 1}-01-01'";
+
+            return LayGiaTriDau(_db.GetListData(sql));
+        }
+
+        private static decimal LayGiaTriDau(DataTable dt)
+        {
+            if (dt == null || dt.Rows.Count == 0 || dt.Rows[0][0] == DBNull.Value)
+                return 0;
+            return Convert.ToDecimal(dt.Rows[0][0]);
+        }
     }
 }

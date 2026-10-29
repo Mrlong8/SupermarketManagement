@@ -9,19 +9,24 @@ namespace SupermarketManagement.Views.Admin.Product
     {
         private SanPhamRepositoryV2 _repo = new SanPhamRepositoryV2();
         public static IndexProduct Instance;
+
+        // Khởi tạo Form và gán Instance dùng chung
         public IndexProduct()
         {
             InitializeComponent();
             Instance = this;
         }
 
+        // Khởi tạo danh mục, nạp danh sách sản phẩm và gắn sự kiện tự động tìm kiếm
         private void IndexProduct_Load(object sender, EventArgs e)
         {
             GetDanhMuc();
             GetSanPham();
+
+            txtTimKiem.TextChanged += txtTimKiem_TextChanged;
         }
 
-        // Hàm chung hỗ trợ vẽ danh sách Card Sản Phẩm lên FlowLayoutPanel
+        // Vẽ danh sách Card sản phẩm lên FlowLayoutPanel
         private void RenderProductList(DataTable products)
         {
             flpListProduct.SuspendLayout();
@@ -35,10 +40,9 @@ namespace SupermarketManagement.Views.Admin.Product
 
                     string maSP = item["MaSP"]?.ToString();
                     string tenSP = item["TenSanPham"]?.ToString();
-                    // Giá nhập, giá bán, đơn vị: lấy theo đơn vị cơ bản (SanPham_DonViTinh)
                     string giaNhap = item["DonGiaNhap"]?.ToString();
                     string giaBan = item["DonGiaBan"]?.ToString();
-                    string soLuong = item["SoLuong"]?.ToString();   // = SoLuongTong
+                    string soLuong = item["SoLuong"]?.ToString();
                     string urlImage = item["UrlImage"]?.ToString();
                     string tenDV = item["TenDV"]?.ToString();
 
@@ -50,12 +54,14 @@ namespace SupermarketManagement.Views.Admin.Product
             flpListProduct.ResumeLayout();
         }
 
+        // Lấy toàn bộ danh sách sản phẩm từ cơ sở dữ liệu và hiển thị lên giao diện
         public void GetSanPham()
         {
             DataTable products = _repo.GetListSanPham();
             RenderProductList(products);
         }
 
+        // Nạp dữ liệu danh mục sản phẩm vào ComboBox
         private void GetDanhMuc()
         {
             DataTable dt = _repo.GetDanhMuc();
@@ -66,6 +72,26 @@ namespace SupermarketManagement.Views.Admin.Product
             cbDanhMuc.SelectedIndex = -1;
         }
 
+        // Tự động lọc danh sách sản phẩm ngay khi nhập từ khóa vào ô tìm kiếm
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtTimKiem.Text.Trim();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                GetSanPham();
+                return;
+            }
+
+            cbDanhMuc.SelectedIndexChanged -= cbDanhMuc_SelectedIndexChanged;
+            cbDanhMuc.SelectedIndex = -1;
+            cbDanhMuc.SelectedIndexChanged += cbDanhMuc_SelectedIndexChanged;
+
+            DataTable dtResult = _repo.TimKiemSanPhamTheoTen(keyword);
+            RenderProductList(dtResult);
+        }
+
+        // Thực hiện tìm kiếm sản phẩm khi nhấn nút Tìm kiếm
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
             string keyword = txtTimKiem.Text.Trim();
@@ -77,7 +103,6 @@ namespace SupermarketManagement.Views.Admin.Product
                 txtTimKiem.Focus();
                 return;
             }
-
 
             cbDanhMuc.SelectedIndex = -1;
 
@@ -91,7 +116,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
-
+        // Xử lý sự kiện nhấn phím Enter trong ô tìm kiếm
         private void txtTimKiem_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -101,8 +126,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
-
-
+        // Lọc danh sách sản phẩm theo danh mục được chọn từ ComboBox
         private void cbDanhMuc_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cbDanhMuc.Focused && cbDanhMuc.SelectedValue != null)
@@ -116,6 +140,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
+        // Đưa ô tìm kiếm và danh mục về trạng thái mặc định
         private void btnReset_Click(object sender, EventArgs e)
         {
             txtTimKiem.Clear();

@@ -1,6 +1,7 @@
 using SupermarketManagement.Controllers;
 using SupermarketManagement.Models.Entities;
 using SupermarketManagement.Utils;
+using SupermarketManagement.Views.Admin.PhieuNhapHang;
 using System;
 using System.Data;
 using System.Drawing;
@@ -13,6 +14,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
     {
         private KhoHangController _controller = new KhoHangController();
         private DataTable _dtChiTietNhap = new DataTable();
+        private decimal _donGiaCoSoItem = 0;
+        private bool _isUpdatingGia = false;
 
         public IndexQuanLyKhoHang()
         {
@@ -163,17 +166,53 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 cboLocNCC.DataSource = dtLocNCC;
                 cboLocNCC.SelectedIndexChanged += cboLocNCC_SelectedIndexChanged;
 
-                // 2. Nhân Viên Nhập Kho
-                DataTable dtNV = _controller.LoadNhanVien();
+                // 2. Nhân Viên Nhập Kho (Hiển thị tên nhân viên thực tế chứ không phải username)
+                DataTable dtNV = new DataTable();
+                dtNV.Columns.Add("MaNV", typeof(int));
+                dtNV.Columns.Add("HoTen", typeof(string));
+
+                int maNVCurrent = UserSession.MaNV > 0 ? UserSession.MaNV : PhienDangNhap.MaNV;
+                string hoTenCurrent = UserSession.HoTen;
+
+                // Nếu tên nhân viên chưa có hoặc đang bằng username/mã số -> truy vấn tên nhân viên thật từ DB
+                if (string.IsNullOrWhiteSpace(hoTenCurrent) ||
+                    hoTenCurrent == UserSession.UserName ||
+                    int.TryParse(hoTenCurrent, out _))
+                {
+                    DataTable dtInfo = _controller.LayThongTinNhanVien(UserSession.UserName, maNVCurrent > 0 ? maNVCurrent.ToString() : "");
+                    if (dtInfo != null && dtInfo.Rows.Count > 0)
+                    {
+                        string tenThat = dtInfo.Rows[0]["HoTen"]?.ToString().Trim();
+                        if (!string.IsNullOrWhiteSpace(tenThat))
+                        {
+                            hoTenCurrent = tenThat;
+                            UserSession.HoTen = tenThat;
+                        }
+
+                        if (maNVCurrent <= 0 && dtInfo.Rows[0]["MaNV"] != DBNull.Value)
+                        {
+                            if (int.TryParse(dtInfo.Rows[0]["MaNV"].ToString(), out int maParsed) && maParsed > 0)
+                            {
+                                maNVCurrent = maParsed;
+                                UserSession.MaNV = maParsed;
+                            }
+                        }
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(hoTenCurrent))
+                {
+                    hoTenCurrent = !string.IsNullOrWhiteSpace(PhienDangNhap.HoTen) ? PhienDangNhap.HoTen : "Thủ kho";
+                }
+
+                int maNVThem = maNVCurrent > 0 ? maNVCurrent : 1;
+                dtNV.Rows.Add(maNVThem, hoTenCurrent);
+
                 cboNguoiNhap.DisplayMember = "HoTen";
                 cboNguoiNhap.ValueMember = "MaNV";
                 cboNguoiNhap.DataSource = dtNV;
-
-                int maNVCurrent = UserSession.MaNV > 0 ? UserSession.MaNV : PhienDangNhap.MaNV;
-                if (maNVCurrent > 0)
-                {
-                    cboNguoiNhap.SelectedValue = maNVCurrent.ToString();
-                }
+                cboNguoiNhap.SelectedIndex = 0;
+                cboNguoiNhap.Enabled = false;
 
                 // 3. Danh mục
                 CapNhatComboBoxDanhMuc();
@@ -269,6 +308,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 maSP = rowView["MaSP"].ToString();
             }
 
+            _donGiaCoSoItem = 0;
             LoadDonViTinhCuaSanPham(maSP);
         }
 
@@ -279,11 +319,11 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 DataTable dtDVT = _controller.LoadDonViTinhTheoSanPham(maSP);
                 if (dtDVT == null || dtDVT.Rows.Count == 0)
                 {
-                    dtDVT = _controller.LoadAllDonViTinh();
-                    if (!dtDVT.Columns.Contains("SoLuongQuyDoi"))
-                        dtDVT.Columns.Add("SoLuongQuyDoi", typeof(int), "1");
-                    if (!dtDVT.Columns.Contains("DonGiaNhapLe"))
-                        dtDVT.Columns.Add("DonGiaNhapLe", typeof(decimal), "0");
+                    dtDVT = new DataTable();
+                    dtDVT.Columns.Add("MaDVT", typeof(string));
+                    dtDVT.Columns.Add("TenDV", typeof(string));
+                    dtDVT.Columns.Add("SoLuongQuyDoi", typeof(int));
+                    dtDVT.Columns.Add("DonGiaNhapLe", typeof(decimal));
                 }
 
                 cboDonViTinh.SelectedIndexChanged -= cboDonViTinh_SelectedIndexChanged;
@@ -308,21 +348,44 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         {
             if (cboDonViTinh.SelectedItem is DataRowView drv)
             {
+                int quyDoi = 1;
                 if (drv.DataView.Table.Columns.Contains("SoLuongQuyDoi"))
                 {
-                    int quyDoi = Convert.ToInt32(drv["SoLuongQuyDoi"]);
-                    nudSoLuongQuyDoi.Value = quyDoi > 0 ? quyDoi : 1;
-                }
-                else
-                {
-                    nudSoLuongQuyDoi.Value = 1;
+                    quyDoi = Convert.ToInt32(drv["SoLuongQuyDoi"]);
+                    if (quyDoi <= 0) quyDoi = 1;
                 }
 
+                decimal gia = 0;
                 if (drv.DataView.Table.Columns.Contains("DonGiaNhapLe"))
                 {
-                    decimal gia = Convert.ToDecimal(drv["DonGiaNhapLe"]);
-                    txtDonGiaNhapItem.Text = gia.ToString("N0");
+                    gia = Convert.ToDecimal(drv["DonGiaNhapLe"]);
                 }
+
+                // Thiết lập đơn giá cơ sở cho 1 item
+                if (quyDoi == 1 && gia > 0)
+                {
+                    _donGiaCoSoItem = gia;
+                }
+                else if (quyDoi > 1 && gia > 0)
+                {
+                    if (_donGiaCoSoItem <= 0)
+                    {
+                        _donGiaCoSoItem = gia / quyDoi;
+                    }
+                    else
+                    {
+                        gia = _donGiaCoSoItem * quyDoi;
+                    }
+                }
+                else if (_donGiaCoSoItem > 0 && gia == 0)
+                {
+                    gia = _donGiaCoSoItem * quyDoi;
+                }
+
+                _isUpdatingGia = true;
+                nudSoLuongQuyDoi.Value = quyDoi;
+                txtDonGiaNhapItem.Text = gia.ToString("N0");
+                _isUpdatingGia = false;
             }
 
             CapNhatQuyDoiVaThanhTienItem();
@@ -335,11 +398,36 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void nudSoLuongQuyDoi_ValueChanged(object sender, EventArgs e)
         {
+            if (_isUpdatingGia) return;
+
+            int quyDoi = (int)nudSoLuongQuyDoi.Value;
+            if (quyDoi <= 0) quyDoi = 1;
+
+            // Đảm bảo đơn giá trên mỗi item luôn nhất quán: mua 1 item hay 10 item giá không được khác nhau
+            if (_donGiaCoSoItem > 0)
+            {
+                _isUpdatingGia = true;
+                decimal giaMoi = _donGiaCoSoItem * quyDoi;
+                txtDonGiaNhapItem.Text = giaMoi.ToString("N0");
+                _isUpdatingGia = false;
+            }
+
             CapNhatQuyDoiVaThanhTienItem();
         }
 
         private void txtDonGiaNhapItem_TextChanged(object sender, EventArgs e)
         {
+            if (_isUpdatingGia) return;
+
+            string rawGia = txtDonGiaNhapItem.Text.Replace(",", "").Replace(".", "").Trim();
+            if (decimal.TryParse(rawGia, out decimal donGia) && donGia >= 0)
+            {
+                int quyDoi = (int)nudSoLuongQuyDoi.Value;
+                if (quyDoi <= 0) quyDoi = 1;
+                // Cập nhật lại đơn giá cơ sở tương ứng cho 1 item
+                _donGiaCoSoItem = donGia / quyDoi;
+            }
+
             CapNhatQuyDoiVaThanhTienItem();
         }
 
@@ -352,19 +440,20 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             int slKho = slNhap * quyDoi;
             string tenDV = cboDonViTinh.Text;
 
-            // Hiển thị công thức quy đổi trực quan theo yêu cầu bài toán
-            lblQuyDoiPreview.Text = $"👉 Quy đổi: {slNhap} {tenDV} x {quyDoi} = {slKho:N0} (sẽ cộng vào tổng kho)";
-
             // Tính thành tiền của món
             string rawGia = txtDonGiaNhapItem.Text.Replace(",", "").Replace(".", "").Trim();
             if (decimal.TryParse(rawGia, out decimal donGia))
             {
                 decimal thanhTien = slNhap * donGia;
                 txtThanhTienItem.Text = thanhTien.ToString("N0") + " đ";
+
+                decimal giaItem = quyDoi > 0 ? (donGia / quyDoi) : donGia;
+                lblQuyDoiPreview.Text = $"👉 Quy đổi: {slNhap} {tenDV} x {quyDoi} = {slKho:N0} (sẽ cộng vào tổng kho) | Đơn giá: {giaItem:N0} đ/item";
             }
             else
             {
                 txtThanhTienItem.Text = "0 đ";
+                lblQuyDoiPreview.Text = $"👉 Quy đổi: {slNhap} {tenDV} x {quyDoi} = {slKho:N0} (sẽ cộng vào tổng kho)";
             }
         }
 
@@ -374,8 +463,45 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             dtpHSD.Enabled = chkCoHSD.Checked;
         }
 
+        private bool KiemTraQuyenNhapHang(bool hienThongBao = true)
+        {
+            int maNV = UserSession.MaNV > 0 ? UserSession.MaNV : PhienDangNhap.MaNV;
+            if (maNV <= 0)
+            {
+                if (hienThongBao)
+                {
+                    MessageBox.Show("Vui lòng đăng nhập hệ thống để thực hiện chức năng nhập hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return false;
+            }
+
+            string role = (UserSession.Role ?? PhienDangNhap.Role ?? "").Trim();
+            string chucVu = (UserSession.ChucVu ?? PhienDangNhap.ChucVu ?? "").Trim();
+
+            bool laThuNgan = UserSession.LaCashier
+                || string.Equals(role, "Cashier", StringComparison.OrdinalIgnoreCase)
+                || chucVu.IndexOf("thu ngân", StringComparison.OrdinalIgnoreCase) >= 0
+                || role.IndexOf("thu ngân", StringComparison.OrdinalIgnoreCase) >= 0;
+
+            bool laAdmin = UserSession.LaAdmin
+                || PhienDangNhap.LaAdmin
+                || string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase);
+
+            if (!laThuNgan && !laAdmin)
+            {
+                if (hienThongBao)
+                {
+                    MessageBox.Show("Chỉ nhân viên có vai trò Thu ngân đã đăng nhập mới được phép nhập hàng!", "Cảnh báo phân quyền", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return false;
+            }
+
+            return true;
+        }
+
         private void btnThemChiTiet_Click(object sender, EventArgs e)
         {
+            if (!KiemTraQuyenNhapHang(true)) return;
             if (cboMatHang.SelectedValue == null)
             {
                 MessageBox.Show("Vui lòng chọn một mặt hàng!", "Nhắc nhở", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -528,10 +654,13 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void btnLuuHD_Click(object sender, EventArgs e)
         {
+            if (!KiemTraQuyenNhapHang(true)) return;
+
             string maPNH = txtMaHoaDon.Text.Trim();
             DateTime ngayNhap = dtpNgayNhap.Value;
             string maNCC = cboNhaCungCap.SelectedValue != null ? cboNhaCungCap.SelectedValue.ToString() : "";
-            string maNV = cboNguoiNhap.SelectedValue != null ? cboNguoiNhap.SelectedValue.ToString() : "1";
+            int maNVLogin = UserSession.MaNV > 0 ? UserSession.MaNV : PhienDangNhap.MaNV;
+            string maNV = maNVLogin > 0 ? maNVLogin.ToString() : (cboNguoiNhap.SelectedValue != null ? cboNguoiNhap.SelectedValue.ToString() : "1");
 
             if (string.IsNullOrWhiteSpace(maNCC))
             {
@@ -786,6 +915,26 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             LoadDanhSachHoaDonNhap();
         }
 
+        private void btnInPhieuNhap_Click(object sender, EventArgs e)
+        {
+            if (dgvHoaDonNhap.CurrentRow == null || dgvHoaDonNhap.CurrentRow.Index < 0)
+            {
+                MessageBox.Show("Vui lòng chọn một phiếu nhập từ bảng để xem chi tiết và in phiếu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maPNH = dgvHoaDonNhap.CurrentRow.Cells["MaPNH"].Value?.ToString();
+            if (string.IsNullOrEmpty(maPNH))
+            {
+                MessageBox.Show("Không tìm thấy mã phiếu nhập của dòng đã chọn!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            IndexPhieuNhapHang frmPrint = new IndexPhieuNhapHang(maPNH);
+            frmPrint.StartPosition = FormStartPosition.CenterParent;
+            frmPrint.ShowDialog();
+        }
+
         private void btnXoaHD_Click(object sender, EventArgs e)
         {
             if (dgvHoaDonNhap.CurrentRow == null || dgvHoaDonNhap.CurrentRow.Index < 0)
@@ -895,6 +1044,29 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                     cboDanhMucHH.SelectedValue = row.Cells["MaDM"].Value.ToString();
                 }
             }
+            else
+            {
+                LamMoiFormHangHoa();
+            }
+        }
+
+        private void dgvHangHoa_MouseDown(object sender, MouseEventArgs e)
+        {
+            DataGridView.HitTestInfo hit = dgvHangHoa.HitTest(e.X, e.Y);
+            if (hit.Type == DataGridViewHitTestType.None || hit.RowIndex < 0)
+            {
+                LamMoiFormHangHoa();
+            }
+        }
+
+        private void grpHangHoa_MouseDown(object sender, MouseEventArgs e)
+        {
+            LamMoiFormHangHoa();
+        }
+
+        private void tabHangHoa_MouseDown(object sender, MouseEventArgs e)
+        {
+            LamMoiFormHangHoa();
         }
 
         private void btnThemHH_Click(object sender, EventArgs e)
@@ -1043,15 +1215,16 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         {
             txtMaHangHoa.Text = _controller.TaoMaSanPhamMoi();
             txtTenHangHoa.Clear();
-            txtSoLuong.Text = "0";
-            txtDonGiaNhap.Text = "0";
-            txtDonGiaBan.Text = "0";
+            txtSoLuong.Clear();
+            txtDonGiaNhap.Clear();
+            txtDonGiaBan.Clear();
             txtMoTaHH.Clear();
             if (cboDanhMucHH.Items.Count > 0)
             {
                 cboDanhMucHH.SelectedIndex = 0;
             }
             dgvHangHoa.ClearSelection();
+            dgvHangHoa.CurrentCell = null;
         }
 
         #endregion

@@ -23,14 +23,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvListHoaDonMua = new System.Windows.Forms.DataGridView();
-            this.txtTimKiem = new System.Windows.Forms.TextBox();
             this.grb1 = new System.Windows.Forms.GroupBox();
             this.btnXemTruocHD = new System.Windows.Forms.Button();
             this.grbThongtin = new System.Windows.Forms.GroupBox();
             this.dgvChiTiet = new System.Windows.Forms.DataGridView();
-            this.label2 = new System.Windows.Forms.Label();
             this.btnReset = new System.Windows.Forms.Button();
-            this.btnTimKiem = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dtpNgayMua = new System.Windows.Forms.DateTimePicker();
             this.lblNgayBan = new System.Windows.Forms.Label();
@@ -90,19 +87,9 @@
             this.dgvListHoaDonMua.RowHeadersWidth = 51;
             this.dgvListHoaDonMua.RowTemplate.Height = 32;
             this.dgvListHoaDonMua.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvListHoaDonMua.Size = new System.Drawing.Size(656, 185);
+            this.dgvListHoaDonMua.Size = new System.Drawing.Size(656, 224);
             this.dgvListHoaDonMua.TabIndex = 0;
             this.dgvListHoaDonMua.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListHoaDonMua_CellContentClick);
-            // 
-            // txtTimKiem
-            // 
-            this.txtTimKiem.BackColor = System.Drawing.Color.White;
-            this.txtTimKiem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtTimKiem.Location = new System.Drawing.Point(222, 26);
-            this.txtTimKiem.Name = "txtTimKiem";
-            this.txtTimKiem.Size = new System.Drawing.Size(250, 30);
-            this.txtTimKiem.TabIndex = 2;
             // 
             // grb1
             // 
@@ -111,9 +98,9 @@
             this.grb1.Controls.Add(this.dgvListHoaDonMua);
             this.grb1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.grb1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(80)))));
-            this.grb1.Location = new System.Drawing.Point(30, 65);
+            this.grb1.Location = new System.Drawing.Point(30, 26);
             this.grb1.Name = "grb1";
-            this.grb1.Size = new System.Drawing.Size(686, 235);
+            this.grb1.Size = new System.Drawing.Size(686, 274);
             this.grb1.TabIndex = 3;
             this.grb1.TabStop = false;
             this.grb1.Text = "Danh Sách Hóa Đơn";
@@ -200,17 +187,6 @@
             this.dgvChiTiet.Size = new System.Drawing.Size(1177, 231);
             this.dgvChiTiet.TabIndex = 1;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(221, 5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(98, 16);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "nhập mã để tìm";
-            // 
             // btnReset
             // 
             this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -230,25 +206,6 @@
             this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // btnTimKiem
-            // 
-            this.btnTimKiem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(191)))), ((int)(((byte)(255)))));
-            this.btnTimKiem.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTimKiem.FlatAppearance.BorderSize = 0;
-            this.btnTimKiem.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(145)))), ((int)(((byte)(205)))));
-            this.btnTimKiem.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(225)))));
-            this.btnTimKiem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTimKiem.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnTimKiem.ForeColor = System.Drawing.Color.White;
-            this.btnTimKiem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTimKiem.Location = new System.Drawing.Point(54, 26);
-            this.btnTimKiem.Name = "btnTimKiem";
-            this.btnTimKiem.Size = new System.Drawing.Size(141, 32);
-            this.btnTimKiem.TabIndex = 1;
-            this.btnTimKiem.Text = "  Tìm Kiếm";
-            this.btnTimKiem.UseVisualStyleBackColor = false;
-            this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -260,9 +217,9 @@
             this.groupBox1.Controls.Add(this.cbNhanVien);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(80)))));
-            this.groupBox1.Location = new System.Drawing.Point(722, 65);
+            this.groupBox1.Location = new System.Drawing.Point(722, 37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(497, 235);
+            this.groupBox1.Size = new System.Drawing.Size(497, 263);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Lọc Hóa Đơn";
@@ -328,12 +285,9 @@
             this.ClientSize = new System.Drawing.Size(1240, 633);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnReset);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.grbThongtin);
             this.Controls.Add(this.btnXemTruocHD);
             this.Controls.Add(this.grb1);
-            this.Controls.Add(this.txtTimKiem);
-            this.Controls.Add(this.btnTimKiem);
             this.Name = "IndexLichSuBan";
             this.Padding = new System.Windows.Forms.Padding(5);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -346,19 +300,15 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.DataGridView dgvListHoaDonMua;
-        private System.Windows.Forms.Button btnTimKiem;
-        private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.GroupBox grb1;
         private System.Windows.Forms.Button btnXemTruocHD;
         private System.Windows.Forms.GroupBox grbThongtin;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.DataGridView dgvChiTiet;
         private System.Windows.Forms.GroupBox groupBox1;
