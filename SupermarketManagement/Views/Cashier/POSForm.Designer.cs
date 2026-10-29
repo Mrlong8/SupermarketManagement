@@ -20,17 +20,17 @@ namespace SupermarketManagement
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTieuDe = new System.Windows.Forms.Label();
             this.lblNhanVien = new System.Windows.Forms.Label();
@@ -101,6 +101,7 @@ namespace SupermarketManagement
             this.btnThemHoaDon = new System.Windows.Forms.Button();
             this.btnTaoHoaDon = new System.Windows.Forms.Button();
             this.btnXuatHoaDon = new System.Windows.Forms.Button();
+            this.btnTraHang = new System.Windows.Forms.Button();
             this.btnThoat = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -259,19 +260,19 @@ namespace SupermarketManagement
             this.dgvDSSP.AllowUserToAddRows = false;
             this.dgvDSSP.AllowUserToDeleteRows = false;
             this.dgvDSSP.AllowUserToResizeRows = false;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
-            this.dgvDSSP.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
+            this.dgvDSSP.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDSSP.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDSSP.BackgroundColor = System.Drawing.Color.White;
             this.dgvDSSP.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
-            dataGridViewCellStyle13.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDSSP.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDSSP.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDSSP.ColumnHeadersHeight = 34;
             this.dgvDSSP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDSSP.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -280,14 +281,14 @@ namespace SupermarketManagement
             this.colSoLuong_DSSP,
             this.colDonGiaBan_DSSP,
             this.colDonViTinh_DSSP});
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDSSP.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDSSP.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvDSSP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDSSP.EnableHeadersVisualStyles = false;
             this.dgvDSSP.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -328,9 +329,9 @@ namespace SupermarketManagement
             // colSoLuong_DSSP
             // 
             this.colSoLuong_DSSP.DataPropertyName = "SoLuong";
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle14.Format = "N0";
-            this.colSoLuong_DSSP.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "N0";
+            this.colSoLuong_DSSP.DefaultCellStyle = dataGridViewCellStyle3;
             this.colSoLuong_DSSP.FillWeight = 15F;
             this.colSoLuong_DSSP.HeaderText = "Tồn kho";
             this.colSoLuong_DSSP.MinimumWidth = 8;
@@ -340,9 +341,9 @@ namespace SupermarketManagement
             // colDonGiaBan_DSSP
             // 
             this.colDonGiaBan_DSSP.DataPropertyName = "DonGiaBan";
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle15.Format = "N0";
-            this.colDonGiaBan_DSSP.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Format = "N0";
+            this.colDonGiaBan_DSSP.DefaultCellStyle = dataGridViewCellStyle4;
             this.colDonGiaBan_DSSP.FillWeight = 20F;
             this.colDonGiaBan_DSSP.HeaderText = "Đơn giá bán";
             this.colDonGiaBan_DSSP.MinimumWidth = 8;
@@ -447,19 +448,19 @@ namespace SupermarketManagement
             this.dgvChiTietHoaDon.AllowUserToAddRows = false;
             this.dgvChiTietHoaDon.AllowUserToDeleteRows = false;
             this.dgvChiTietHoaDon.AllowUserToResizeRows = false;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
-            this.dgvChiTietHoaDon.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
+            this.dgvChiTietHoaDon.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvChiTietHoaDon.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvChiTietHoaDon.BackgroundColor = System.Drawing.Color.White;
             this.dgvChiTietHoaDon.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvChiTietHoaDon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvChiTietHoaDon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvChiTietHoaDon.ColumnHeadersHeight = 34;
             this.dgvChiTietHoaDon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvChiTietHoaDon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -469,14 +470,14 @@ namespace SupermarketManagement
             this.colDonViTinh,
             this.colDonGia,
             this.colThanhTien});
-            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle22.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle22.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
-            dataGridViewCellStyle22.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle22.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
-            dataGridViewCellStyle22.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvChiTietHoaDon.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvChiTietHoaDon.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgvChiTietHoaDon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvChiTietHoaDon.EnableHeadersVisualStyles = false;
             this.dgvChiTietHoaDon.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -512,9 +513,9 @@ namespace SupermarketManagement
             // 
             // colSoLuong
             // 
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle19.Format = "N0";
-            this.colSoLuong.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.Format = "N0";
+            this.colSoLuong.DefaultCellStyle = dataGridViewCellStyle8;
             this.colSoLuong.FillWeight = 12F;
             this.colSoLuong.HeaderText = "Số lượng";
             this.colSoLuong.MinimumWidth = 8;
@@ -531,9 +532,9 @@ namespace SupermarketManagement
             // 
             // colDonGia
             // 
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle20.Format = "N0";
-            this.colDonGia.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.Format = "N0";
+            this.colDonGia.DefaultCellStyle = dataGridViewCellStyle9;
             this.colDonGia.FillWeight = 19F;
             this.colDonGia.HeaderText = "Đơn giá";
             this.colDonGia.MinimumWidth = 8;
@@ -542,9 +543,9 @@ namespace SupermarketManagement
             // 
             // colThanhTien
             // 
-            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle21.Format = "N0";
-            this.colThanhTien.DefaultCellStyle = dataGridViewCellStyle21;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.Format = "N0";
+            this.colThanhTien.DefaultCellStyle = dataGridViewCellStyle10;
             this.colThanhTien.FillWeight = 19F;
             this.colThanhTien.HeaderText = "Thành tiền";
             this.colThanhTien.MinimumWidth = 8;
@@ -1092,14 +1093,16 @@ namespace SupermarketManagement
             this.tlpNut.Controls.Add(this.btnThemHoaDon, 0, 0);
             this.tlpNut.Controls.Add(this.btnTaoHoaDon, 1, 0);
             this.tlpNut.Controls.Add(this.btnXuatHoaDon, 0, 1);
-            this.tlpNut.Controls.Add(this.btnThoat, 1, 1);
+            this.tlpNut.Controls.Add(this.btnTraHang, 1, 1);
+            this.tlpNut.Controls.Add(this.btnThoat, 0, 2);
             this.tlpNut.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpNut.Location = new System.Drawing.Point(4, 857);
             this.tlpNut.Margin = new System.Windows.Forms.Padding(4);
             this.tlpNut.Name = "tlpNut";
-            this.tlpNut.RowCount = 2;
-            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpNut.RowCount = 3;
+            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.333F));
+            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.333F));
+            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.334F));
             this.tlpNut.Size = new System.Drawing.Size(703, 157);
             this.tlpNut.TabIndex = 2;
             // 
@@ -1115,7 +1118,7 @@ namespace SupermarketManagement
             this.btnThemHoaDon.Location = new System.Drawing.Point(6, 6);
             this.btnThemHoaDon.Margin = new System.Windows.Forms.Padding(6);
             this.btnThemHoaDon.Name = "btnThemHoaDon";
-            this.btnThemHoaDon.Size = new System.Drawing.Size(339, 66);
+            this.btnThemHoaDon.Size = new System.Drawing.Size(339, 40);
             this.btnThemHoaDon.TabIndex = 0;
             this.btnThemHoaDon.Text = "Hóa đơn mới";
             this.btnThemHoaDon.UseVisualStyleBackColor = false;
@@ -1133,7 +1136,7 @@ namespace SupermarketManagement
             this.btnTaoHoaDon.Location = new System.Drawing.Point(357, 6);
             this.btnTaoHoaDon.Margin = new System.Windows.Forms.Padding(6);
             this.btnTaoHoaDon.Name = "btnTaoHoaDon";
-            this.btnTaoHoaDon.Size = new System.Drawing.Size(340, 66);
+            this.btnTaoHoaDon.Size = new System.Drawing.Size(340, 40);
             this.btnTaoHoaDon.TabIndex = 1;
             this.btnTaoHoaDon.Text = "Xem lịch sử hóa đơn";
             this.btnTaoHoaDon.UseVisualStyleBackColor = false;
@@ -1148,29 +1151,48 @@ namespace SupermarketManagement
             this.btnXuatHoaDon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXuatHoaDon.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnXuatHoaDon.ForeColor = System.Drawing.Color.White;
-            this.btnXuatHoaDon.Location = new System.Drawing.Point(6, 84);
+            this.btnXuatHoaDon.Location = new System.Drawing.Point(6, 58);
             this.btnXuatHoaDon.Margin = new System.Windows.Forms.Padding(6);
             this.btnXuatHoaDon.Name = "btnXuatHoaDon";
-            this.btnXuatHoaDon.Size = new System.Drawing.Size(339, 67);
+            this.btnXuatHoaDon.Size = new System.Drawing.Size(339, 40);
             this.btnXuatHoaDon.TabIndex = 2;
             this.btnXuatHoaDon.Text = "Xuất hóa đơn";
             this.btnXuatHoaDon.UseVisualStyleBackColor = false;
             this.btnXuatHoaDon.Click += new System.EventHandler(this.btnXuatHoaDon_Click);
             // 
+            // btnTraHang
+            // 
+            this.btnTraHang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.btnTraHang.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTraHang.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnTraHang.FlatAppearance.BorderSize = 0;
+            this.btnTraHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTraHang.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnTraHang.ForeColor = System.Drawing.Color.White;
+            this.btnTraHang.Location = new System.Drawing.Point(357, 58);
+            this.btnTraHang.Margin = new System.Windows.Forms.Padding(6);
+            this.btnTraHang.Name = "btnTraHang";
+            this.btnTraHang.Size = new System.Drawing.Size(340, 40);
+            this.btnTraHang.TabIndex = 3;
+            this.btnTraHang.Text = "Trả hàng";
+            this.btnTraHang.UseVisualStyleBackColor = false;
+            this.btnTraHang.Click += new System.EventHandler(this.btnTraHang_Click);
+            // 
             // btnThoat
             // 
             this.btnThoat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.tlpNut.SetColumnSpan(this.btnThoat, 2);
             this.btnThoat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThoat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnThoat.FlatAppearance.BorderSize = 0;
             this.btnThoat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThoat.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnThoat.ForeColor = System.Drawing.Color.White;
-            this.btnThoat.Location = new System.Drawing.Point(357, 84);
+            this.btnThoat.Location = new System.Drawing.Point(6, 110);
             this.btnThoat.Margin = new System.Windows.Forms.Padding(6);
             this.btnThoat.Name = "btnThoat";
-            this.btnThoat.Size = new System.Drawing.Size(340, 67);
-            this.btnThoat.TabIndex = 3;
+            this.btnThoat.Size = new System.Drawing.Size(691, 41);
+            this.btnThoat.TabIndex = 4;
             this.btnThoat.Text = "Đăng xuất";
             this.btnThoat.UseVisualStyleBackColor = false;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
@@ -1293,6 +1315,7 @@ namespace SupermarketManagement
         private Button btnThemHoaDon;
         private Button btnTaoHoaDon;
         private Button btnXuatHoaDon;
+        private Button btnTraHang;
         private Button btnThoat;
         private GroupBox grpGiamGia;
         private RadioButton rdoGiam30;

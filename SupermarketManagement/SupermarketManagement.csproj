@@ -155,6 +155,7 @@
     <Compile Include="Models\Repositories\NhanVienRepository.cs" />
     <Compile Include="Models\Repositories\SanPhamRepositoryV2.cs" />
     <Compile Include="Models\Repositories\ThongKeRepository.cs" />
+    <Compile Include="Models\Repositories\TraHangRepository.cs" />
     <Compile Include="Views\Admin\Account\IndexAccount.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -275,6 +276,12 @@
     <Compile Include="Views\Auth\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Cashier\ChonSanPhamTraHangForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Cashier\ChonSanPhamTraHangForm.Designer.cs">
+      <DependentUpon>ChonSanPhamTraHangForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cashier\InvoiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -286,6 +293,12 @@
     </Compile>
     <Compile Include="Views\Cashier\POSForm.Designer.cs">
       <DependentUpon>POSForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cashier\TraHangForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Cashier\TraHangForm.Designer.cs">
+      <DependentUpon>TraHangForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -342,6 +355,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\POSForm.resx">
       <DependentUpon>POSForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Cashier\TraHangForm.resx">
+      <DependentUpon>TraHangForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
