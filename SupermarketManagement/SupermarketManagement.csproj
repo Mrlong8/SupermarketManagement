@@ -350,12 +350,16 @@
     <EmbeddedResource Include="Views\Admin\ThongKe\IndexThongKe.resx">
       <DependentUpon>IndexThongKe.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Cashier\ChonSanPhamTraHangForm.resx">
-      <DependentUpon>ChonSanPhamTraHangForm.cs</DependentUpon>
-    <EmbeddedResource Include="Views\Auth\LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Cashier\InvoiceForm.resx">
+
+	  <EmbeddedResource Include="Views\Cashier\ChonSanPhamTraHangForm.resx">
+		  <DependentUpon>ChonSanPhamTraHangForm.cs</DependentUpon>
+	  </EmbeddedResource>
+
+	  <EmbeddedResource Include="Views\Auth\LoginForm.resx">
+		  <DependentUpon>LoginForm.cs</DependentUpon>
+	  </EmbeddedResource>
+
+	  <EmbeddedResource Include="Views\Cashier\InvoiceForm.resx">
       <DependentUpon>InvoiceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\POSForm.resx">
