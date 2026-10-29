@@ -377,3 +377,4 @@ namespace SupermarketManagement.Views.Admin.LichSuTraHang
         }
     }
 }
+

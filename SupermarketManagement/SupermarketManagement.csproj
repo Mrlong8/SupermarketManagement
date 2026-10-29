@@ -283,12 +283,6 @@
     <Compile Include="Views\Auth\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Cashier\ChonSanPhamTraHangForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Cashier\ChonSanPhamTraHangForm.Designer.cs">
-      <DependentUpon>ChonSanPhamTraHangForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Cashier\InvoiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -329,6 +323,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\LichSuTraHang\IndexLichSuTraHang.resx">
       <DependentUpon>IndexLichSuTraHang.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\NhanVien\IndexNhanVien.resx">
       <DependentUpon>IndexNhanVien.cs</DependentUpon>
@@ -359,9 +354,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\ThongKe\IndexThongKe.resx">
       <DependentUpon>IndexThongKe.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Cashier\ChonSanPhamTraHangForm.resx">
-      <DependentUpon>ChonSanPhamTraHangForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Auth\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

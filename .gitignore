@@ -5,3 +5,5 @@ obj/
 *.user
 *.userosscache
 *.sln.docstates
+UpgradeLog*.htm
+*_backup.*

@@ -28,7 +28,7 @@ namespace SupermarketManagement.Models.Repositories
                                WHERE pt.MaHD = ct.MaHD
                                  AND cpt.MaSP = ct.MaSP
                                  AND cpt.MaDVT = ct.MaDVT), 0) AS SoLuongDaTra,
-                       d.DonGiaBanLe AS DonGia, d.SoLuongQuyDoi
+                       d.DonGiaBanLe AS DonGia, ct.SoLuongBan * d.SoLuongQuyDoi AS SoLuongQuyDoi,d.SoLuongQuyDoi AS HeSoQuyDoi
                 FROM dbo.ChiTietHoaDon ct
                 INNER JOIN dbo.SanPham sp ON sp.MaSP = ct.MaSP
                 INNER JOIN dbo.SanPham_DonViTinh d ON d.MaSP = ct.MaSP AND d.MaDVT = ct.MaDVT
@@ -153,7 +153,7 @@ namespace SupermarketManagement.Models.Repositories
                                 throw new Exception($"Sản phẩm {row["TenSanPham"]}: chỉ còn được trả tối đa {daMua - daTra} {row["TenDV"]}.");
 
                             decimal donGia = Convert.ToDecimal(row["DonGia"]);
-                            int quyDoi = Convert.ToInt32(row["SoLuongQuyDoi"]);
+                            int quyDoi = Convert.ToInt32(row["HeSoQuyDoi"]);
                             using (var cmd = new SqlCommand(@"INSERT INTO dbo.ChiTietPhieuTraHang
                                 (MaPhieuTra, MaSP, MaDVT, SoLuongTra, DonGiaHoan)
                                 VALUES (@MaPhieuTra, @MaSP, @MaDVT, @SoLuongTra, @DonGia);", conn, tran))

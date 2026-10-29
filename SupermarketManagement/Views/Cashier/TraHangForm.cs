@@ -41,6 +41,7 @@ namespace SupermarketManagement.Views.Cashier
             }
         }
 
+
         private void BtnCapNhatSoLuongTra_Click(object sender, EventArgs e)
         {
             if (dgv.CurrentRow == null ||
@@ -67,12 +68,20 @@ namespace SupermarketManagement.Views.Cashier
                 return;
             }
 
+            // Lấy hệ số quy đổi của một đơn vị tính.
+            int heSoQuyDoi = Convert.ToInt32(row["HeSoQuyDoi"]);
+
+            // Cập nhật số lượng trả và số lượng quy đổi tương ứng.
             row["SoLuongTra"] = soLuongTra;
+            row["SoLuongQuyDoi"] = soLuongTra * heSoQuyDoi;
+
+            // Tính thành tiền.
             row["ThanhTien"] = soLuongTra *
                 Convert.ToDecimal(row["DonGia"]);
 
             dgv.Refresh();
         }
+
 
         private void TaoMaPhieuMoi()
         {
@@ -92,6 +101,7 @@ namespace SupermarketManagement.Views.Cashier
             bangChiTiet.Columns.Add("SoLuongDaTra", typeof(int));
             bangChiTiet.Columns.Add("SoLuongTra", typeof(int));
             bangChiTiet.Columns.Add("DonGia", typeof(decimal));
+            bangChiTiet.Columns.Add("HeSoQuyDoi", typeof(int));
             bangChiTiet.Columns.Add("SoLuongQuyDoi", typeof(int));
             bangChiTiet.Columns.Add("ThanhTien", typeof(decimal));
             dgv.DataSource = bangChiTiet;
@@ -137,6 +147,7 @@ namespace SupermarketManagement.Views.Cashier
                         Convert.ToInt32(row["SoLuongDaTra"]),
                         0,
                         Convert.ToDecimal(row["DonGia"]),
+                        Convert.ToInt32(row["HeSoQuyDoi"]),
                         Convert.ToInt32(row["SoLuongQuyDoi"]),
                         0m
                     );
