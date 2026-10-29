@@ -17,10 +17,10 @@ namespace SupermarketManagement.Controllers.Repositories
         // khai báo biết chuỗi kết nối đến cơ sở dữ liệu SQL Server
         //private static string str = @"Data Source=localhost;Initial Catalog=SupermarketManagement;Integrated Security=True";//của diễn
 
-        //private static  string str = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True"; ///của Long
+        private static  string str = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=SupermarketManagement;Integrated Security=True"; ///của Long
         //public static string ConnectionString => str;
         public SqlConnection CreateConnection() => new SqlConnection(str);
-        private static string str = @"Data Source=localhost;Initial Catalog=SupermarketManagement;Integrated Security=True"; // của Nam
+        //private static string str = @"Data Source=localhost;Initial Catalog=SupermarketManagement;Integrated Security=True"; // của Nam
 
         // csdl của ai thì đổi địa chỉ ở đây  nhớ copy ra òng khác và conment lại dòng này để tránh xung đột nhé
         SqlConnection sqlConnection = null;

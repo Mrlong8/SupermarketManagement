@@ -29,6 +29,12 @@ namespace SupermarketManagement.Views.Admin
         private void InitializeComponent()
         {
             this.pnlSideBar = new System.Windows.Forms.Panel();
+            this.pnlMainAdmin = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnLichSuTraHang = new System.Windows.Forms.Button();
             this.btnBanHang = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btnNhapHang = new System.Windows.Forms.Button();
@@ -39,11 +45,6 @@ namespace SupermarketManagement.Views.Admin
             this.btnManagerProduct = new System.Windows.Forms.Button();
             this.btnManageStaff = new System.Windows.Forms.Button();
             this.btnProfile = new System.Windows.Forms.Button();
-            this.pnlMainAdmin = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnlHeader = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.pnlSideBar.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnlHeader.SuspendLayout();
@@ -53,6 +54,7 @@ namespace SupermarketManagement.Views.Admin
             // pnlSideBar
             // 
             this.pnlSideBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(52)))), ((int)(((byte)(77)))));
+            this.pnlSideBar.Controls.Add(this.btnLichSuTraHang);
             this.pnlSideBar.Controls.Add(this.btnBanHang);
             this.pnlSideBar.Controls.Add(this.button1);
             this.pnlSideBar.Controls.Add(this.btnNhapHang);
@@ -69,6 +71,92 @@ namespace SupermarketManagement.Views.Admin
             this.pnlSideBar.Name = "pnlSideBar";
             this.pnlSideBar.Size = new System.Drawing.Size(290, 767);
             this.pnlSideBar.TabIndex = 1;
+            // 
+            // pnlMainAdmin
+            // 
+            this.pnlMainAdmin.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pnlMainAdmin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMainAdmin.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.pnlMainAdmin.Location = new System.Drawing.Point(0, 60);
+            this.pnlMainAdmin.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlMainAdmin.Name = "pnlMainAdmin";
+            this.pnlMainAdmin.Size = new System.Drawing.Size(1291, 707);
+            this.pnlMainAdmin.TabIndex = 2;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.pnlMainAdmin, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pnlHeader, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(290, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1291, 767);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.pnlHeader.Controls.Add(this.label1);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1291, 60);
+            this.pnlHeader.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(59)))));
+            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(1291, 60);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "DASHBOARD QUẢN LÝ";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 290F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.pnlSideBar, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1581, 767);
+            this.tableLayoutPanel2.TabIndex = 5;
+            // 
+            // btnLichSuTraHang
+            // 
+            this.btnLichSuTraHang.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnLichSuTraHang.FlatAppearance.BorderSize = 0;
+            this.btnLichSuTraHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLichSuTraHang.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLichSuTraHang.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnLichSuTraHang.Image = global::SupermarketManagement.Properties.Resources.money;
+            this.btnLichSuTraHang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnLichSuTraHang.Location = new System.Drawing.Point(0, 551);
+            this.btnLichSuTraHang.Name = "btnLichSuTraHang";
+            this.btnLichSuTraHang.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnLichSuTraHang.Size = new System.Drawing.Size(290, 55);
+            this.btnLichSuTraHang.TabIndex = 12;
+            this.btnLichSuTraHang.Text = "   Lịch Sử Trả Hàng";
+            this.btnLichSuTraHang.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnLichSuTraHang.UseVisualStyleBackColor = true;
+            this.btnLichSuTraHang.Click += new System.EventHandler(this.btnLichSuTraHang_Click);
             // 
             // btnBanHang
             // 
@@ -261,73 +349,6 @@ namespace SupermarketManagement.Views.Admin
             this.btnProfile.UseVisualStyleBackColor = false;
             this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
-            // pnlMainAdmin
-            // 
-            this.pnlMainAdmin.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pnlMainAdmin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMainAdmin.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.pnlMainAdmin.Location = new System.Drawing.Point(0, 60);
-            this.pnlMainAdmin.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlMainAdmin.Name = "pnlMainAdmin";
-            this.pnlMainAdmin.Size = new System.Drawing.Size(1291, 707);
-            this.pnlMainAdmin.TabIndex = 2;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.pnlMainAdmin, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.pnlHeader, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(290, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1291, 767);
-            this.tableLayoutPanel1.TabIndex = 3;
-            // 
-            // pnlHeader
-            // 
-            this.pnlHeader.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.pnlHeader.Controls.Add(this.label1);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1291, 60);
-            this.pnlHeader.TabIndex = 3;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(59)))));
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(1291, 60);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "DASHBOARD QUẢN LÝ";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 290F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.pnlSideBar, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1581, 767);
-            this.tableLayoutPanel2.TabIndex = 5;
-            // 
             // Frm_Admin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -364,5 +385,6 @@ namespace SupermarketManagement.Views.Admin
         private System.Windows.Forms.Button btnNhapHang;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnBanHang;
+        private System.Windows.Forms.Button btnLichSuTraHang;
     }
 }
