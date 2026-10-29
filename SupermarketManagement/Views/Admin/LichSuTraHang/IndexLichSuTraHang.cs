@@ -6,7 +6,6 @@ using System.Data;
 using System.IO;
 using System.Windows.Forms;
 
-
 namespace SupermarketManagement.Views.Admin.LichSuTraHang
 {
     public partial class IndexLichSuTraHang : Form
@@ -378,3 +377,4 @@ namespace SupermarketManagement.Views.Admin.LichSuTraHang
         }
     }
 }
+
