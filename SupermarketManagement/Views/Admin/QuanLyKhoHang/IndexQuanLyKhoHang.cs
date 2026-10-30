@@ -1,11 +1,14 @@
 using SupermarketManagement.Controllers;
+using SupermarketManagement.Models;
 using SupermarketManagement.Models.Entities;
 using SupermarketManagement.Utils;
 using SupermarketManagement.Views.Admin.PhieuNhapHang;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
@@ -16,6 +19,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         private DataTable _dtChiTietNhap = new DataTable();
         private decimal _donGiaCoSoItem = 0;
         private bool _isUpdatingGia = false;
+        private List<DonViQuyDoiItem> _danhSachDonViTam = new List<DonViQuyDoiItem>();
 
         public IndexQuanLyKhoHang()
         {
@@ -999,6 +1003,11 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                         dgvHangHoa.Columns["TenDV"].HeaderText = "Đ/Vị Cơ Bản";
                         dgvHangHoa.Columns["TenDV"].Width = 90;
                     }
+                    if (dgvHangHoa.Columns.Contains("DonViQuyDoi"))
+                    {
+                        dgvHangHoa.Columns["DonViQuyDoi"].HeaderText = "Đ/Vị Quy Đổi";
+                        dgvHangHoa.Columns["DonViQuyDoi"].Width = 160;
+                    }
                     if (dgvHangHoa.Columns.Contains("DonGiaNhap"))
                     {
                         dgvHangHoa.Columns["DonGiaNhap"].HeaderText = "Giá Nhập Cơ Bản";
@@ -1038,6 +1047,38 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 txtDonGiaNhap.Text = Convert.ToDecimal(row.Cells["DonGiaNhap"].Value ?? 0).ToString("N0");
                 txtDonGiaBan.Text = Convert.ToDecimal(row.Cells["DonGiaBan"].Value ?? 0).ToString("N0");
                 txtMoTaHH.Text = row.Cells["MoTa"].Value?.ToString();
+
+                string maSP = row.Cells["MaSP"].Value?.ToString();
+                string tenDVCoban = row.Cells["TenDV"].Value?.ToString() ?? "Cái";
+                string quyDoi = row.Cells["DonViQuyDoi"].Value?.ToString() ?? "-";
+
+                // Tải danh sách đơn vị của sản phẩm này vào _danhSachDonViTam
+                _danhSachDonViTam.Clear();
+                DataTable dtDVT = _controller.LoadDonViTinhTheoSanPham(maSP);
+                if (dtDVT != null)
+                {
+                    foreach (DataRow r in dtDVT.Rows)
+                    {
+                        _danhSachDonViTam.Add(new DonViQuyDoiItem(
+                            r["MaDVT"]?.ToString(),
+                            r["TenDV"]?.ToString(),
+                            Convert.ToInt32(r["SoLuongQuyDoi"] ?? 1),
+                            Convert.ToDecimal(r["DonGiaNhapLe"] ?? 0),
+                            Convert.ToDecimal(r["DonGiaBanLe"] ?? 0)
+                        ));
+                    }
+                }
+
+                if (quyDoi != "-" && !string.IsNullOrEmpty(quyDoi))
+                {
+                    lblDonViPreview.Text = $"✔ ĐVT: {tenDVCoban} ({quyDoi})";
+                    lblDonViPreview.ForeColor = Color.FromArgb(22, 135, 55);
+                }
+                else
+                {
+                    lblDonViPreview.Text = $"✔ ĐVT: {tenDVCoban} (Chưa có quy đổi)";
+                    lblDonViPreview.ForeColor = Color.FromArgb(13, 110, 253);
+                }
 
                 if (row.Cells["MaDM"].Value != null && row.Cells["MaDM"].Value != DBNull.Value)
                 {
@@ -1092,7 +1133,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             int maNV = PhienDangNhap.MaNV > 0 ? PhienDangNhap.MaNV : (UserSession.MaNV > 0 ? UserSession.MaNV : 1);
 
             string thongBao;
-            if (_controller.ThemSanPham(txtMaHangHoa.Text, txtTenHangHoa.Text, txtSoLuong.Text, "0", txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, maNV, out thongBao))
+            if (_controller.ThemSanPham(txtMaHangHoa.Text, txtTenHangHoa.Text, txtSoLuong.Text, "0", txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, maNV, _danhSachDonViTam, out thongBao))
             {
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachHangHoa();
@@ -1128,6 +1169,10 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             string thongBao;
             if (_controller.SuaSanPham(txtMaHangHoa.Text, txtTenHangHoa.Text, txtSoLuong.Text, "0", txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, out thongBao))
             {
+                if (_danhSachDonViTam != null && _danhSachDonViTam.Count > 0)
+                {
+                    _controller.SaveDonViTinhChoSanPham(txtMaHangHoa.Text, _danhSachDonViTam, out _);
+                }
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachHangHoa();
                 LoadComboBoxMatHang();
@@ -1219,12 +1264,57 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             txtDonGiaNhap.Clear();
             txtDonGiaBan.Clear();
             txtMoTaHH.Clear();
+            _danhSachDonViTam.Clear();
+            lblDonViPreview.Text = "ĐVT: Chưa chọn (Click \'+ Thêm Đơn Vị\')";
+            lblDonViPreview.ForeColor = Color.FromArgb(13, 110, 253);
             if (cboDanhMucHH.Items.Count > 0)
             {
                 cboDanhMucHH.SelectedIndex = 0;
             }
             dgvHangHoa.ClearSelection();
             dgvHangHoa.CurrentCell = null;
+        }
+
+        private void btnThemDonVi_Click(object sender, EventArgs e)
+        {
+            string maSP = txtMaHangHoa.Text.Trim();
+            string tenSP = txtTenHangHoa.Text.Trim();
+            string rawGiaNhap = txtDonGiaNhap.Text.Replace(",", "").Replace(".", "").Trim();
+            decimal.TryParse(rawGiaNhap, out decimal giaNhap);
+            string rawGiaBan = txtDonGiaBan.Text.Replace(",", "").Replace(".", "").Trim();
+            decimal.TryParse(rawGiaBan, out decimal giaBan);
+
+            bool isNewProduct = true;
+            if (dgvHangHoa.CurrentRow != null && dgvHangHoa.CurrentRow.Index >= 0)
+            {
+                string currentSelectedMaSP = dgvHangHoa.CurrentRow.Cells["MaSP"].Value?.ToString();
+                if (currentSelectedMaSP == maSP)
+                {
+                    isNewProduct = false;
+                }
+            }
+
+            using (FrmQuyDoiDonVi frm = new FrmQuyDoiDonVi(maSP, tenSP, giaNhap, giaBan, _danhSachDonViTam, isNewProduct))
+            {
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    _danhSachDonViTam = frm.DanhSachDonVi;
+
+                    var coBan = frm.DonViCoBan;
+                    if (coBan != null)
+                    {
+                        txtDonGiaNhap.Text = frm.GiaNhapCoBanLayRa.ToString("N0");
+                        txtDonGiaBan.Text = frm.GiaBanCoBanLayRa.ToString("N0");
+                        lblDonViPreview.Text = $"✔ ĐVT: {coBan.TenDV} (Quy đổi: {frm.MoTaQuyDoi})";
+                        lblDonViPreview.ForeColor = Color.FromArgb(22, 135, 55);
+                    }
+
+                    if (!isNewProduct)
+                    {
+                        LoadDanhSachHangHoa();
+                    }
+                }
+            }
         }
 
         #endregion

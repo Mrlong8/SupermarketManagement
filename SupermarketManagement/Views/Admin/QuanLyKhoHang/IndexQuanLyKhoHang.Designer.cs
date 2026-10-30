@@ -117,6 +117,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.lblDanhMucHH = new System.Windows.Forms.Label();
             this.cboDanhMucHH = new System.Windows.Forms.ComboBox();
             this.BtnMoQLDM = new System.Windows.Forms.Button();
+            this.btnThemDonVi = new System.Windows.Forms.Button();
+            this.lblDonViPreview = new System.Windows.Forms.Label();
             this.lblSoLuong = new System.Windows.Forms.Label();
             this.txtSoLuong = new System.Windows.Forms.TextBox();
             this.lblDonGiaNhap = new System.Windows.Forms.Label();
@@ -1036,6 +1038,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.grpHangHoa.Controls.Add(this.lblDanhMucHH);
             this.grpHangHoa.Controls.Add(this.cboDanhMucHH);
             this.grpHangHoa.Controls.Add(this.BtnMoQLDM);
+            this.grpHangHoa.Controls.Add(this.btnThemDonVi);
+            this.grpHangHoa.Controls.Add(this.lblDonViPreview);
             this.grpHangHoa.Controls.Add(this.lblSoLuong);
             this.grpHangHoa.Controls.Add(this.txtSoLuong);
             this.grpHangHoa.Controls.Add(this.lblDonGiaNhap);
@@ -1121,6 +1125,30 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             this.BtnMoQLDM.Text = "+ Danh Mục";
             this.BtnMoQLDM.UseVisualStyleBackColor = false;
             this.BtnMoQLDM.Click += new System.EventHandler(this.BtnMoQLDM_Click);
+
+            // btnThemDonVi
+            this.btnThemDonVi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(110)))), ((int)(((byte)(253)))));
+            this.btnThemDonVi.FlatAppearance.BorderSize = 0;
+            this.btnThemDonVi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnThemDonVi.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.btnThemDonVi.ForeColor = System.Drawing.Color.White;
+            this.btnThemDonVi.Location = new System.Drawing.Point(1005, 27);
+            this.btnThemDonVi.Name = "btnThemDonVi";
+            this.btnThemDonVi.Size = new System.Drawing.Size(115, 30);
+            this.btnThemDonVi.TabIndex = 7;
+            this.btnThemDonVi.Text = "+ Thêm Đơn Vị";
+            this.btnThemDonVi.UseVisualStyleBackColor = false;
+            this.btnThemDonVi.Click += new System.EventHandler(this.btnThemDonVi_Click);
+
+            // lblDonViPreview
+            this.lblDonViPreview.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.lblDonViPreview.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(13)))), ((int)(((byte)(110)))), ((int)(((byte)(253)))));
+            this.lblDonViPreview.Location = new System.Drawing.Point(1005, 66);
+            this.lblDonViPreview.Name = "lblDonViPreview";
+            this.lblDonViPreview.Size = new System.Drawing.Size(235, 32);
+            this.lblDonViPreview.TabIndex = 15;
+            this.lblDonViPreview.Text = "ĐVT: Chưa chọn (Click \'+ Thêm Đơn Vị\')";
+            this.lblDonViPreview.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 
             // Số lượng tồn
             this.lblSoLuong.AutoSize = true;
@@ -1573,6 +1601,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         private System.Windows.Forms.Label lblDanhMucHH;
         private System.Windows.Forms.ComboBox cboDanhMucHH;
         private System.Windows.Forms.Button BtnMoQLDM;
+        private System.Windows.Forms.Button btnThemDonVi;
+        private System.Windows.Forms.Label lblDonViPreview;
         private System.Windows.Forms.Label lblSoLuong;
         private System.Windows.Forms.TextBox txtSoLuong;
         private System.Windows.Forms.Label lblDonGiaNhap;

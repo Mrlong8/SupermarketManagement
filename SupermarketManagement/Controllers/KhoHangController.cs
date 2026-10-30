@@ -1,5 +1,7 @@
+using SupermarketManagement.Models;
 using SupermarketManagement.Models.Repositories;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace SupermarketManagement.Controllers
@@ -114,6 +116,11 @@ namespace SupermarketManagement.Controllers
 
         public bool ThemSanPham(string maSPStr, string tenSP, string soLuongStr, string trongLuongStr, string giaNhapStr, string giaBanStr, string moTa, int maDM, int maNV, out string thongBao)
         {
+            return ThemSanPham(maSPStr, tenSP, soLuongStr, trongLuongStr, giaNhapStr, giaBanStr, moTa, maDM, maNV, null, out thongBao);
+        }
+
+        public bool ThemSanPham(string maSPStr, string tenSP, string soLuongStr, string trongLuongStr, string giaNhapStr, string giaBanStr, string moTa, int maDM, int maNV, List<DonViQuyDoiItem> dsDonVi, out string thongBao)
+        {
             if (!int.TryParse(maSPStr, out int maSP))
             {
                 thongBao = "Mã hàng hóa không hợp lệ!";
@@ -154,7 +161,7 @@ namespace SupermarketManagement.Controllers
             try
             {
                 if (maNV <= 0) maNV = 1;
-                _repo.ThemSanPham(maSP, tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa?.Trim(), maDM, maNV);
+                _repo.ThemSanPham(maSP, tenSP.Trim(), soLuong, trongLuong, giaNhap, giaBan, moTa?.Trim(), maDM, maNV, dsDonVi);
                 thongBao = "Thêm hàng hóa thành công!";
                 return true;
             }
@@ -299,6 +306,38 @@ namespace SupermarketManagement.Controllers
         public DataTable LoadAllDonViTinh()
         {
             return _repo.GetAllDonViTinh();
+        }
+
+        public bool SaveDonViTinhChoSanPham(string maSP, List<DonViQuyDoiItem> dsDonVi, out string thongBao)
+        {
+            if (string.IsNullOrWhiteSpace(maSP))
+            {
+                thongBao = "Mã sản phẩm không hợp lệ!";
+                return false;
+            }
+
+            if (dsDonVi == null || dsDonVi.Count == 0)
+            {
+                thongBao = "Vui lòng chọn ít nhất 1 đơn vị tính!";
+                return false;
+            }
+
+            try
+            {
+                _repo.SaveDonViTinhChoSanPham(maSP, dsDonVi);
+                thongBao = "Lưu cấu hình đơn vị tính thành công!";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                thongBao = "Lỗi khi lưu đơn vị tính: " + ex.Message;
+                return false;
+            }
+        }
+
+        public bool ThemDonViTinhMoi(string tenDV, string ghiChu, out string maDVTMoi, out string thongBao)
+        {
+            return _repo.ThemDonViTinhMoi(tenDV, ghiChu, out maDVTMoi, out thongBao);
         }
 
         #endregion
