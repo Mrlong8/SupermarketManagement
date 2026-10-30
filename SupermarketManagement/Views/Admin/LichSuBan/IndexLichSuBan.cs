@@ -154,5 +154,71 @@ namespace SupermarketManagement.Views.Admin.LichSuBan
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra người dùng đã chọn dòng hóa đơn nào chưa
+            DataGridViewRow selectedRow = null;
+
+            if (dgvListHoaDonMua.SelectedRows.Count > 0)
+            {
+                selectedRow = dgvListHoaDonMua.SelectedRows[0];
+            }
+            else if (dgvListHoaDonMua.CurrentRow != null)
+            {
+                selectedRow = dgvListHoaDonMua.CurrentRow;
+            }
+
+            if (selectedRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn 1 hóa đơn trong danh sách để xóa!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maHD = selectedRow.Cells["MaHD"].Value?.ToString();
+
+            if (string.IsNullOrEmpty(maHD))
+            {
+                MessageBox.Show("Không tìm thấy mã hóa đơn cần xóa!", "Thông báo",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Hộp thoại xác nhận trước khi xóa
+            DialogResult dr = MessageBox.Show(
+                $"Bạn có chắc chắn muốn xóa hóa đơn '{maHD}' không?\n\nLưu ý: Số lượng sản phẩm trong hóa đơn này sẽ được hoàn trả lại vào kho hàng!",
+                "Xác nhận xóa hóa đơn",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                try
+                {
+                    bool result = _repo.XoaHoaDon(maHD);
+
+                    if (result)
+                    {
+                        MessageBox.Show("Xóa hóa đơn thành công và đã hoàn lại số lượng sản phẩm vào kho!", "Thông báo",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Tải lại danh sách hóa đơn
+                        GetDataHD();
+
+                        // Xóa sạch bảng chi tiết hóa đơn bên dưới
+                        if (dgvChiTiet.DataSource != null)
+                        {
+                            ((DataTable)dgvChiTiet.DataSource).Clear();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xóa hóa đơn: " + ex.Message, "Lỗi",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

@@ -35,6 +35,7 @@
             this.cbKhachHang = new System.Windows.Forms.ComboBox();
             this.lblNhanVien = new System.Windows.Forms.Label();
             this.cbNhanVien = new System.Windows.Forms.ComboBox();
+            this.btnXoa = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListHoaDonMua)).BeginInit();
             this.grb1.SuspendLayout();
             this.grbThongtin.SuspendLayout();
@@ -277,12 +278,32 @@
             this.cbNhanVien.TabIndex = 0;
             this.cbNhanVien.SelectedIndexChanged += new System.EventHandler(this.cbNhanVien_SelectedIndexChanged);
             // 
+            // btnXoa
+            // 
+            this.btnXoa.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnXoa.BackColor = System.Drawing.Color.Crimson;
+            this.btnXoa.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnXoa.FlatAppearance.BorderSize = 0;
+            this.btnXoa.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(130)))), ((int)(((byte)(48)))));
+            this.btnXoa.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(145)))), ((int)(((byte)(55)))));
+            this.btnXoa.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnXoa.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnXoa.ForeColor = System.Drawing.Color.White;
+            this.btnXoa.Location = new System.Drawing.Point(353, 578);
+            this.btnXoa.Name = "btnXoa";
+            this.btnXoa.Size = new System.Drawing.Size(95, 36);
+            this.btnXoa.TabIndex = 14;
+            this.btnXoa.Text = "Xóa";
+            this.btnXoa.UseVisualStyleBackColor = false;
+            this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
+            // 
             // IndexLichSuBan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(1240, 633);
+            this.Controls.Add(this.btnXoa);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.grbThongtin);
@@ -318,5 +339,6 @@
         private System.Windows.Forms.ComboBox cbNhanVien;
         private System.Windows.Forms.DateTimePicker dtpNgayMua;
         private System.Windows.Forms.Label lblNgayBan;
+        private System.Windows.Forms.Button btnXoa;
     }
 }

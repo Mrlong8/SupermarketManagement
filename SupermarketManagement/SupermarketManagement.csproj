@@ -228,6 +228,12 @@
     <Compile Include="Views\Admin\Product\EditProduct.Designer.cs">
       <DependentUpon>EditProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Admin\Product\Frm_KhoiPhuc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Product\Frm_KhoiPhuc.Designer.cs">
+      <DependentUpon>Frm_KhoiPhuc.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Admin\Product\ThemDonVi.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -346,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\Product\EditProduct.resx">
       <DependentUpon>EditProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Product\Frm_KhoiPhuc.resx">
+      <DependentUpon>Frm_KhoiPhuc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\Product\IndexProduct.resx">
       <DependentUpon>IndexProduct.cs</DependentUpon>

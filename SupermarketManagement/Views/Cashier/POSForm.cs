@@ -77,6 +77,13 @@ namespace SupermarketManagement
                 if (dtSanPham.Columns.Contains("DonGiaBan"))
                     colDonGiaBan_DSSP.DataPropertyName = "DonGiaBan";
 
+                // Bổ sung ánh xạ Ngày sản xuất & Hạn sử dụng vào DataGridView danh sách sản phẩm
+                if (dtSanPham.Columns.Contains("NgaySanXuat") && dgvDSSP.Columns.Contains("colNgaySanXuat_DSSP"))
+                    dgvDSSP.Columns["colNgaySanXuat_DSSP"].DataPropertyName = "NgaySanXuat";
+
+                if (dtSanPham.Columns.Contains("NgayHetHan") && dgvDSSP.Columns.Contains("colNgayHetHan_DSSP"))
+                    dgvDSSP.Columns["colNgayHetHan_DSSP"].DataPropertyName = "NgayHetHan";
+
                 dgvDSSP.AutoGenerateColumns = false;
                 dgvDSSP.DataSource = dtSanPham;
 
@@ -133,9 +140,11 @@ namespace SupermarketManagement
         // CHI TIẾT HÓA ĐƠN
         // =====================================================================
 
+
+        // Cấu hình các cột động bao gồm đơn vị tính, hệ số quy đổi, ngày sản xuất và hạn sử dụng cho hóa đơn
+        // Cấu hình các cột động bao gồm đơn vị tính, hệ số quy đổi, NSX và NHH cho hóa đơn
         private void CauHinhCotDonViTinh()
         {
-            // Các cột ẩn dùng để lưu mã đơn vị và hệ số quy đổi.
             if (!dgvChiTietHoaDon.Columns.Contains("colMaDVT"))
             {
                 var col = new DataGridViewTextBoxColumn
@@ -154,6 +163,30 @@ namespace SupermarketManagement
                     Name = "colSoLuongQuyDoi",
                     HeaderText = "Quy đổi",
                     Visible = false
+                };
+                dgvChiTietHoaDon.Columns.Add(col);
+            }
+
+            // Cột NSX tự co gọn theo độ rộng nội dung
+            if (!dgvChiTietHoaDon.Columns.Contains("colNgaySanXuat"))
+            {
+                var col = new DataGridViewTextBoxColumn
+                {
+                    Name = "colNgaySanXuat",
+                    HeaderText = "NSX",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                };
+                dgvChiTietHoaDon.Columns.Add(col);
+            }
+
+            // Cột NHH tự co gọn theo độ rộng nội dung
+            if (!dgvChiTietHoaDon.Columns.Contains("colNgayHetHan"))
+            {
+                var col = new DataGridViewTextBoxColumn
+                {
+                    Name = "colNgayHetHan",
+                    HeaderText = "NHH",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 };
                 dgvChiTietHoaDon.Columns.Add(col);
             }
@@ -205,6 +238,23 @@ namespace SupermarketManagement
             string maSP = Convert.ToString(sp["MaSP"]);
             cboDonViTinh.Tag = maSP;
             TaiDonViTinh(maSP);
+        }
+        private void dgvDSSP_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value != null && e.Value != DBNull.Value)
+            {
+                string colName = dgvDSSP.Columns[e.ColumnIndex].Name;
+                if (colName == "colNgaySanXuat_DSSP" || colName == "colNgayHetHan_DSSP" ||
+                    dgvDSSP.Columns[e.ColumnIndex].DataPropertyName == "NgaySanXuat" ||
+                    dgvDSSP.Columns[e.ColumnIndex].DataPropertyName == "NgayHetHan")
+                {
+                    if (DateTime.TryParse(e.Value.ToString(), out DateTime dateValue))
+                    {
+                        e.Value = dateValue.ToString("dd/MM/yyyy");
+                        e.FormattingApplied = true;
+                    }
+                }
+            }
         }
 
         private void cboDonViTinh_SelectedIndexChanged(object sender, EventArgs e)
@@ -343,7 +393,10 @@ namespace SupermarketManagement
             DataRow sp = ((DataRowView)dgvDSSP.Rows[e.RowIndex].DataBoundItem).Row;
             string maSP = Convert.ToString(sp["MaSP"]);
 
-            // Đảm bảo ComboBox chứa đơn vị của đúng sản phẩm đang thêm.
+            // Lấy thông tin NSX và NHH từ dòng sản phẩm
+            string nsx = sp["NgaySanXuat"] != DBNull.Value ? Convert.ToDateTime(sp["NgaySanXuat"]).ToString("dd/MM/yyyy") : "";
+            string nhh = sp["NgayHetHan"] != DBNull.Value ? Convert.ToDateTime(sp["NgayHetHan"]).ToString("dd/MM/yyyy") : "";
+
             if (dtDonViTinh == null || dtDonViTinh.Rows.Count == 0 ||
                 Convert.ToString(cboDonViTinh.Tag) != maSP)
             {
@@ -365,8 +418,7 @@ namespace SupermarketManagement
             int tonKhoCoSo = Convert.ToInt32(sp["SoLuong"]);
 
             DataGridViewRow dongHoaDon = TimDongHoaDon(maSP, maDVT);
-            int soLuongCu = dongHoaDon == null ? 0 :
-                Convert.ToInt32(dongHoaDon.Cells["colSoLuong"].Value);
+            int soLuongCu = dongHoaDon == null ? 0 : Convert.ToInt32(dongHoaDon.Cells["colSoLuong"].Value);
 
             if (tonKhoCoSo < quyDoi)
             {
@@ -386,6 +438,10 @@ namespace SupermarketManagement
                 dongHoaDon.Cells["colThanhTien"].Value = donGia;
                 dongHoaDon.Cells["colMaDVT"].Value = maDVT;
                 dongHoaDon.Cells["colSoLuongQuyDoi"].Value = quyDoi;
+
+                // Gán NSX & NHH vào chi tiết dòng hóa đơn
+                dongHoaDon.Cells["colNgaySanXuat"].Value = nsx;
+                dongHoaDon.Cells["colNgayHetHan"].Value = nhh;
             }
             else
             {
@@ -397,7 +453,6 @@ namespace SupermarketManagement
             dgvChiTietHoaDon.CurrentCell = dongHoaDon.Cells["colMaSP"];
             CapNhatSoLuongMoiTheoDongDangChon();
 
-            // Tồn kho hiển thị lưu theo đơn vị cơ bản, nên phải trừ theo hệ số quy đổi.
             sp["SoLuong"] = tonKhoCoSo - quyDoi;
             CapNhatTongTien();
         }

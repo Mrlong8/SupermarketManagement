@@ -24,6 +24,8 @@
             this.btnSuaItem = new System.Windows.Forms.Button();
             this.btnXoaItem = new System.Windows.Forms.Button();
             this.lblGiaBan = new System.Windows.Forms.Label();
+            this.lblNSX = new System.Windows.Forms.Label();
+            this.lblNHH = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pctbImageItem)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,7 +80,7 @@
             this.btnSuaItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSuaItem.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSuaItem.ForeColor = System.Drawing.Color.White;
-            this.btnSuaItem.Location = new System.Drawing.Point(12, 280);
+            this.btnSuaItem.Location = new System.Drawing.Point(12, 348);
             this.btnSuaItem.Name = "btnSuaItem";
             this.btnSuaItem.Size = new System.Drawing.Size(88, 30);
             this.btnSuaItem.TabIndex = 4;
@@ -94,7 +96,7 @@
             this.btnXoaItem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXoaItem.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnXoaItem.ForeColor = System.Drawing.Color.White;
-            this.btnXoaItem.Location = new System.Drawing.Point(114, 280);
+            this.btnXoaItem.Location = new System.Drawing.Point(114, 348);
             this.btnXoaItem.Name = "btnXoaItem";
             this.btnXoaItem.Size = new System.Drawing.Size(88, 30);
             this.btnXoaItem.TabIndex = 5;
@@ -113,12 +115,36 @@
             this.lblGiaBan.TabIndex = 6;
             this.lblGiaBan.Text = "Giá : ";
             // 
+            // lblNSX
+            // 
+            this.lblNSX.AutoSize = true;
+            this.lblNSX.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNSX.ForeColor = System.Drawing.Color.DimGray;
+            this.lblNSX.Location = new System.Drawing.Point(10, 277);
+            this.lblNSX.Name = "lblNSX";
+            this.lblNSX.Size = new System.Drawing.Size(37, 20);
+            this.lblNSX.TabIndex = 7;
+            this.lblNSX.Text = "NSX";
+            // 
+            // lblNHH
+            // 
+            this.lblNHH.AutoSize = true;
+            this.lblNHH.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNHH.ForeColor = System.Drawing.Color.DimGray;
+            this.lblNHH.Location = new System.Drawing.Point(10, 308);
+            this.lblNHH.Name = "lblNHH";
+            this.lblNHH.Size = new System.Drawing.Size(42, 20);
+            this.lblNHH.TabIndex = 8;
+            this.lblNHH.Text = "NHH";
+            // 
             // ProductItemControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.lblNHH);
+            this.Controls.Add(this.lblNSX);
             this.Controls.Add(this.lblGiaBan);
             this.Controls.Add(this.btnXoaItem);
             this.Controls.Add(this.btnSuaItem);
@@ -129,7 +155,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "ProductItemControl";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(210, 324);
+            this.Size = new System.Drawing.Size(210, 392);
             ((System.ComponentModel.ISupportInitialize)(this.pctbImageItem)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -145,5 +171,7 @@
         private System.Windows.Forms.Button btnSuaItem;
         private System.Windows.Forms.Button btnXoaItem;
         private System.Windows.Forms.Label lblGiaBan;
+        private System.Windows.Forms.Label lblNSX;
+        private System.Windows.Forms.Label lblNHH;
     }
 }
