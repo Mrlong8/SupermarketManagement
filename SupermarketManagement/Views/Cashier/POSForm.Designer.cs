@@ -20,17 +20,17 @@ namespace SupermarketManagement
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle49 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle50 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle51 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle55 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle52 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle53 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle54 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblTieuDe = new System.Windows.Forms.Label();
             this.lblNhanVien = new System.Windows.Forms.Label();
@@ -45,12 +45,18 @@ namespace SupermarketManagement
             this.colTenSP_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSoLuong_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDonGiaBan_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDonViTinh_DSSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tlpDonViTinh = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDonViTinh = new System.Windows.Forms.Label();
+            this.cboDonViTinh = new System.Windows.Forms.ComboBox();
+            this.lblQuyDoi = new System.Windows.Forms.Label();
             this.grpChiTiet = new System.Windows.Forms.GroupBox();
             this.tlpChiTiet = new System.Windows.Forms.TableLayoutPanel();
             this.dgvChiTietHoaDon = new System.Windows.Forms.DataGridView();
             this.colMaSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTenSP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSoLuong = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDonViTinh = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDonGia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colThanhTien = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flpThaoTac = new System.Windows.Forms.FlowLayoutPanel();
@@ -95,6 +101,7 @@ namespace SupermarketManagement
             this.btnThemHoaDon = new System.Windows.Forms.Button();
             this.btnTaoHoaDon = new System.Windows.Forms.Button();
             this.btnXuatHoaDon = new System.Windows.Forms.Button();
+            this.btnTraHang = new System.Windows.Forms.Button();
             this.btnThoat = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.tlpMain.SuspendLayout();
@@ -102,6 +109,7 @@ namespace SupermarketManagement
             this.tlpTimKiem.SuspendLayout();
             this.grpDSSP.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDSSP)).BeginInit();
+            this.tlpDonViTinh.SuspendLayout();
             this.grpChiTiet.SuspendLayout();
             this.tlpChiTiet.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvChiTietHoaDon)).BeginInit();
@@ -179,15 +187,17 @@ namespace SupermarketManagement
             this.tlpTrai.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpTrai.Controls.Add(this.tlpTimKiem, 0, 0);
             this.tlpTrai.Controls.Add(this.grpDSSP, 0, 1);
-            this.tlpTrai.Controls.Add(this.grpChiTiet, 0, 2);
+            this.tlpTrai.Controls.Add(this.tlpDonViTinh, 0, 2);
+            this.tlpTrai.Controls.Add(this.grpChiTiet, 0, 3);
             this.tlpTrai.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpTrai.Location = new System.Drawing.Point(19, 19);
             this.tlpTrai.Margin = new System.Windows.Forms.Padding(4);
             this.tlpTrai.Name = "tlpTrai";
-            this.tlpTrai.RowCount = 3;
+            this.tlpTrai.RowCount = 4;
             this.tlpTrai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 66F));
-            this.tlpTrai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpTrai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpTrai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 46F));
+            this.tlpTrai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 58F));
+            this.tlpTrai.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54F));
             this.tlpTrai.Size = new System.Drawing.Size(1163, 1018);
             this.tlpTrai.TabIndex = 0;
             // 
@@ -240,7 +250,7 @@ namespace SupermarketManagement
             this.grpDSSP.Margin = new System.Windows.Forms.Padding(4);
             this.grpDSSP.Name = "grpDSSP";
             this.grpDSSP.Padding = new System.Windows.Forms.Padding(12);
-            this.grpDSSP.Size = new System.Drawing.Size(1155, 468);
+            this.grpDSSP.Size = new System.Drawing.Size(1155, 403);
             this.grpDSSP.TabIndex = 1;
             this.grpDSSP.TabStop = false;
             this.grpDSSP.Text = "DANH SÁCH SẢN PHẨM (nhấp đúp để thêm vào hóa đơn)";
@@ -250,34 +260,35 @@ namespace SupermarketManagement
             this.dgvDSSP.AllowUserToAddRows = false;
             this.dgvDSSP.AllowUserToDeleteRows = false;
             this.dgvDSSP.AllowUserToResizeRows = false;
-            dataGridViewCellStyle45.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
-            this.dgvDSSP.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle45;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
+            this.dgvDSSP.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDSSP.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDSSP.BackgroundColor = System.Drawing.Color.White;
             this.dgvDSSP.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle46.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle46.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
-            dataGridViewCellStyle46.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle46.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle46.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle46.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle46.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDSSP.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle46;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDSSP.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDSSP.ColumnHeadersHeight = 34;
             this.dgvDSSP.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDSSP.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colMaSP_DSSP,
             this.colTenSP_DSSP,
             this.colSoLuong_DSSP,
-            this.colDonGiaBan_DSSP});
-            dataGridViewCellStyle49.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle49.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle49.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle49.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
-            dataGridViewCellStyle49.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle49.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
-            dataGridViewCellStyle49.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDSSP.DefaultCellStyle = dataGridViewCellStyle49;
+            this.colDonGiaBan_DSSP,
+            this.colDonViTinh_DSSP});
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDSSP.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvDSSP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDSSP.EnableHeadersVisualStyles = false;
             this.dgvDSSP.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -291,9 +302,11 @@ namespace SupermarketManagement
             this.dgvDSSP.RowHeadersWidth = 62;
             this.dgvDSSP.RowTemplate.Height = 30;
             this.dgvDSSP.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDSSP.Size = new System.Drawing.Size(1131, 417);
+            this.dgvDSSP.Size = new System.Drawing.Size(1131, 352);
             this.dgvDSSP.TabIndex = 0;
+            this.dgvDSSP.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDSSP_CellClick_1);
             this.dgvDSSP.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDSSP_CellDoubleClick);
+            this.dgvDSSP.SelectionChanged += new System.EventHandler(this.dgvDSSP_SelectionChanged);
             // 
             // colMaSP_DSSP
             // 
@@ -316,9 +329,9 @@ namespace SupermarketManagement
             // colSoLuong_DSSP
             // 
             this.colSoLuong_DSSP.DataPropertyName = "SoLuong";
-            dataGridViewCellStyle47.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle47.Format = "N0";
-            this.colSoLuong_DSSP.DefaultCellStyle = dataGridViewCellStyle47;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.Format = "N0";
+            this.colSoLuong_DSSP.DefaultCellStyle = dataGridViewCellStyle3;
             this.colSoLuong_DSSP.FillWeight = 15F;
             this.colSoLuong_DSSP.HeaderText = "Tồn kho";
             this.colSoLuong_DSSP.MinimumWidth = 8;
@@ -328,14 +341,74 @@ namespace SupermarketManagement
             // colDonGiaBan_DSSP
             // 
             this.colDonGiaBan_DSSP.DataPropertyName = "DonGiaBan";
-            dataGridViewCellStyle48.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle48.Format = "N0";
-            this.colDonGiaBan_DSSP.DefaultCellStyle = dataGridViewCellStyle48;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.Format = "N0";
+            this.colDonGiaBan_DSSP.DefaultCellStyle = dataGridViewCellStyle4;
             this.colDonGiaBan_DSSP.FillWeight = 20F;
             this.colDonGiaBan_DSSP.HeaderText = "Đơn giá bán";
             this.colDonGiaBan_DSSP.MinimumWidth = 8;
             this.colDonGiaBan_DSSP.Name = "colDonGiaBan_DSSP";
             this.colDonGiaBan_DSSP.ReadOnly = true;
+            // 
+            // colDonViTinh_DSSP
+            // 
+            this.colDonViTinh_DSSP.DataPropertyName = "DonViTinh";
+            this.colDonViTinh_DSSP.FillWeight = 18F;
+            this.colDonViTinh_DSSP.HeaderText = "Đơn vị tính";
+            this.colDonViTinh_DSSP.MinimumWidth = 8;
+            this.colDonViTinh_DSSP.Name = "colDonViTinh_DSSP";
+            this.colDonViTinh_DSSP.ReadOnly = true;
+            // 
+            // tlpDonViTinh
+            // 
+            this.tlpDonViTinh.ColumnCount = 3;
+            this.tlpDonViTinh.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tlpDonViTinh.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 190F));
+            this.tlpDonViTinh.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpDonViTinh.Controls.Add(this.lblDonViTinh, 0, 0);
+            this.tlpDonViTinh.Controls.Add(this.cboDonViTinh, 1, 0);
+            this.tlpDonViTinh.Controls.Add(this.lblQuyDoi, 2, 0);
+            this.tlpDonViTinh.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpDonViTinh.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.tlpDonViTinh.Location = new System.Drawing.Point(4, 477);
+            this.tlpDonViTinh.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.tlpDonViTinh.Name = "tlpDonViTinh";
+            this.tlpDonViTinh.RowCount = 1;
+            this.tlpDonViTinh.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpDonViTinh.Size = new System.Drawing.Size(1155, 58);
+            this.tlpDonViTinh.TabIndex = 3;
+            // 
+            // lblDonViTinh
+            // 
+            this.lblDonViTinh.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblDonViTinh.AutoSize = true;
+            this.lblDonViTinh.Location = new System.Drawing.Point(3, 15);
+            this.lblDonViTinh.Name = "lblDonViTinh";
+            this.lblDonViTinh.Size = new System.Drawing.Size(112, 28);
+            this.lblDonViTinh.TabIndex = 0;
+            this.lblDonViTinh.Text = "Đơn vị tính:";
+            // 
+            // cboDonViTinh
+            // 
+            this.cboDonViTinh.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cboDonViTinh.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDonViTinh.FormattingEnabled = true;
+            this.cboDonViTinh.Location = new System.Drawing.Point(153, 15);
+            this.cboDonViTinh.Name = "cboDonViTinh";
+            this.cboDonViTinh.Size = new System.Drawing.Size(170, 36);
+            this.cboDonViTinh.TabIndex = 1;
+            this.cboDonViTinh.SelectedIndexChanged += new System.EventHandler(this.cboDonViTinh_SelectedIndexChanged_1);
+            // 
+            // lblQuyDoi
+            // 
+            this.lblQuyDoi.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblQuyDoi.AutoSize = true;
+            this.lblQuyDoi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
+            this.lblQuyDoi.Location = new System.Drawing.Point(343, 15);
+            this.lblQuyDoi.Name = "lblQuyDoi";
+            this.lblQuyDoi.Size = new System.Drawing.Size(347, 28);
+            this.lblQuyDoi.TabIndex = 2;
+            this.lblQuyDoi.Text = "Chọn sản phẩm để xem quy đổi đơn vị";
             // 
             // grpChiTiet
             // 
@@ -344,11 +417,11 @@ namespace SupermarketManagement
             this.grpChiTiet.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpChiTiet.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.grpChiTiet.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
-            this.grpChiTiet.Location = new System.Drawing.Point(4, 546);
+            this.grpChiTiet.Location = new System.Drawing.Point(4, 539);
             this.grpChiTiet.Margin = new System.Windows.Forms.Padding(4);
             this.grpChiTiet.Name = "grpChiTiet";
             this.grpChiTiet.Padding = new System.Windows.Forms.Padding(12);
-            this.grpChiTiet.Size = new System.Drawing.Size(1155, 468);
+            this.grpChiTiet.Size = new System.Drawing.Size(1155, 475);
             this.grpChiTiet.TabIndex = 2;
             this.grpChiTiet.TabStop = false;
             this.grpChiTiet.Text = "CHI TIẾT HÓA ĐƠN";
@@ -367,7 +440,7 @@ namespace SupermarketManagement
             this.tlpChiTiet.RowCount = 2;
             this.tlpChiTiet.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpChiTiet.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 69F));
-            this.tlpChiTiet.Size = new System.Drawing.Size(1131, 417);
+            this.tlpChiTiet.Size = new System.Drawing.Size(1131, 424);
             this.tlpChiTiet.TabIndex = 0;
             // 
             // dgvChiTietHoaDon
@@ -375,35 +448,36 @@ namespace SupermarketManagement
             this.dgvChiTietHoaDon.AllowUserToAddRows = false;
             this.dgvChiTietHoaDon.AllowUserToDeleteRows = false;
             this.dgvChiTietHoaDon.AllowUserToResizeRows = false;
-            dataGridViewCellStyle50.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
-            this.dgvChiTietHoaDon.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle50;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(247)))), ((int)(((byte)(252)))));
+            this.dgvChiTietHoaDon.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvChiTietHoaDon.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvChiTietHoaDon.BackgroundColor = System.Drawing.Color.White;
             this.dgvChiTietHoaDon.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle51.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle51.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
-            dataGridViewCellStyle51.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle51.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle51.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle51.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle51.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvChiTietHoaDon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle51;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(181)))), ((int)(((byte)(232)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvChiTietHoaDon.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvChiTietHoaDon.ColumnHeadersHeight = 34;
             this.dgvChiTietHoaDon.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvChiTietHoaDon.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colMaSP,
             this.colTenSP,
             this.colSoLuong,
+            this.colDonViTinh,
             this.colDonGia,
             this.colThanhTien});
-            dataGridViewCellStyle55.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle55.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle55.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle55.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
-            dataGridViewCellStyle55.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
-            dataGridViewCellStyle55.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
-            dataGridViewCellStyle55.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvChiTietHoaDon.DefaultCellStyle = dataGridViewCellStyle55;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(50)))), ((int)(((byte)(65)))));
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(235)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(50)))));
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvChiTietHoaDon.DefaultCellStyle = dataGridViewCellStyle11;
             this.dgvChiTietHoaDon.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvChiTietHoaDon.EnableHeadersVisualStyles = false;
             this.dgvChiTietHoaDon.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -417,7 +491,7 @@ namespace SupermarketManagement
             this.dgvChiTietHoaDon.RowHeadersWidth = 62;
             this.dgvChiTietHoaDon.RowTemplate.Height = 30;
             this.dgvChiTietHoaDon.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvChiTietHoaDon.Size = new System.Drawing.Size(1123, 340);
+            this.dgvChiTietHoaDon.Size = new System.Drawing.Size(1123, 347);
             this.dgvChiTietHoaDon.TabIndex = 0;
             this.dgvChiTietHoaDon.SelectionChanged += new System.EventHandler(this.dgvChiTietHoaDon_SelectionChanged);
             // 
@@ -439,20 +513,28 @@ namespace SupermarketManagement
             // 
             // colSoLuong
             // 
-            dataGridViewCellStyle52.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle52.Format = "N0";
-            this.colSoLuong.DefaultCellStyle = dataGridViewCellStyle52;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.Format = "N0";
+            this.colSoLuong.DefaultCellStyle = dataGridViewCellStyle8;
             this.colSoLuong.FillWeight = 12F;
             this.colSoLuong.HeaderText = "Số lượng";
             this.colSoLuong.MinimumWidth = 8;
             this.colSoLuong.Name = "colSoLuong";
             this.colSoLuong.ReadOnly = true;
             // 
+            // colDonViTinh
+            // 
+            this.colDonViTinh.FillWeight = 15F;
+            this.colDonViTinh.HeaderText = "Đơn vị tính";
+            this.colDonViTinh.MinimumWidth = 8;
+            this.colDonViTinh.Name = "colDonViTinh";
+            this.colDonViTinh.ReadOnly = true;
+            // 
             // colDonGia
             // 
-            dataGridViewCellStyle53.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle53.Format = "N0";
-            this.colDonGia.DefaultCellStyle = dataGridViewCellStyle53;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle9.Format = "N0";
+            this.colDonGia.DefaultCellStyle = dataGridViewCellStyle9;
             this.colDonGia.FillWeight = 19F;
             this.colDonGia.HeaderText = "Đơn giá";
             this.colDonGia.MinimumWidth = 8;
@@ -461,9 +543,9 @@ namespace SupermarketManagement
             // 
             // colThanhTien
             // 
-            dataGridViewCellStyle54.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle54.Format = "N0";
-            this.colThanhTien.DefaultCellStyle = dataGridViewCellStyle54;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle10.Format = "N0";
+            this.colThanhTien.DefaultCellStyle = dataGridViewCellStyle10;
             this.colThanhTien.FillWeight = 19F;
             this.colThanhTien.HeaderText = "Thành tiền";
             this.colThanhTien.MinimumWidth = 8;
@@ -478,7 +560,7 @@ namespace SupermarketManagement
             this.flpThaoTac.Controls.Add(this.lblSoLuong);
             this.flpThaoTac.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flpThaoTac.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flpThaoTac.Location = new System.Drawing.Point(4, 352);
+            this.flpThaoTac.Location = new System.Drawing.Point(4, 359);
             this.flpThaoTac.Margin = new System.Windows.Forms.Padding(4);
             this.flpThaoTac.Name = "flpThaoTac";
             this.flpThaoTac.Size = new System.Drawing.Size(1123, 61);
@@ -541,6 +623,7 @@ namespace SupermarketManagement
             0,
             0,
             0});
+            this.nudSoLuong.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nudSoLuong_KeyDown);
             // 
             // lblSoLuong
             // 
@@ -700,6 +783,7 @@ namespace SupermarketManagement
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(513, 34);
             this.txtSDT.TabIndex = 6;
+            this.txtSDT.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSDT_KeyDown);
             // 
             // lblEmail
             // 
@@ -1009,14 +1093,16 @@ namespace SupermarketManagement
             this.tlpNut.Controls.Add(this.btnThemHoaDon, 0, 0);
             this.tlpNut.Controls.Add(this.btnTaoHoaDon, 1, 0);
             this.tlpNut.Controls.Add(this.btnXuatHoaDon, 0, 1);
-            this.tlpNut.Controls.Add(this.btnThoat, 1, 1);
+            this.tlpNut.Controls.Add(this.btnTraHang, 1, 1);
+            this.tlpNut.Controls.Add(this.btnThoat, 0, 2);
             this.tlpNut.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpNut.Location = new System.Drawing.Point(4, 857);
             this.tlpNut.Margin = new System.Windows.Forms.Padding(4);
             this.tlpNut.Name = "tlpNut";
-            this.tlpNut.RowCount = 2;
-            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpNut.RowCount = 3;
+            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.333F));
+            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.333F));
+            this.tlpNut.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.334F));
             this.tlpNut.Size = new System.Drawing.Size(703, 157);
             this.tlpNut.TabIndex = 2;
             // 
@@ -1032,7 +1118,7 @@ namespace SupermarketManagement
             this.btnThemHoaDon.Location = new System.Drawing.Point(6, 6);
             this.btnThemHoaDon.Margin = new System.Windows.Forms.Padding(6);
             this.btnThemHoaDon.Name = "btnThemHoaDon";
-            this.btnThemHoaDon.Size = new System.Drawing.Size(339, 66);
+            this.btnThemHoaDon.Size = new System.Drawing.Size(339, 40);
             this.btnThemHoaDon.TabIndex = 0;
             this.btnThemHoaDon.Text = "Hóa đơn mới";
             this.btnThemHoaDon.UseVisualStyleBackColor = false;
@@ -1050,9 +1136,9 @@ namespace SupermarketManagement
             this.btnTaoHoaDon.Location = new System.Drawing.Point(357, 6);
             this.btnTaoHoaDon.Margin = new System.Windows.Forms.Padding(6);
             this.btnTaoHoaDon.Name = "btnTaoHoaDon";
-            this.btnTaoHoaDon.Size = new System.Drawing.Size(340, 66);
+            this.btnTaoHoaDon.Size = new System.Drawing.Size(340, 40);
             this.btnTaoHoaDon.TabIndex = 1;
-            this.btnTaoHoaDon.Text = "Lưu hóa đơn";
+            this.btnTaoHoaDon.Text = "Xem lịch sử hóa đơn";
             this.btnTaoHoaDon.UseVisualStyleBackColor = false;
             this.btnTaoHoaDon.Click += new System.EventHandler(this.btnTaoHoaDon_Click);
             // 
@@ -1065,29 +1151,48 @@ namespace SupermarketManagement
             this.btnXuatHoaDon.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXuatHoaDon.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnXuatHoaDon.ForeColor = System.Drawing.Color.White;
-            this.btnXuatHoaDon.Location = new System.Drawing.Point(6, 84);
+            this.btnXuatHoaDon.Location = new System.Drawing.Point(6, 58);
             this.btnXuatHoaDon.Margin = new System.Windows.Forms.Padding(6);
             this.btnXuatHoaDon.Name = "btnXuatHoaDon";
-            this.btnXuatHoaDon.Size = new System.Drawing.Size(339, 67);
+            this.btnXuatHoaDon.Size = new System.Drawing.Size(339, 40);
             this.btnXuatHoaDon.TabIndex = 2;
             this.btnXuatHoaDon.Text = "Xuất hóa đơn";
             this.btnXuatHoaDon.UseVisualStyleBackColor = false;
             this.btnXuatHoaDon.Click += new System.EventHandler(this.btnXuatHoaDon_Click);
             // 
+            // btnTraHang
+            // 
+            this.btnTraHang.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(126)))), ((int)(((byte)(34)))));
+            this.btnTraHang.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTraHang.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnTraHang.FlatAppearance.BorderSize = 0;
+            this.btnTraHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTraHang.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnTraHang.ForeColor = System.Drawing.Color.White;
+            this.btnTraHang.Location = new System.Drawing.Point(357, 58);
+            this.btnTraHang.Margin = new System.Windows.Forms.Padding(6);
+            this.btnTraHang.Name = "btnTraHang";
+            this.btnTraHang.Size = new System.Drawing.Size(340, 40);
+            this.btnTraHang.TabIndex = 3;
+            this.btnTraHang.Text = "Trả hàng";
+            this.btnTraHang.UseVisualStyleBackColor = false;
+            this.btnTraHang.Click += new System.EventHandler(this.btnTraHang_Click);
+            // 
             // btnThoat
             // 
             this.btnThoat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.tlpNut.SetColumnSpan(this.btnThoat, 2);
             this.btnThoat.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThoat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.btnThoat.FlatAppearance.BorderSize = 0;
             this.btnThoat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThoat.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnThoat.ForeColor = System.Drawing.Color.White;
-            this.btnThoat.Location = new System.Drawing.Point(357, 84);
+            this.btnThoat.Location = new System.Drawing.Point(6, 110);
             this.btnThoat.Margin = new System.Windows.Forms.Padding(6);
             this.btnThoat.Name = "btnThoat";
-            this.btnThoat.Size = new System.Drawing.Size(340, 67);
-            this.btnThoat.TabIndex = 3;
+            this.btnThoat.Size = new System.Drawing.Size(691, 41);
+            this.btnThoat.TabIndex = 4;
             this.btnThoat.Text = "Đăng xuất";
             this.btnThoat.UseVisualStyleBackColor = false;
             this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
@@ -1114,6 +1219,8 @@ namespace SupermarketManagement
             this.tlpTimKiem.PerformLayout();
             this.grpDSSP.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDSSP)).EndInit();
+            this.tlpDonViTinh.ResumeLayout(false);
+            this.tlpDonViTinh.PerformLayout();
             this.grpChiTiet.ResumeLayout(false);
             this.tlpChiTiet.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvChiTietHoaDon)).EndInit();
@@ -1148,12 +1255,17 @@ namespace SupermarketManagement
         private TableLayoutPanel tlpTimKiem;
         private Label lblTimKiemSP;
         private TextBox txtTimKiemSP;
+        private TableLayoutPanel tlpDonViTinh;
+        private Label lblDonViTinh;
+        private ComboBox cboDonViTinh;
+        private Label lblQuyDoi;
         private GroupBox grpDSSP;
         private DataGridView dgvDSSP;
         private DataGridViewTextBoxColumn colMaSP_DSSP;
         private DataGridViewTextBoxColumn colTenSP_DSSP;
         private DataGridViewTextBoxColumn colSoLuong_DSSP;
         private DataGridViewTextBoxColumn colDonGiaBan_DSSP;
+        private DataGridViewTextBoxColumn colDonViTinh_DSSP;
 
         private GroupBox grpChiTiet;
         private TableLayoutPanel tlpChiTiet;
@@ -1163,6 +1275,7 @@ namespace SupermarketManagement
         private DataGridViewTextBoxColumn colSoLuong;
         private DataGridViewTextBoxColumn colDonGia;
         private DataGridViewTextBoxColumn colThanhTien;
+        private DataGridViewTextBoxColumn colDonViTinh;
         private FlowLayoutPanel flpThaoTac;
         private Button btnXoaSPKhoiHD;
         private Button btnSuaSP;
@@ -1202,6 +1315,7 @@ namespace SupermarketManagement
         private Button btnThemHoaDon;
         private Button btnTaoHoaDon;
         private Button btnXuatHoaDon;
+        private Button btnTraHang;
         private Button btnThoat;
         private GroupBox grpGiamGia;
         private RadioButton rdoGiam30;

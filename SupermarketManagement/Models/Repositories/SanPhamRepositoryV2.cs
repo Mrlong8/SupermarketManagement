@@ -1,7 +1,9 @@
-﻿using SupermarketManagement.Controllers.Repositories;
+﻿using DocumentFormat.OpenXml.Drawing;
+using SupermarketManagement.Controllers.Repositories;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 
 namespace SupermarketManagement.Models.Repositories
 {
@@ -17,7 +19,16 @@ namespace SupermarketManagement.Models.Repositories
                 FROM SanPham_DonViTinh d
                 JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
                 WHERE d.MaSP = sp.MaSP
-                ORDER BY d.SoLuongQuyDoi ASC, d.MaDVT
+                ORDER BY
+                    CASE
+                        WHEN sp.MaSP IN (1, 6, 12) AND d.MaDVT = 'DV08' THEN 0 -- Táo: Kg
+                        WHEN sp.MaSP IN (2, 7) AND d.MaDVT = 'DV03' THEN 0 -- Sữa: Hộp
+                        WHEN sp.MaSP IN (3, 8) AND d.MaDVT = 'DV07' THEN 0 -- Oreo: Gói
+                        WHEN sp.MaSP IN (4, 5, 10, 13) AND d.MaDVT = 'DV05' THEN 0 -- Chai
+                        WHEN sp.MaSP = 11 AND d.MaDVT = 'DV01' THEN 0 -- Bánh mì: Cái
+                        ELSE 1
+                    END,
+                    d.SoLuongQuyDoi ASC, d.MaDVT
             ) u";
 
         // Đặt alias SoLuong, DonGiaNhap, DonGiaBan để code giao diện cũ vẫn dùng được tên cột cũ.
@@ -65,14 +76,34 @@ namespace SupermarketManagement.Models.Repositories
         }
 
         // Danh sách đơn vị tính của 1 sản phẩm (đổ vào ComboBox)
+        //public DataTable GetDonViTinhTheoSanPham(string maSP)
+        //{
+        //    string sql = $@"
+        //        SELECT d.MaDVT, dv.TenDV, d.SoLuongQuyDoi, d.DonGiaNhapLe, d.DonGiaBanLe
+        //        FROM SanPham_DonViTinh d
+        //        JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
+        //        WHERE d.MaSP = '{Esc(maSP)}'
+        //          AND (
+        //               (d.MaSP IN (1, 6, 12) AND d.MaDVT IN ('DV08', 'DV02'))
+        //            OR (d.MaSP IN (2, 7) AND d.MaDVT IN ('DV03', 'DV04', 'DV02'))
+        //            OR (d.MaSP IN (3, 8) AND d.MaDVT IN ('DV07', 'DV03'))
+        //            OR (d.MaSP IN (4, 5, 10, 13) AND d.MaDVT IN ('DV05', 'DV02'))
+        //            OR (d.MaSP = 11 AND d.MaDVT = 'DV01')
+        //          )
+        //        ORDER BY d.SoLuongQuyDoi, d.MaDVT";
+        //    return _db.GetListData(sql);
+        //}
+
+        // Lấy danh sách tất cả đơn vị tính và giá quy đổi của một sản phẩm
         public DataTable GetDonViTinhTheoSanPham(string maSP)
         {
             string sql = $@"
-                SELECT d.MaDVT, dv.TenDV, d.SoLuongQuyDoi, d.DonGiaNhapLe, d.DonGiaBanLe
-                FROM SanPham_DonViTinh d
-                JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
-                WHERE d.MaSP = '{Esc(maSP)}'
-                ORDER BY d.SoLuongQuyDoi";
+        SELECT d.MaDVT, dv.TenDV, d.SoLuongQuyDoi, d.DonGiaNhapLe, d.DonGiaBanLe
+        FROM SanPham_DonViTinh d
+        JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
+        WHERE d.MaSP = '{Esc(maSP)}'
+        ORDER BY d.SoLuongQuyDoi, d.MaDVT";
+
             return _db.GetListData(sql);
         }
 
@@ -241,6 +272,72 @@ namespace SupermarketManagement.Models.Repositories
             });
 
             return rowsAffected > 0;
+        }
+
+        public DataTable GetDonVi()
+        {
+            string sql = "select * from DonViTinh";
+            return _db.GetListData(sql);
+        }
+
+        //public DataTable GetDonViByMaSP(string maSP)
+        //{
+        //    string sql = $"SELECT * FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP}";
+        //    return _db.GetTable(sql);
+        //}
+
+        public void ThemQuyDoiDonViChoSanPham(string maSP, string maDVT, int soLuongQuyDoi, decimal donGiaNhap, decimal donGiaBan)
+        {
+            string sql = $@"
+        IF EXISTS (SELECT 1 FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP} AND MaDVT = '{maDVT}')
+        BEGIN
+            UPDATE dbo.SanPham_DonViTinh
+            SET SoLuongQuyDoi = {soLuongQuyDoi},
+                DonGiaNhapLe = {donGiaNhap},
+                DonGiaBanLe = {donGiaBan}
+            WHERE MaSP = {maSP} AND MaDVT = '{maDVT}';
+        END
+        ELSE
+        BEGIN
+            INSERT INTO dbo.SanPham_DonViTinh (MaSP, MaDVT, SoLuongQuyDoi, DonGiaNhapLe, DonGiaBanLe)
+            VALUES ({maSP}, '{maDVT}', {soLuongQuyDoi}, {donGiaNhap}, {donGiaBan});
+        END";
+
+            _db.DataChange(sql);
+        }
+
+        public DataTable GetDonViByMaSP(string maSP)
+        {
+            string sql = $"SELECT * FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP} ORDER BY SoLuongQuyDoi";
+            return _db.GetTable(sql);
+        }
+
+        public void ThemQuyDoiDonViChoSanPham(string maSP, string maDVTCu, string maDVT,
+                                              int soLuongQuyDoi, decimal donGiaNhap, decimal donGiaBan)
+        {
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            string nhap = donGiaNhap.ToString(inv);
+            string ban = donGiaBan.ToString(inv);
+
+            string sql = $@"
+                SET XACT_ABORT ON;
+                BEGIN TRAN;
+
+                -- Nếu đổi sang đơn vị khác thì xoá dòng quy đổi cũ
+                IF '{maDVTCu}' <> '' AND '{maDVTCu}' <> '{maDVT}'
+                    DELETE FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP} AND MaDVT = '{maDVTCu}';
+
+                IF EXISTS (SELECT 1 FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP} AND MaDVT = '{maDVT}')
+                    UPDATE dbo.SanPham_DonViTinh
+                    SET SoLuongQuyDoi = {soLuongQuyDoi}, DonGiaNhapLe = {nhap}, DonGiaBanLe = {ban}
+                    WHERE MaSP = {maSP} AND MaDVT = '{maDVT}';
+                ELSE
+                    INSERT INTO dbo.SanPham_DonViTinh (MaSP, MaDVT, SoLuongQuyDoi, DonGiaNhapLe, DonGiaBanLe)
+                    VALUES ({maSP}, '{maDVT}', {soLuongQuyDoi}, {nhap}, {ban});
+
+                COMMIT TRAN;";
+
+            _db.DataChange(sql);
         }
     }
 }
