@@ -6,6 +6,7 @@ using SupermarketManagement.Views.Admin.QuanLyKhoHang;
 using SupermarketManagement.Views.Admin.LichSuNhap;
 using SupermarketManagement.Views.Admin.Product;
 using SupermarketManagement.Views.Admin.ThongKe;
+using SupermarketManagement.Views.Admin.Account;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SupermarketManagement.Views.Admin.LichSuTraHang;
 
 namespace SupermarketManagement.Views.Admin
 {
@@ -37,6 +39,7 @@ namespace SupermarketManagement.Views.Admin
         private void Frm_Admin_Load(object sender, EventArgs e)
         {
             btnProfile.Text = UserSession.UserName;
+            btnThongKe.PerformClick();
         }
         // lấy màu
         private Color SelectThemeColor()
@@ -132,7 +135,7 @@ namespace SupermarketManagement.Views.Admin
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
-            //ShowChildForm(new INde);
+            ShowChildForm(new IndexAccount(UserSession.MaTK,true),sender);
         }
 
         private void btnManagerCustom_Click(object sender, EventArgs e)
@@ -177,6 +180,11 @@ namespace SupermarketManagement.Views.Admin
             {
                 UserSession.DangXuat(this);
             }
+        }
+
+        private void btnLichSuTraHang_Click(object sender, EventArgs e)
+        {
+            ShowChildForm(new IndexLichSuTraHang(),sender);
         }
     }
 }

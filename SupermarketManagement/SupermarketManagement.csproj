@@ -148,13 +148,16 @@
     <Compile Include="Models\Repositories\ChucVuRepository.cs" />
     <Compile Include="Models\Repositories\DbConection.cs" />
     <Compile Include="Models\Entities\DonViQuyDoiItem.cs" />
+    <Compile Include="Models\Repositories\DonViRepository.cs" />
     <Compile Include="Models\Repositories\KhachHangRepository.cs" />
     <Compile Include="Models\Repositories\KhoHangRepository.cs" />
     <Compile Include="Models\Repositories\LichSuMuaRepository.cs" />
     <Compile Include="Models\Repositories\LichSuNhapRepository.cs" />
+    <Compile Include="Models\Repositories\LichSuTraHangRepostory.cs" />
     <Compile Include="Models\Repositories\NhanVienRepository.cs" />
     <Compile Include="Models\Repositories\SanPhamRepositoryV2.cs" />
     <Compile Include="Models\Repositories\ThongKeRepository.cs" />
+    <Compile Include="Models\Repositories\TraHangRepository.cs" />
     <Compile Include="Views\Admin\Account\IndexAccount.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +187,12 @@
     </Compile>
     <Compile Include="Views\Admin\LichSuNhap\IndexLichSuNhap.Designer.cs">
       <DependentUpon>IndexLichSuNhap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuTraHang\IndexLichSuTraHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\LichSuTraHang\IndexLichSuTraHang.Designer.cs">
+      <DependentUpon>IndexLichSuTraHang.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Admin\NhanVien\IndexNhanVien.cs">
       <SubType>UserControl</SubType>
@@ -218,6 +227,12 @@
     </Compile>
     <Compile Include="Views\Admin\Product\EditProduct.Designer.cs">
       <DependentUpon>EditProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\Product\ThemDonVi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\Product\ThemDonVi.Designer.cs">
+      <DependentUpon>ThemDonVi.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Admin\QuanLyKhoHang\IndexQuanLyKhoHang.cs">
       <SubType>Form</SubType>
@@ -287,6 +302,12 @@
     <Compile Include="Views\Cashier\POSForm.Designer.cs">
       <DependentUpon>POSForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Cashier\TraHangForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Cashier\TraHangForm.Designer.cs">
+      <DependentUpon>TraHangForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -306,6 +327,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\LichSuNhap\IndexLichSuNhap.resx">
       <DependentUpon>IndexLichSuNhap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\LichSuTraHang\IndexLichSuTraHang.resx">
+      <DependentUpon>IndexLichSuTraHang.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\NhanVien\IndexNhanVien.resx">
       <DependentUpon>IndexNhanVien.cs</DependentUpon>
@@ -328,17 +353,26 @@
     <EmbeddedResource Include="Views\Admin\Product\ProductItemControl.resx">
       <DependentUpon>ProductItemControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Admin\Product\ThemDonVi.resx">
+      <DependentUpon>ThemDonVi.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\QuanLyKhoHang\IndexQuanLyKhoHang.resx">
       <DependentUpon>IndexQuanLyKhoHang.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Admin\ThongKe\IndexThongKe.resx">
       <DependentUpon>IndexThongKe.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Auth\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\InvoiceForm.resx">
       <DependentUpon>InvoiceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Cashier\POSForm.resx">
       <DependentUpon>POSForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Cashier\TraHangForm.resx">
+      <DependentUpon>TraHangForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -374,9 +408,13 @@
     <Content Include="Resources\Icon\customer.png" />
     <Content Include="Resources\Icon\stop.png" />
     <Content Include="Resources\Icon\user.png" />
+    <None Include="Resources\money.png" />
     <Content Include="Resources\Product\b7.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\supermarket2.jpg" />
+    <None Include="Resources\supermarket1.jpg" />
+    <None Include="Resources\supermarket.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 // ===== CỦA NAM: 2 dòng using cho phần Đăng nhập (đang BẬT) =====
 using SupermarketManagement.Utils;
 using SupermarketManagement.Views.Auth;
+using SupermarketManagement.Views.Admin.QuanLyKhoHang;
 
 namespace SupermarketManagement
 {
@@ -57,8 +58,9 @@ namespace SupermarketManagement
             switch ((role ?? "").Trim().ToLower())
             {
                 case "admin": return new Frm_Admin();      // Admin   -> form Admin của Long Hiện
-                case "manager": return new DashboardForm();  // Manager -> form tổng (có menu)
+                case "manager": return new Frm_Admin();   // Manager -> form tổng (có menu)
                 case "cashier": return new POSForm();        // Cashier -> form bán hàng
+                case "warehouse": return new IndexQuanLyKhoHang();
                 default: return null;
             }
         }
