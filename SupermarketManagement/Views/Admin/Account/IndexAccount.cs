@@ -296,5 +296,37 @@ namespace SupermarketManagement.Views.Admin.Account
                 txtPasswordNew.SelectAll();
             }
         }
+
+        // Đặt lại mật khẩu về mặc định khi người dùng bấm quên mật khẩu
+        private void btnQuenMK_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Bạn có chắc chắn muốn đặt lại mật khẩu về mặc định ('1') không?", "Xác nhận đặt lại", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try
+                {
+                    string defaultPassHash = SupermarketManagement.Utils.SecurityHelper.Sha256("1");
+                    bool isSuccess = _reppo.ResetMatKhau(maNV, defaultPassHash);
+
+                    if (isSuccess)
+                    {
+                        MessageBox.Show("Đặt lại mật khẩu thành công! Mật khẩu mới của bạn là '1'.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        txtPassCu.Clear();
+                        txtPasswordNew.Clear();
+                        txtXacNhan.Clear();
+
+                        GetThongTin();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Đặt lại mật khẩu thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi đặt lại mật khẩu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

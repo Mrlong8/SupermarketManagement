@@ -11,8 +11,6 @@ namespace SupermarketManagement.Models.Repositories
     {
         private DbConection _db = new DbConection();
 
-        // Đơn vị cơ bản của sản phẩm = đơn vị có SoLuongQuyDoi nhỏ nhất (thường là 1).
-        // Giá nhập/giá bán hiển thị ở danh sách lấy theo đơn vị này.
         private const string BaseUnitApply = @"
             OUTER APPLY (
                 SELECT TOP 1 d.MaDVT, d.SoLuongQuyDoi, d.DonGiaNhapLe, d.DonGiaBanLe, dv.TenDV
@@ -21,45 +19,57 @@ namespace SupermarketManagement.Models.Repositories
                 WHERE d.MaSP = sp.MaSP
                 ORDER BY
                     CASE
-                        WHEN sp.MaSP IN (1, 6, 12) AND d.MaDVT = 'DV08' THEN 0 -- Táo: Kg
-                        WHEN sp.MaSP IN (2, 7) AND d.MaDVT = 'DV03' THEN 0 -- Sữa: Hộp
-                        WHEN sp.MaSP IN (3, 8) AND d.MaDVT = 'DV07' THEN 0 -- Oreo: Gói
-                        WHEN sp.MaSP IN (4, 5, 10, 13) AND d.MaDVT = 'DV05' THEN 0 -- Chai
-                        WHEN sp.MaSP = 11 AND d.MaDVT = 'DV01' THEN 0 -- Bánh mì: Cái
+                        WHEN sp.MaSP IN (1, 6, 12) AND d.MaDVT = 'DV08' THEN 0
+                        WHEN sp.MaSP IN (2, 7) AND d.MaDVT = 'DV03' THEN 0
+                        WHEN sp.MaSP IN (3, 8) AND d.MaDVT = 'DV07' THEN 0
+                        WHEN sp.MaSP IN (4, 5, 10, 13) AND d.MaDVT = 'DV05' THEN 0
+                        WHEN sp.MaSP = 11 AND d.MaDVT = 'DV01' THEN 0
                         ELSE 1
                     END,
                     d.SoLuongQuyDoi ASC, d.MaDVT
             ) u";
 
-        // Đặt alias SoLuong, DonGiaNhap, DonGiaBan để code giao diện cũ vẫn dùng được tên cột cũ.
-        private const string SelectSanPham = @"
+        private const string SelectSanPhamByHSD = @"
             SELECT sp.MaSP, sp.TenSanPham,
-                   sp.SoLuongTong AS SoLuong,
+                   ISNULL(SUM(ct.SoLuongNhap), sp.SoLuongTong) AS SoLuong,
+                   ct.NgaySanXuat, ct.NgayHetHan,
                    sp.UrlImage, sp.MoTa, sp.MaDM, sp.MaKM, sp.MaNV, sp.MaNCC, sp.TrangThai,
                    u.MaDVT, u.TenDV,
                    u.DonGiaNhapLe AS DonGiaNhap,
                    u.DonGiaBanLe  AS DonGiaBan
-            FROM SanPham sp" + BaseUnitApply;
+            FROM SanPham sp
+            LEFT JOIN ChiTietPhieuNhapHang ct ON ct.MaSP = sp.MaSP
+            " + BaseUnitApply;
+
+        private const string GroupByHSD = @"
+            GROUP BY sp.MaSP, sp.TenSanPham, sp.SoLuongTong, ct.NgaySanXuat, ct.NgayHetHan,
+                     sp.UrlImage, sp.MoTa, sp.MaDM, sp.MaKM, sp.MaNV, sp.MaNCC, sp.TrangThai,
+                     u.MaDVT, u.TenDV, u.DonGiaNhapLe, u.DonGiaBanLe";
 
         private static string Esc(string s)
         {
             return (s ?? "").Replace("'", "''");
         }
 
+        // Lấy danh sách sản phẩm theo lô hạn sử dụng
         public DataTable GetListSanPham()
         {
-            string sql = SelectSanPham + " WHERE sp.TrangThai = 1";
+            string sql = SelectSanPhamByHSD + " WHERE sp.TrangThai = 1 " + GroupByHSD;
             return _db.GetListData(sql);
         }
 
+        // Lấy danh sách sản phẩm thu gọn theo lô hạn sử dụng
         public DataTable GetListSanPhamV2()
         {
-            string sql = @"SELECT sp.MaSP, sp.TenSanPham, sp.SoLuongTong AS SoLuong, u.DonGiaBanLe AS DonGiaBan
-                           FROM SanPham sp" + BaseUnitApply + " WHERE sp.TrangThai = 1";
+            string sql = @"SELECT sp.MaSP, sp.TenSanPham, ISNULL(SUM(ct.SoLuongNhap), sp.SoLuongTong) AS SoLuong, 
+                                  ct.NgaySanXuat, ct.NgayHetHan, u.DonGiaBanLe AS DonGiaBan
+                           FROM SanPham sp
+                           LEFT JOIN ChiTietPhieuNhapHang ct ON ct.MaSP = sp.MaSP" + BaseUnitApply +
+                         " WHERE sp.TrangThai = 1 " + GroupByHSD;
             return _db.GetListData(sql);
         }
 
-        // Dùng cho màn hình bán hàng / nhập hàng: mỗi sản phẩm một dòng cho MỖI đơn vị tính
+        // Lấy danh sách sản phẩm theo từng đơn vị tính
         public DataTable GetListSanPhamTheoDonViTinh()
         {
             string sql = @"
@@ -75,63 +85,48 @@ namespace SupermarketManagement.Models.Repositories
             return _db.GetListData(sql);
         }
 
-        // Danh sách đơn vị tính của 1 sản phẩm (đổ vào ComboBox)
-        //public DataTable GetDonViTinhTheoSanPham(string maSP)
-        //{
-        //    string sql = $@"
-        //        SELECT d.MaDVT, dv.TenDV, d.SoLuongQuyDoi, d.DonGiaNhapLe, d.DonGiaBanLe
-        //        FROM SanPham_DonViTinh d
-        //        JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
-        //        WHERE d.MaSP = '{Esc(maSP)}'
-        //          AND (
-        //               (d.MaSP IN (1, 6, 12) AND d.MaDVT IN ('DV08', 'DV02'))
-        //            OR (d.MaSP IN (2, 7) AND d.MaDVT IN ('DV03', 'DV04', 'DV02'))
-        //            OR (d.MaSP IN (3, 8) AND d.MaDVT IN ('DV07', 'DV03'))
-        //            OR (d.MaSP IN (4, 5, 10, 13) AND d.MaDVT IN ('DV05', 'DV02'))
-        //            OR (d.MaSP = 11 AND d.MaDVT = 'DV01')
-        //          )
-        //        ORDER BY d.SoLuongQuyDoi, d.MaDVT";
-        //    return _db.GetListData(sql);
-        //}
-
-        // Lấy danh sách tất cả đơn vị tính và giá quy đổi của một sản phẩm
+        // Lấy danh sách đơn vị tính của sản phẩm
         public DataTable GetDonViTinhTheoSanPham(string maSP)
         {
             string sql = $@"
-        SELECT d.MaDVT, dv.TenDV, d.SoLuongQuyDoi, d.DonGiaNhapLe, d.DonGiaBanLe
-        FROM SanPham_DonViTinh d
-        JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
-        WHERE d.MaSP = '{Esc(maSP)}'
-        ORDER BY d.SoLuongQuyDoi, d.MaDVT";
+                SELECT d.MaDVT, dv.TenDV, d.SoLuongQuyDoi, d.DonGiaNhapLe, d.DonGiaBanLe
+                FROM SanPham_DonViTinh d
+                JOIN DonViTinh dv ON dv.MaDVT = d.MaDVT
+                WHERE d.MaSP = '{Esc(maSP)}'
+                ORDER BY d.SoLuongQuyDoi, d.MaDVT";
 
             return _db.GetListData(sql);
         }
 
+        // Lấy toàn bộ bảng đơn vị tính
         public DataTable GetListDonViTinh()
         {
             return _db.GetListData("SELECT MaDVT, TenDV, GhiChu FROM DonViTinh");
         }
 
+        // Lấy danh mục sản phẩm
         public DataTable GetDanhMuc()
         {
             string sql = "SELECT * FROM DanhMuc";
             return _db.GetListData(sql);
         }
 
+        // Tìm kiếm sản phẩm theo tên bao gồm thông tin lô hạn sử dụng
         public DataTable TimKiemSanPhamTheoTen(string keyword)
         {
-            string sql = SelectSanPham +
-                         $" WHERE sp.TenSanPham LIKE N'%{Esc(keyword.Trim())}%' AND sp.TrangThai = 1";
+            string sql = SelectSanPhamByHSD +
+                         $" WHERE sp.TenSanPham LIKE N'%{Esc(keyword.Trim())}%' AND sp.TrangThai = 1 " + GroupByHSD;
             return _db.GetListData(sql);
         }
 
+        // Lọc sản phẩm theo mã danh mục
         public DataTable LocSanPhamTheoDanhMuc(string maDM)
         {
-            string sql = SelectSanPham + $" WHERE sp.MaDM = '{Esc(maDM)}' AND sp.TrangThai = 1";
+            string sql = SelectSanPhamByHSD + $" WHERE sp.MaDM = '{Esc(maDM)}' AND sp.TrangThai = 1 " + GroupByHSD;
             return _db.GetListData(sql);
         }
 
-        // Xóa mềm sản phẩm
+        // Đánh dấu xóa mềm sản phẩm
         public void Delete(string maSP)
         {
             string sql = "UPDATE SanPham SET TrangThai = 0 WHERE MaSP = @MaSP";
@@ -141,14 +136,14 @@ namespace SupermarketManagement.Models.Repositories
             });
         }
 
+        // Lấy chi tiết sản phẩm theo mã
         public DataTable GetSanPhamById(string maSP)
         {
-            string sql = SelectSanPham + $" WHERE sp.MaSP = '{Esc(maSP)}'";
+            string sql = SelectSanPhamByHSD + $" WHERE sp.MaSP = '{Esc(maSP)}' " + GroupByHSD;
             return _db.GetListData(sql);
         }
 
-        // Giữ nguyên chữ ký cũ. giaNhap/giaBan được ghi vào đơn vị cơ bản (SoLuongQuyDoi nhỏ nhất).
-        // soLuong ghi vào SoLuongTong (tính theo đơn vị nhỏ nhất).
+        // Cập nhật thông tin cơ bản sản phẩm
         public void Update(string maSP, string tenSP, decimal giaNhap, decimal giaBan,
                            int soLuong, string maDM, string moTa)
         {
@@ -183,7 +178,7 @@ namespace SupermarketManagement.Models.Repositories
             });
         }
 
-        // Cập nhật giá cho 1 đơn vị tính cụ thể (Thùng, Chai, ...)
+        // Cập nhật đơn giá theo đơn vị tính
         public bool UpdateGiaTheoDonVi(string maSP, string maDVT, decimal giaNhapLe, decimal giaBanLe)
         {
             string sql = @"UPDATE SanPham_DonViTinh
@@ -199,9 +194,9 @@ namespace SupermarketManagement.Models.Repositories
             return rows > 0;
         }
 
-        // Thêm hoặc sửa quy đổi của 1 đơn vị cho 1 sản phẩm
+        // Lưu thông tin quy đổi đơn vị tính
         public bool LuuDonViTinhChoSanPham(string maSP, string maDVT, int soLuongQuyDoi,
-                                           decimal giaNhapLe, decimal giaBanLe)
+                                            decimal giaNhapLe, decimal giaBanLe)
         {
             string sql = @"
                 IF EXISTS (SELECT 1 FROM SanPham_DonViTinh WHERE MaSP = @MaSP AND MaDVT = @MaDVT)
@@ -222,6 +217,7 @@ namespace SupermarketManagement.Models.Repositories
             return rows > 0;
         }
 
+        // Cập nhật ảnh đại diện sản phẩm
         public void UpdateImage(string maSP, string urlImage)
         {
             string sql = "UPDATE SanPham SET UrlImage = @Url WHERE MaSP = @MaSP";
@@ -232,8 +228,7 @@ namespace SupermarketManagement.Models.Repositories
             });
         }
 
-        // Nhập hàng: SoLuongTong += SoLuongNhap * SoLuongQuyDoi của đơn vị đó
-        // VD: nhập 10 Thùng (quy đổi 10) => +100
+        // Cập nhật số lượng tổng khi nhập hàng
         public bool CapNhatSoLuongKhiNhapHang(string maSP, string maDVT, int soLuongNhap)
         {
             string query = @"
@@ -253,7 +248,7 @@ namespace SupermarketManagement.Models.Repositories
             return rowsAffected > 0;
         }
 
-        // Bán hàng: SoLuongTong -= SoLuongBan * SoLuongQuyDoi. Trả false nếu không đủ hàng.
+        // Trừ số lượng tồn khi bán hàng
         public bool TruSoLuongKhiBanHang(string maSP, string maDVT, int soLuongBan)
         {
             string query = @"
@@ -274,18 +269,14 @@ namespace SupermarketManagement.Models.Repositories
             return rowsAffected > 0;
         }
 
+        // Lấy tất cả danh mục đơn vị tính
         public DataTable GetDonVi()
         {
             string sql = "select * from DonViTinh";
             return _db.GetListData(sql);
         }
 
-        //public DataTable GetDonViByMaSP(string maSP)
-        //{
-        //    string sql = $"SELECT * FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP}";
-        //    return _db.GetTable(sql);
-        //}
-
+        // Thêm quy đổi đơn vị cho sản phẩm
         public void ThemQuyDoiDonViChoSanPham(string maSP, string maDVT, int soLuongQuyDoi, decimal donGiaNhap, decimal donGiaBan)
         {
             string sql = $@"
@@ -306,12 +297,14 @@ namespace SupermarketManagement.Models.Repositories
             _db.DataChange(sql);
         }
 
+        // Lấy thông tin đơn vị quy đổi theo mã sản phẩm
         public DataTable GetDonViByMaSP(string maSP)
         {
             string sql = $"SELECT * FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP} ORDER BY SoLuongQuyDoi";
             return _db.GetTable(sql);
         }
 
+        // Cập nhật hoặc xóa đơn vị quy đổi cũ của sản phẩm
         public void ThemQuyDoiDonViChoSanPham(string maSP, string maDVTCu, string maDVT,
                                               int soLuongQuyDoi, decimal donGiaNhap, decimal donGiaBan)
         {
@@ -323,7 +316,6 @@ namespace SupermarketManagement.Models.Repositories
                 SET XACT_ABORT ON;
                 BEGIN TRAN;
 
-                -- Nếu đổi sang đơn vị khác thì xoá dòng quy đổi cũ
                 IF '{maDVTCu}' <> '' AND '{maDVTCu}' <> '{maDVT}'
                     DELETE FROM dbo.SanPham_DonViTinh WHERE MaSP = {maSP} AND MaDVT = '{maDVTCu}';
 
@@ -338,6 +330,22 @@ namespace SupermarketManagement.Models.Repositories
                 COMMIT TRAN;";
 
             _db.DataChange(sql);
+        }
+        // Lấy danh sách các sản phẩm đã bị xóa (TrangThai = 0)
+        public DataTable GetListSanPhamDaXoa()
+        {
+            string sql = SelectSanPhamByHSD + " WHERE sp.TrangThai = 0 " + GroupByHSD;
+            return _db.GetListData(sql);
+        }
+
+        // Khôi phục trạng thái sản phẩm về 1 theo mã sản phẩm
+        public void KhoiPhuc(string maSP)
+        {
+            string sql = "UPDATE SanPham SET TrangThai = 1 WHERE MaSP = @MaSP";
+            DbConection.DBHelper.ExecuteNonQuery(sql, new SqlParameter[]
+            {
+        new SqlParameter("@MaSP", maSP)
+            });
         }
     }
 }

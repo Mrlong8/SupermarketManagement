@@ -116,5 +116,12 @@ namespace SupermarketManagement.Controllers.Repositories
             }
             return false; 
         }
+        // Đặt lại mật khẩu tài khoản về mật khẩu mặc định theo mã nhân viên
+        public bool ResetMatKhau(string maNV, string matKhauMoiHash)
+        {
+            string sql = $"UPDATE TaiKhoan SET Password = '{matKhauMoiHash}' WHERE MaNV = '{maNV}'";
+            _db.DataChange(sql);
+            return true;
+        }
     }
 }

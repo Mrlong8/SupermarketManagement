@@ -45,8 +45,10 @@ namespace SupermarketManagement.Views.Admin.Product
                     string soLuong = item["SoLuong"]?.ToString();
                     string urlImage = item["UrlImage"]?.ToString();
                     string tenDV = item["TenDV"]?.ToString();
+                    string nsx = item["NgaySanXuat"]?.ToString();
+                    string nhh = item["NgayHetHan"]?.ToString();
 
-                    control.SetData(maSP, tenSP, giaNhap, giaBan, soLuong, urlImage, tenDV);
+                    control.SetData(maSP, tenSP, giaNhap, giaBan, soLuong, urlImage, tenDV, nsx, nhh);
                     flpListProduct.Controls.Add(control);
                 }
             }
@@ -150,6 +152,12 @@ namespace SupermarketManagement.Views.Admin.Product
 
             GetSanPham();
             txtTimKiem.Focus();
+        }
+
+        private void btnKhoiPhuc_Click(object sender, EventArgs e)
+        {
+            Frm_KhoiPhuc frm = new Frm_KhoiPhuc();
+            frm.ShowDialog();
         }
     }
 }

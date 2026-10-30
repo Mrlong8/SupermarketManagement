@@ -136,5 +136,31 @@ namespace SupermarketManagement.Models.Repositories
             DataTable dt = _db.GetListData(sql);
             return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
+        // 10. Xóa hóa đơn (Tự động hoàn trả số lượng vào kho, xóa ChiTietHoaDon và HoaDon)
+        public bool XoaHoaDon(string maHD)
+        {
+            string sql = $@"
+                SET XACT_ABORT ON;
+                BEGIN TRAN;
+
+                -- 1. Hoàn lại số lượng tồn kho cho các sản phẩm trong hóa đơn
+                UPDATE sp
+                SET sp.SoLuongTong = sp.SoLuongTong + (ct.SoLuongBan * ISNULL(d.SoLuongQuyDoi, 1))
+                FROM SanPham sp
+                INNER JOIN ChiTietHoaDon ct ON sp.MaSP = ct.MaSP
+                LEFT JOIN SanPham_DonViTinh d ON d.MaSP = ct.MaSP AND d.MaDVT = ct.MaDVT
+                WHERE ct.MaHD = '{Esc(maHD)}';
+
+                -- 2. Xóa dữ liệu trong bảng ChiTietHoaDon
+                DELETE FROM ChiTietHoaDon WHERE MaHD = '{Esc(maHD)}';
+
+                -- 3. Xóa bản ghi trong bảng HoaDon
+                DELETE FROM HoaDon WHERE MaHD = '{Esc(maHD)}';
+
+                COMMIT TRAN;";
+
+            _db.DataChange(sql);
+            return true;
+        }
     }
 }

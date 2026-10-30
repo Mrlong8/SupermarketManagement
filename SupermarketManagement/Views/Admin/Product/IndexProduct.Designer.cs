@@ -33,6 +33,7 @@
             this.btnTimKiem = new System.Windows.Forms.Button();
             this.cbDanhMuc = new System.Windows.Forms.ComboBox();
             this.btnReset = new System.Windows.Forms.Button();
+            this.btnKhoiPhuc = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // flpListProduct
@@ -100,12 +101,29 @@
             this.btnReset.UseVisualStyleBackColor = false;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
+            // btnKhoiPhuc
+            // 
+            this.btnKhoiPhuc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnKhoiPhuc.BackColor = System.Drawing.Color.Crimson;
+            this.btnKhoiPhuc.FlatAppearance.BorderSize = 0;
+            this.btnKhoiPhuc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnKhoiPhuc.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnKhoiPhuc.ForeColor = System.Drawing.Color.White;
+            this.btnKhoiPhuc.Location = new System.Drawing.Point(218, 520);
+            this.btnKhoiPhuc.Name = "btnKhoiPhuc";
+            this.btnKhoiPhuc.Size = new System.Drawing.Size(256, 38);
+            this.btnKhoiPhuc.TabIndex = 7;
+            this.btnKhoiPhuc.Text = "Khôi Phục Hàng Dã Xóa";
+            this.btnKhoiPhuc.UseVisualStyleBackColor = false;
+            this.btnKhoiPhuc.Click += new System.EventHandler(this.btnKhoiPhuc_Click);
+            // 
             // IndexProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1333, 570);
+            this.Controls.Add(this.btnKhoiPhuc);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.cbDanhMuc);
             this.Controls.Add(this.btnTimKiem);
@@ -127,5 +145,6 @@
         private System.Windows.Forms.Button btnTimKiem;
         private System.Windows.Forms.ComboBox cbDanhMuc;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnKhoiPhuc;
     }
 }

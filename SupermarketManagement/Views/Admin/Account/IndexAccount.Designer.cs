@@ -53,6 +53,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtXacNhan = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnQuenMK = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlAvatar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picAvata)).BeginInit();
@@ -65,7 +66,7 @@
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1099, 60);
+            this.pnlHeader.Size = new System.Drawing.Size(1137, 60);
             this.pnlHeader.TabIndex = 100;
             // 
             // lblTitle
@@ -241,9 +242,9 @@
             this.btnSuaThongTin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSuaThongTin.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnSuaThongTin.ForeColor = System.Drawing.Color.White;
-            this.btnSuaThongTin.Location = new System.Drawing.Point(363, 463);
+            this.btnSuaThongTin.Location = new System.Drawing.Point(315, 463);
             this.btnSuaThongTin.Name = "btnSuaThongTin";
-            this.btnSuaThongTin.Size = new System.Drawing.Size(179, 44);
+            this.btnSuaThongTin.Size = new System.Drawing.Size(152, 44);
             this.btnSuaThongTin.TabIndex = 18;
             this.btnSuaThongTin.Text = "Sửa Thông Tin";
             this.btnSuaThongTin.UseVisualStyleBackColor = false;
@@ -260,9 +261,9 @@
             this.btnLuu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLuu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnLuu.ForeColor = System.Drawing.Color.White;
-            this.btnLuu.Location = new System.Drawing.Point(557, 463);
+            this.btnLuu.Location = new System.Drawing.Point(487, 463);
             this.btnLuu.Name = "btnLuu";
-            this.btnLuu.Size = new System.Drawing.Size(214, 44);
+            this.btnLuu.Size = new System.Drawing.Size(173, 44);
             this.btnLuu.TabIndex = 19;
             this.btnLuu.Text = "Lưu";
             this.btnLuu.UseVisualStyleBackColor = false;
@@ -278,9 +279,9 @@
             this.btnChangePass.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnChangePass.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnChangePass.ForeColor = System.Drawing.Color.White;
-            this.btnChangePass.Location = new System.Drawing.Point(777, 463);
+            this.btnChangePass.Location = new System.Drawing.Point(666, 463);
             this.btnChangePass.Name = "btnChangePass";
-            this.btnChangePass.Size = new System.Drawing.Size(176, 44);
+            this.btnChangePass.Size = new System.Drawing.Size(152, 44);
             this.btnChangePass.TabIndex = 20;
             this.btnChangePass.Text = "Đổi Mật Khẩu";
             this.btnChangePass.UseVisualStyleBackColor = false;
@@ -296,7 +297,7 @@
             this.btnThoat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThoat.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnThoat.ForeColor = System.Drawing.Color.White;
-            this.btnThoat.Location = new System.Drawing.Point(959, 463);
+            this.btnThoat.Location = new System.Drawing.Point(999, 463);
             this.btnThoat.Name = "btnThoat";
             this.btnThoat.Size = new System.Drawing.Size(117, 44);
             this.btnThoat.TabIndex = 103;
@@ -356,12 +357,31 @@
             this.label2.TabIndex = 107;
             this.label2.Text = "Xác Nhận";
             // 
+            // btnQuenMK
+            // 
+            this.btnQuenMK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.btnQuenMK.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnQuenMK.FlatAppearance.BorderSize = 0;
+            this.btnQuenMK.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(183)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.btnQuenMK.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(57)))), ((int)(((byte)(53)))));
+            this.btnQuenMK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnQuenMK.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnQuenMK.ForeColor = System.Drawing.Color.White;
+            this.btnQuenMK.Location = new System.Drawing.Point(824, 463);
+            this.btnQuenMK.Name = "btnQuenMK";
+            this.btnQuenMK.Size = new System.Drawing.Size(159, 44);
+            this.btnQuenMK.TabIndex = 109;
+            this.btnQuenMK.Text = "Quên Mật Khẩu";
+            this.btnQuenMK.UseVisualStyleBackColor = false;
+            this.btnQuenMK.Click += new System.EventHandler(this.btnQuenMK_Click);
+            // 
             // IndexAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1099, 529);
+            this.ClientSize = new System.Drawing.Size(1137, 529);
+            this.Controls.Add(this.btnQuenMK);
             this.Controls.Add(this.txtXacNhan);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtPasswordNew);
@@ -425,5 +445,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtXacNhan;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnQuenMK;
     }
 }

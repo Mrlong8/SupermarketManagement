@@ -19,20 +19,28 @@ namespace SupermarketManagement.Views.Admin.Product
             InitializeComponent();
         }
 
-        // TenDV là tham số tùy chọn: tên đơn vị cơ bản (Cái, Chai, ...) để hiển thị cạnh số lượng
-        public void SetData(string maSP, string TenSP, string GiaNhap, string GiaBan, string SoLuong, string UrlImage, string TenDV = "")
+        // Gán dữ liệu sản phẩm và hiển thị thông tin lô hạn sử dụng
+        public void SetData(string maSP, string TenSP, string GiaNhap, string GiaBan, string SoLuong, string UrlImage, string TenDV = "", string ngaySanXuat = "", string ngayHetHan = "")
         {
             _maSP = maSP;
             lblTenSP.Text = TenSP;
             lblGiaNhap.Text = "Giá Nhập: " + GiaNhap;
             lblGiaBan.Text = "Giá Bán: " + GiaBan;
             lblSoLuong.Text = "Số Lượng: " + SoLuong + (string.IsNullOrEmpty(TenDV) ? "" : " " + TenDV);
+
+            if (DateTime.TryParse(ngaySanXuat, out DateTime nsx))
+                lblNSX.Text = "NSX: " + nsx.ToString("dd/MM/yyyy");
+            else
+                lblNSX.Text = "NSX: " + (string.IsNullOrEmpty(ngaySanXuat) ? "N/A" : ngaySanXuat);
+
+            if (DateTime.TryParse(ngayHetHan, out DateTime nhh))
+                lblNHH.Text = "NHH: " + nhh.ToString("dd/MM/yyyy");
+            else
+                lblNHH.Text = "NHH: " + (string.IsNullOrEmpty(ngayHetHan) ? "N/A" : ngayHetHan);
+
             if (!string.IsNullOrEmpty(UrlImage))
             {
-                // Chuyển / thành \ để phù hợp với đường dẫn Windows
                 string cleanPath = UrlImage.Replace("/", "\\").TrimStart('\\');
-
-                // Kết hợp với thư mục đang chạy ứng dụng (bin\Debug)
                 string fullPath = System.IO.Path.Combine(Application.StartupPath, cleanPath);
 
                 if (System.IO.File.Exists(fullPath))
@@ -44,11 +52,12 @@ namespace SupermarketManagement.Views.Admin.Product
                 }
                 else
                 {
-                    pctbImageItem.Image = null; // Hoặc gán ảnh mặc định nếu không thấy file
+                    pctbImageItem.Image = null;
                 }
             }
         }
 
+        // Xử lý sự kiện khi nhấn nút xóa sản phẩm
         private void btnXoaItem_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show($"Bạn chắc chắn muốn xóa sản phẩm {lblTenSP.Text}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -70,6 +79,7 @@ namespace SupermarketManagement.Views.Admin.Product
             }
         }
 
+        // Mở Form chỉnh sửa thông tin sản phẩm
         private void btnSuaItem_Click(object sender, EventArgs e)
         {
             EditProduct frm = new EditProduct(_maSP);
