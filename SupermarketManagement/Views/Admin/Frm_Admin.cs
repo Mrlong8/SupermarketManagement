@@ -40,6 +40,7 @@ namespace SupermarketManagement.Views.Admin
         {
             btnProfile.Text = UserSession.UserName;
             btnThongKe.PerformClick();
+            LoadProfileImage();
         }
         // lấy màu
         private Color SelectThemeColor()
@@ -185,6 +186,31 @@ namespace SupermarketManagement.Views.Admin
         private void btnLichSuTraHang_Click(object sender, EventArgs e)
         {
             ShowChildForm(new IndexLichSuTraHang(),sender);
+        }
+        private void LoadProfileImage()
+        {
+            try
+            {
+                string imagePath = UserSession.UrlImage;
+
+                if (!string.IsNullOrEmpty(imagePath) && System.IO.File.Exists(imagePath))
+                {
+                    using (var stream = new System.IO.MemoryStream(System.IO.File.ReadAllBytes(imagePath)))
+                    {
+                        Image originalImage = Image.FromStream(stream);
+                        Image resizedImage = new Bitmap(originalImage, new Size(32, 32));
+
+                        btnProfile.Image = resizedImage;
+                        btnProfile.TextImageRelation = TextImageRelation.ImageBeforeText;
+                        btnProfile.ImageAlign = ContentAlignment.MiddleLeft;
+                        btnProfile.TextAlign = ContentAlignment.MiddleCenter;
+                    }
+                }
+            }
+            catch
+            {
+                btnProfile.Image = null;
+            }
         }
     }
 }
