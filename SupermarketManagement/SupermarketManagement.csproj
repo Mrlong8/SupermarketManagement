@@ -147,6 +147,7 @@
     <Compile Include="Models\Entities\PhienDangNhap.cs" />
     <Compile Include="Models\Repositories\ChucVuRepository.cs" />
     <Compile Include="Models\Repositories\DbConection.cs" />
+    <Compile Include="Models\Entities\DonViQuyDoiItem.cs" />
     <Compile Include="Models\Repositories\KhachHangRepository.cs" />
     <Compile Include="Models\Repositories\KhoHangRepository.cs" />
     <Compile Include="Models\Repositories\LichSuMuaRepository.cs" />
@@ -229,6 +230,12 @@
     </Compile>
     <Compile Include="Views\Admin\QuanLyKhoHang\FrmThemNhaCungCap.Designer.cs">
       <DependentUpon>FrmThemNhaCungCap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Admin\QuanLyKhoHang\FrmQuyDoiDonVi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Admin\QuanLyKhoHang\FrmQuyDoiDonVi.Designer.cs">
+      <DependentUpon>FrmQuyDoiDonVi.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Admin\PhieuNhapHang\IndexPhieuNhapHang.cs">
       <SubType>Form</SubType>

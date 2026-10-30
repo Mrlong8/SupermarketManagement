@@ -1,7 +1,10 @@
 using SupermarketManagement.Controllers.Repositories;
+using SupermarketManagement.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace SupermarketManagement.Models.Repositories
 {
@@ -112,6 +115,7 @@ namespace SupermarketManagement.Models.Repositories
                     ISNULL(sp.SoLuongTong, 0) AS SoLuongTong, 
                     ISNULL(sp.SoLuongTong, 0) AS SoLuong,
                     ISNULL(u.TenDV, N'Cái') AS TenDV,
+                    ISNULL(qd.DonViQuyDoi, N'-') AS DonViQuyDoi,
                     u.MaDVT,
                     ISNULL(u.DonGiaNhapLe, 0) AS DonGiaNhap, 
                     ISNULL(u.DonGiaBanLe, 0) AS DonGiaBan, 
@@ -130,6 +134,16 @@ namespace SupermarketManagement.Models.Repositories
                     WHERE d.MaSP = sp.MaSP
                     ORDER BY d.SoLuongQuyDoi ASC, d.MaDVT
                 ) u
+                OUTER APPLY (
+                    SELECT STUFF((
+                        SELECT ', 1 ' + dv2.TenDV + ' = ' + CAST(d2.SoLuongQuyDoi AS VARCHAR) + ' ' + ISNULL(u.TenDV, N'')
+                        FROM SanPham_DonViTinh d2
+                        JOIN DonViTinh dv2 ON dv2.MaDVT = d2.MaDVT
+                        WHERE d2.MaSP = sp.MaSP AND d2.SoLuongQuyDoi > 1
+                        ORDER BY d2.SoLuongQuyDoi ASC
+                        FOR XML PATH(''), TYPE
+                    ).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS DonViQuyDoi
+                ) qd
                 WHERE sp.TrangThai = 1
                 ORDER BY TRY_CAST(sp.MaSP AS INT), sp.MaSP";
             return _db.GetListData(sql);
@@ -145,6 +159,7 @@ namespace SupermarketManagement.Models.Repositories
                     ISNULL(sp.SoLuongTong, 0) AS SoLuongTong, 
                     ISNULL(sp.SoLuongTong, 0) AS SoLuong,
                     ISNULL(u.TenDV, N'Cái') AS TenDV,
+                    ISNULL(qd.DonViQuyDoi, N'-') AS DonViQuyDoi,
                     u.MaDVT,
                     ISNULL(u.DonGiaNhapLe, 0) AS DonGiaNhap, 
                     ISNULL(u.DonGiaBanLe, 0) AS DonGiaBan, 
@@ -163,13 +178,23 @@ namespace SupermarketManagement.Models.Repositories
                     WHERE d.MaSP = sp.MaSP
                     ORDER BY d.SoLuongQuyDoi ASC, d.MaDVT
                 ) u
+                OUTER APPLY (
+                    SELECT STUFF((
+                        SELECT ', 1 ' + dv2.TenDV + ' = ' + CAST(d2.SoLuongQuyDoi AS VARCHAR) + ' ' + ISNULL(u.TenDV, N'')
+                        FROM SanPham_DonViTinh d2
+                        JOIN DonViTinh dv2 ON dv2.MaDVT = d2.MaDVT
+                        WHERE d2.MaSP = sp.MaSP AND d2.SoLuongQuyDoi > 1
+                        ORDER BY d2.SoLuongQuyDoi ASC
+                        FOR XML PATH(''), TYPE
+                    ).value('.', 'NVARCHAR(MAX)'), 1, 2, '') AS DonViQuyDoi
+                ) qd
                 WHERE sp.TrangThai = 1 
                   AND (sp.TenSanPham LIKE N'%{tuKhoaEsc}%' OR sp.MaSP LIKE '%{tuKhoaEsc}%')
                 ORDER BY TRY_CAST(sp.MaSP AS INT), sp.MaSP";
             return _db.GetListData(sql);
         }
 
-        public void ThemSanPham(int maSP, string tenSP, int soLuong, double trongLuong, decimal giaNhap, decimal giaBan, string moTa, int maDM, int maNV)
+        public void ThemSanPham(int maSP, string tenSP, int soLuong, double trongLuong, decimal giaNhap, decimal giaBan, string moTa, int maDM, int maNV, List<DonViQuyDoiItem> dsDonVi = null)
         {
             using (SqlConnection conn = _db.CreateConnection())
             {
@@ -193,19 +218,45 @@ namespace SupermarketManagement.Models.Repositories
                             cmd.ExecuteNonQuery();
                         }
 
-                        // 2. Thêm đơn vị tính mặc định (DV01) vào SanPham_DonViTinh
-                        string sqlDVT = @"
-                            IF NOT EXISTS (SELECT 1 FROM SanPham_DonViTinh WHERE MaSP = @MaSP AND MaDVT = 'DV01')
-                                INSERT INTO SanPham_DonViTinh (MaDVT, MaSP, SoLuongQuyDoi, DonGiaNhapLe, DonGiaBanLe)
-                                VALUES ('DV01', @MaSP, 1, @GiaNhap, @GiaBan)
-                            ELSE
-                                UPDATE SanPham_DonViTinh SET DonGiaNhapLe = @GiaNhap, DonGiaBanLe = @GiaBan WHERE MaSP = @MaSP AND MaDVT = 'DV01'";
-                        using (SqlCommand cmd = new SqlCommand(sqlDVT, conn, trans))
+                        // 2. Thêm đơn vị tính vào SanPham_DonViTinh
+                        if (dsDonVi != null && dsDonVi.Count > 0)
                         {
-                            cmd.Parameters.AddWithValue("@MaSP", maSP.ToString());
-                            cmd.Parameters.AddWithValue("@GiaNhap", giaNhap);
-                            cmd.Parameters.AddWithValue("@GiaBan", giaBan);
-                            cmd.ExecuteNonQuery();
+                            foreach (var dv in dsDonVi)
+                            {
+                                string sqlDVT = @"
+                                    IF NOT EXISTS (SELECT 1 FROM SanPham_DonViTinh WHERE MaSP = @MaSP AND MaDVT = @MaDVT)
+                                        INSERT INTO SanPham_DonViTinh (MaDVT, MaSP, SoLuongQuyDoi, DonGiaNhapLe, DonGiaBanLe)
+                                        VALUES (@MaDVT, @MaSP, @SoLuongQuyDoi, @GiaNhap, @GiaBan)
+                                    ELSE
+                                        UPDATE SanPham_DonViTinh 
+                                        SET SoLuongQuyDoi = @SoLuongQuyDoi, DonGiaNhapLe = @GiaNhap, DonGiaBanLe = @GiaBan 
+                                        WHERE MaSP = @MaSP AND MaDVT = @MaDVT";
+                                using (SqlCommand cmd = new SqlCommand(sqlDVT, conn, trans))
+                                {
+                                    cmd.Parameters.AddWithValue("@MaSP", maSP.ToString());
+                                    cmd.Parameters.AddWithValue("@MaDVT", dv.MaDVT.Trim());
+                                    cmd.Parameters.AddWithValue("@SoLuongQuyDoi", dv.SoLuongQuyDoi > 0 ? dv.SoLuongQuyDoi : 1);
+                                    cmd.Parameters.AddWithValue("@GiaNhap", dv.DonGiaNhapLe);
+                                    cmd.Parameters.AddWithValue("@GiaBan", dv.DonGiaBanLe);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            string sqlDVT = @"
+                                IF NOT EXISTS (SELECT 1 FROM SanPham_DonViTinh WHERE MaSP = @MaSP AND MaDVT = 'DV01')
+                                    INSERT INTO SanPham_DonViTinh (MaDVT, MaSP, SoLuongQuyDoi, DonGiaNhapLe, DonGiaBanLe)
+                                    VALUES ('DV01', @MaSP, 1, @GiaNhap, @GiaBan)
+                                ELSE
+                                    UPDATE SanPham_DonViTinh SET DonGiaNhapLe = @GiaNhap, DonGiaBanLe = @GiaBan WHERE MaSP = @MaSP AND MaDVT = 'DV01'";
+                            using (SqlCommand cmd = new SqlCommand(sqlDVT, conn, trans))
+                            {
+                                cmd.Parameters.AddWithValue("@MaSP", maSP.ToString());
+                                cmd.Parameters.AddWithValue("@GiaNhap", giaNhap);
+                                cmd.Parameters.AddWithValue("@GiaBan", giaBan);
+                                cmd.ExecuteNonQuery();
+                            }
                         }
 
                         trans.Commit();
@@ -485,6 +536,141 @@ namespace SupermarketManagement.Models.Repositories
                 }
 
                 return dt;
+            }
+        }
+
+        public void SaveDonViTinhChoSanPham(string maSP, List<DonViQuyDoiItem> dsDonVi)
+        {
+            if (string.IsNullOrWhiteSpace(maSP) || dsDonVi == null || dsDonVi.Count == 0) return;
+
+            using (SqlConnection conn = _db.CreateConnection())
+            {
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        List<string> maDvtMoi = dsDonVi.Select(x => x.MaDVT.Trim()).ToList();
+
+                        // 1. Cập nhật hoặc thêm mới từng đơn vị
+                        foreach (var dv in dsDonVi)
+                        {
+                            string sqlUpsert = @"
+                                IF EXISTS (SELECT 1 FROM SanPham_DonViTinh WHERE MaSP = @MaSP AND MaDVT = @MaDVT)
+                                    UPDATE SanPham_DonViTinh 
+                                    SET SoLuongQuyDoi = @SoLuongQuyDoi, DonGiaNhapLe = @GiaNhap, DonGiaBanLe = @GiaBan 
+                                    WHERE MaSP = @MaSP AND MaDVT = @MaDVT
+                                ELSE
+                                    INSERT INTO SanPham_DonViTinh (MaDVT, MaSP, SoLuongQuyDoi, DonGiaNhapLe, DonGiaBanLe)
+                                    VALUES (@MaDVT, @MaSP, @SoLuongQuyDoi, @GiaNhap, @GiaBan)";
+
+                            using (SqlCommand cmd = new SqlCommand(sqlUpsert, conn, trans))
+                            {
+                                cmd.Parameters.AddWithValue("@MaSP", maSP.Trim());
+                                cmd.Parameters.AddWithValue("@MaDVT", dv.MaDVT.Trim());
+                                cmd.Parameters.AddWithValue("@SoLuongQuyDoi", dv.SoLuongQuyDoi > 0 ? dv.SoLuongQuyDoi : 1);
+                                cmd.Parameters.AddWithValue("@GiaNhap", dv.DonGiaNhapLe);
+                                cmd.Parameters.AddWithValue("@GiaBan", dv.DonGiaBanLe);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        // 2. Xóa các đơn vị quy đổi cũ không còn nằm trong danh sách (chỉ xóa đơn vị quy đổi > 1 và chưa phát sinh giao dịch)
+                        if (maDvtMoi.Count > 0)
+                        {
+                            string sqlDeleteUnused = @"
+                                DELETE FROM SanPham_DonViTinh 
+                                WHERE MaSP = @MaSP 
+                                  AND SoLuongQuyDoi > 1 
+                                  AND MaDVT NOT IN ({0})
+                                  AND NOT EXISTS (SELECT 1 FROM ChiTietPhieuNhapHang WHERE MaSP = @MaSP AND MaDVT = SanPham_DonViTinh.MaDVT)
+                                  AND NOT EXISTS (SELECT 1 FROM ChiTietHoaDon WHERE MaSP = @MaSP AND MaDVT = SanPham_DonViTinh.MaDVT)";
+
+                            string inClause = string.Join(",", maDvtMoi.Select((s, i) => "@p" + i));
+                            string formattedSql = string.Format(sqlDeleteUnused, inClause);
+
+                            using (SqlCommand cmdDel = new SqlCommand(formattedSql, conn, trans))
+                            {
+                                cmdDel.Parameters.AddWithValue("@MaSP", maSP.Trim());
+                                for (int i = 0; i < maDvtMoi.Count; i++)
+                                {
+                                    cmdDel.Parameters.AddWithValue("@p" + i, maDvtMoi[i]);
+                                }
+                                cmdDel.ExecuteNonQuery();
+                            }
+                        }
+
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public bool ThemDonViTinhMoi(string tenDV, string ghiChu, out string maDVTMoi, out string thongBao)
+        {
+            maDVTMoi = "";
+            if (string.IsNullOrWhiteSpace(tenDV))
+            {
+                thongBao = "Tên đơn vị tính không được để trống!";
+                return false;
+            }
+
+            tenDV = tenDV.Trim();
+            try
+            {
+                using (SqlConnection conn = _db.CreateConnection())
+                {
+                    conn.Open();
+
+                    // Kiểm tra trùng tên
+                    string sqlCheck = "SELECT MaDVT FROM DonViTinh WHERE LOWER(TenDV) = LOWER(@TenDV)";
+                    using (SqlCommand cmdCheck = new SqlCommand(sqlCheck, conn))
+                    {
+                        cmdCheck.Parameters.AddWithValue("@TenDV", tenDV);
+                        object objExist = cmdCheck.ExecuteScalar();
+                        if (objExist != null && objExist != DBNull.Value)
+                        {
+                            maDVTMoi = objExist.ToString();
+                            thongBao = $"Đơn vị tính '{tenDV}' đã tồn tại sẵn trong hệ thống ({maDVTMoi}).";
+                            return true;
+                        }
+                    }
+
+                    // Sinh mã mới DVxx
+                    string sqlMax = "SELECT ISNULL(MAX(TRY_CAST(SUBSTRING(MaDVT, 3, 10) AS INT)), 0) + 1 FROM DonViTinh WHERE MaDVT LIKE 'DV%'";
+                    int nextId = 1;
+                    using (SqlCommand cmdMax = new SqlCommand(sqlMax, conn))
+                    {
+                        object objMax = cmdMax.ExecuteScalar();
+                        if (objMax != null && objMax != DBNull.Value)
+                        {
+                            nextId = Convert.ToInt32(objMax);
+                        }
+                    }
+                    maDVTMoi = "DV" + nextId.ToString("D2");
+
+                    string sqlInsert = "INSERT INTO DonViTinh (MaDVT, TenDV, GhiChu) VALUES (@MaDVT, @TenDV, @GhiChu)";
+                    using (SqlCommand cmdInsert = new SqlCommand(sqlInsert, conn))
+                    {
+                        cmdInsert.Parameters.AddWithValue("@MaDVT", maDVTMoi);
+                        cmdInsert.Parameters.AddWithValue("@TenDV", tenDV);
+                        cmdInsert.Parameters.AddWithValue("@GhiChu", (object)ghiChu ?? "Thêm từ quản lý quy đổi");
+                        cmdInsert.ExecuteNonQuery();
+                    }
+                }
+
+                thongBao = $"Thêm đơn vị '{tenDV}' ({maDVTMoi}) thành công!";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                thongBao = "Lỗi khi thêm đơn vị: " + ex.Message;
+                return false;
             }
         }
 
