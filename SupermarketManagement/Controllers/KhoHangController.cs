@@ -188,16 +188,16 @@ namespace SupermarketManagement.Controllers
             }
 
             int soLuong = 0;
-            int.TryParse(soLuongStr, out soLuong);
+            int.TryParse(soLuongStr?.Replace(",", "").Replace(".", "").Trim(), out soLuong);
 
             double trongLuong = 0;
-            double.TryParse(trongLuongStr, out trongLuong);
+            double.TryParse(trongLuongStr?.Replace(",", "").Replace(".", "").Trim(), out trongLuong);
 
             decimal giaNhap = 0;
-            decimal.TryParse(giaNhapStr.Replace(",", "").Replace(".", ""), out giaNhap);
+            decimal.TryParse(giaNhapStr?.Replace(",", "").Replace(".", "").Trim(), out giaNhap);
 
             decimal giaBan = 0;
-            decimal.TryParse(giaBanStr.Replace(",", "").Replace(".", ""), out giaBan);
+            decimal.TryParse(giaBanStr?.Replace(",", "").Replace(".", "").Trim(), out giaBan);
 
             try
             {
