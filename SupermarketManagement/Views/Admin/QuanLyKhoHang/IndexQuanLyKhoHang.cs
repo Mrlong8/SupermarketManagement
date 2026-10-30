@@ -1166,16 +1166,73 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
                 return;
             }
 
+            string currentMaSP = txtMaHangHoa.Text.Trim();
+            string rawGiaNhap = (txtDonGiaNhap.Text ?? "").Replace(",", "").Replace(".", "").Trim();
+            decimal.TryParse(rawGiaNhap, out decimal giaNhap);
+            string rawGiaBan = (txtDonGiaBan.Text ?? "").Replace(",", "").Replace(".", "").Trim();
+            decimal.TryParse(rawGiaBan, out decimal giaBan);
+
+            // Đồng bộ đơn giá cơ bản mới vào danh sách đơn vị tạm để tránh ghi đè giá cũ
+            if (_danhSachDonViTam != null && _danhSachDonViTam.Count > 0)
+            {
+                var coBan = _danhSachDonViTam.FirstOrDefault(x => x.IsCoBan)
+                         ?? _danhSachDonViTam.OrderBy(x => x.SoLuongQuyDoi).FirstOrDefault();
+                if (coBan != null)
+                {
+                    coBan.DonGiaNhapLe = giaNhap;
+                    coBan.DonGiaBanLe = giaBan;
+                }
+            }
+
             string thongBao;
-            if (_controller.SuaSanPham(txtMaHangHoa.Text, txtTenHangHoa.Text, txtSoLuong.Text, "0", txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, out thongBao))
+            if (_controller.SuaSanPham(currentMaSP, txtTenHangHoa.Text, txtSoLuong.Text, "0", txtDonGiaNhap.Text, txtDonGiaBan.Text, txtMoTaHH.Text, maDM, out thongBao))
             {
                 if (_danhSachDonViTam != null && _danhSachDonViTam.Count > 0)
                 {
-                    _controller.SaveDonViTinhChoSanPham(txtMaHangHoa.Text, _danhSachDonViTam, out _);
+                    _controller.SaveDonViTinhChoSanPham(currentMaSP, _danhSachDonViTam, out _);
                 }
                 MessageBox.Show(thongBao, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadDanhSachHangHoa();
+                LocDanhSachHangHoa();
                 LoadComboBoxMatHang();
+
+                // Format lại hiển thị giá nhập và giá bán trong ô nhập
+                txtDonGiaNhap.Text = giaNhap.ToString("N0");
+                txtDonGiaBan.Text = giaBan.ToString("N0");
+
+                // Tải lại danh sách đơn vị tạm từ CSDL để đảm bảo dữ liệu đồng bộ
+                _danhSachDonViTam.Clear();
+                DataTable dtDVT = _controller.LoadDonViTinhTheoSanPham(currentMaSP);
+                if (dtDVT != null)
+                {
+                    foreach (DataRow r in dtDVT.Rows)
+                    {
+                        _danhSachDonViTam.Add(new DonViQuyDoiItem(
+                            r["MaDVT"]?.ToString(),
+                            r["TenDV"]?.ToString(),
+                            Convert.ToInt32(r["SoLuongQuyDoi"] ?? 1),
+                            Convert.ToDecimal(r["DonGiaNhapLe"] ?? 0),
+                            Convert.ToDecimal(r["DonGiaBanLe"] ?? 0)
+                        ));
+                    }
+                }
+
+                // Chọn lại dòng sản phẩm vừa sửa trong bảng
+                if (!string.IsNullOrEmpty(currentMaSP))
+                {
+                    foreach (DataGridViewRow row in dgvHangHoa.Rows)
+                    {
+                        if (row.Cells["MaSP"].Value?.ToString() == currentMaSP)
+                        {
+                            row.Selected = true;
+                            if (dgvHangHoa.Columns.Contains("TenSanPham"))
+                            {
+                                dgvHangHoa.CurrentCell = row.Cells["TenSanPham"];
+                            }
+                            break;
+                        }
+                    }
+                }
             }
             else
             {

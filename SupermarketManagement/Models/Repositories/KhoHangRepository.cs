@@ -298,9 +298,13 @@ namespace SupermarketManagement.Models.Repositories
 
                         // Cập nhật giá cho đơn vị tính cơ bản
                         string sqlDVT = @"
-                            UPDATE SanPham_DonViTinh 
-                            SET DonGiaNhapLe = @GiaNhap, DonGiaBanLe = @GiaBan 
-                            WHERE MaSP = @MaSP AND SoLuongQuyDoi = (SELECT MIN(SoLuongQuyDoi) FROM SanPham_DonViTinh WHERE MaSP = @MaSP)";
+                            IF EXISTS (SELECT 1 FROM SanPham_DonViTinh WHERE MaSP = @MaSP)
+                                UPDATE SanPham_DonViTinh 
+                                SET DonGiaNhapLe = @GiaNhap, DonGiaBanLe = @GiaBan 
+                                WHERE MaSP = @MaSP AND SoLuongQuyDoi = (SELECT MIN(SoLuongQuyDoi) FROM SanPham_DonViTinh WHERE MaSP = @MaSP)
+                            ELSE
+                                INSERT INTO SanPham_DonViTinh (MaDVT, MaSP, SoLuongQuyDoi, DonGiaNhapLe, DonGiaBanLe)
+                                VALUES ('DV01', @MaSP, 1, @GiaNhap, @GiaBan)";
                         using (SqlCommand cmd = new SqlCommand(sqlDVT, conn, trans))
                         {
                             cmd.Parameters.AddWithValue("@MaSP", maSP.ToString());
