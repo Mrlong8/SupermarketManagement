@@ -996,7 +996,7 @@ namespace SupermarketManagement
             this.grpGiamGia.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grpGiamGia.Name = "grpGiamGia";
             this.grpGiamGia.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.grpGiamGia.Size = new System.Drawing.Size(398, 43);
+            this.grpGiamGia.Size = new System.Drawing.Size(398, 65);
             this.grpGiamGia.TabIndex = 10;
             this.grpGiamGia.TabStop = false;
             this.grpGiamGia.Text = "Chọn mức giảm giá";
@@ -1004,7 +1004,7 @@ namespace SupermarketManagement
             // rdoGiam30
             // 
             this.rdoGiam30.AutoSize = true;
-            this.rdoGiam30.Location = new System.Drawing.Point(307, 28);
+            this.rdoGiam30.Location = new System.Drawing.Point(307, 22);
             this.rdoGiam30.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdoGiam30.Name = "rdoGiam30";
             this.rdoGiam30.Size = new System.Drawing.Size(63, 27);
@@ -1017,7 +1017,7 @@ namespace SupermarketManagement
             // rdoGiam20
             // 
             this.rdoGiam20.AutoSize = true;
-            this.rdoGiam20.Location = new System.Drawing.Point(213, 28);
+            this.rdoGiam20.Location = new System.Drawing.Point(213, 22);
             this.rdoGiam20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdoGiam20.Name = "rdoGiam20";
             this.rdoGiam20.Size = new System.Drawing.Size(63, 27);
@@ -1030,7 +1030,7 @@ namespace SupermarketManagement
             // rdoGiam10
             // 
             this.rdoGiam10.AutoSize = true;
-            this.rdoGiam10.Location = new System.Drawing.Point(115, 28);
+            this.rdoGiam10.Location = new System.Drawing.Point(115, 22);
             this.rdoGiam10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdoGiam10.Name = "rdoGiam10";
             this.rdoGiam10.Size = new System.Drawing.Size(63, 27);
@@ -1043,7 +1043,7 @@ namespace SupermarketManagement
             // rdoGiam5
             // 
             this.rdoGiam5.AutoSize = true;
-            this.rdoGiam5.Location = new System.Drawing.Point(25, 28);
+            this.rdoGiam5.Location = new System.Drawing.Point(25, 22);
             this.rdoGiam5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdoGiam5.Name = "rdoGiam5";
             this.rdoGiam5.Size = new System.Drawing.Size(54, 27);

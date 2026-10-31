@@ -393,10 +393,21 @@ namespace SupermarketManagement
             DataRow sp = ((DataRowView)dgvDSSP.Rows[e.RowIndex].DataBoundItem).Row;
             string maSP = Convert.ToString(sp["MaSP"]);
 
-            // Lấy thông tin NSX và NHH từ dòng sản phẩm
-            string nsx = sp["NgaySanXuat"] != DBNull.Value ? Convert.ToDateTime(sp["NgaySanXuat"]).ToString("dd/MM/yyyy") : "";
-            string nhh = sp["NgayHetHan"] != DBNull.Value ? Convert.ToDateTime(sp["NgayHetHan"]).ToString("dd/MM/yyyy") : "";
+            // Lấy NSX và NHH từ lô nhập có hạn sử dụng gần nhất
+            DataRow thongTinLo =
+                sanPhamRepository.GetNgaySanXuatVaHetHanGanNhat(maSP);
 
+            string nsx = "";
+            string nhh = "";
+
+            if (thongTinLo != null)
+            {
+                if (thongTinLo["NgaySanXuat"] != DBNull.Value)
+                    nsx = Convert.ToDateTime(thongTinLo["NgaySanXuat"]).ToString("dd/MM/yyyy");
+
+                if (thongTinLo["NgayHetHan"] != DBNull.Value)
+                    nhh = Convert.ToDateTime(thongTinLo["NgayHetHan"]).ToString("dd/MM/yyyy");
+            }
             if (dtDonViTinh == null || dtDonViTinh.Rows.Count == 0 ||
                 Convert.ToString(cboDonViTinh.Tag) != maSP)
             {
@@ -443,10 +454,16 @@ namespace SupermarketManagement
                 dongHoaDon.Cells["colNgaySanXuat"].Value = nsx;
                 dongHoaDon.Cells["colNgayHetHan"].Value = nhh;
             }
+            
             else
             {
                 DatSoLuongDong(dongHoaDon, soLuongCu + 1);
+
+                // Cập nhật NSX và NHH
+                dongHoaDon.Cells["colNgaySanXuat"].Value = nsx;
+                dongHoaDon.Cells["colNgayHetHan"].Value = nhh;
             }
+            
 
             dgvChiTietHoaDon.ClearSelection();
             dongHoaDon.Selected = true;
@@ -787,6 +804,7 @@ namespace SupermarketManagement
                 txtTenKH.Clear();
                 txtSDT.Clear();
                 txtEmail.Clear();
+                txtDiemTichLuy.Clear();
 
                 // Đưa mức giảm giá về 0%
                 foreach (Control control in this.Controls)

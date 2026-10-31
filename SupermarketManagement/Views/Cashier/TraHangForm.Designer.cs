@@ -33,6 +33,7 @@ namespace SupermarketManagement.Views.Cashier
         private DataGridViewTextBoxColumn colThanhTien;
         private Button btnLuu;
         private Button btnDong;
+        private Button btnLichSuTraHang;
 
         protected override void Dispose(bool disposing)
         {
@@ -58,6 +59,7 @@ namespace SupermarketManagement.Views.Cashier
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnLuu = new System.Windows.Forms.Button();
             this.btnDong = new System.Windows.Forms.Button();
+            this.btnLichSuTraHang = new System.Windows.Forms.Button();
             this.lblSoLuongTra = new System.Windows.Forms.Label();
             this.numSoLuongTra = new System.Windows.Forms.NumericUpDown();
             this.btnCapNhatSoLuong = new System.Windows.Forms.Button();
@@ -202,14 +204,15 @@ namespace SupermarketManagement.Views.Cashier
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1200, 463);
             this.dgv.TabIndex = 0;
-            this.dgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellEndEdit);
             this.dgv.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellClick);
+            this.dgv.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellEndEdit);
             // 
             // pnlBottom
             // 
             this.pnlBottom.BackColor = System.Drawing.Color.White;
             this.pnlBottom.Controls.Add(this.btnLuu);
             this.pnlBottom.Controls.Add(this.btnDong);
+            this.pnlBottom.Controls.Add(this.btnLichSuTraHang);
             this.pnlBottom.Controls.Add(this.lblSoLuongTra);
             this.pnlBottom.Controls.Add(this.numSoLuongTra);
             this.pnlBottom.Controls.Add(this.btnCapNhatSoLuong);
@@ -227,7 +230,7 @@ namespace SupermarketManagement.Views.Cashier
             this.btnLuu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(164)))), ((int)(((byte)(71)))));
             this.btnLuu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLuu.ForeColor = System.Drawing.Color.White;
-            this.btnLuu.Location = new System.Drawing.Point(900, 13);
+            this.btnLuu.Location = new System.Drawing.Point(794, 13);
             this.btnLuu.Name = "btnLuu";
             this.btnLuu.Size = new System.Drawing.Size(130, 36);
             this.btnLuu.TabIndex = 2;
@@ -238,17 +241,30 @@ namespace SupermarketManagement.Views.Cashier
             // btnDong
             // 
             this.btnDong.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDong.Location = new System.Drawing.Point(1050, 13);
+            this.btnDong.Location = new System.Drawing.Point(1083, 13);
             this.btnDong.Name = "btnDong";
             this.btnDong.Size = new System.Drawing.Size(110, 36);
             this.btnDong.TabIndex = 3;
             this.btnDong.Text = "Đóng";
             this.btnDong.Click += new System.EventHandler(this.btnDong_Click);
             // 
+            // btnLichSuTraHang
+            // 
+            this.btnLichSuTraHang.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnLichSuTraHang.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLichSuTraHang.ForeColor = System.Drawing.Color.White;
+            this.btnLichSuTraHang.Location = new System.Drawing.Point(929, 13);
+            this.btnLichSuTraHang.Name = "btnLichSuTraHang";
+            this.btnLichSuTraHang.Size = new System.Drawing.Size(150, 36);
+            this.btnLichSuTraHang.TabIndex = 10;
+            this.btnLichSuTraHang.Text = "Lịch sử trả hàng";
+            this.btnLichSuTraHang.UseVisualStyleBackColor = false;
+            this.btnLichSuTraHang.Click += new System.EventHandler(this.btnLichSuTraHang_Click);
+            // 
             // lblSoLuongTra
             // 
             this.lblSoLuongTra.AutoSize = true;
-            this.lblSoLuongTra.Location = new System.Drawing.Point(400, 20);
+            this.lblSoLuongTra.Location = new System.Drawing.Point(305, 20);
             this.lblSoLuongTra.Name = "lblSoLuongTra";
             this.lblSoLuongTra.Size = new System.Drawing.Size(115, 25);
             this.lblSoLuongTra.TabIndex = 4;
@@ -256,26 +272,38 @@ namespace SupermarketManagement.Views.Cashier
             // 
             // numSoLuongTra
             // 
-            this.numSoLuongTra.Location = new System.Drawing.Point(530, 18);
-            this.numSoLuongTra.Maximum = new decimal(new int[] {100000,0,0,0});
-            this.numSoLuongTra.Minimum = new decimal(new int[] {1,0,0,0});
+            this.numSoLuongTra.Location = new System.Drawing.Point(424, 18);
+            this.numSoLuongTra.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numSoLuongTra.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numSoLuongTra.Name = "numSoLuongTra";
             this.numSoLuongTra.Size = new System.Drawing.Size(100, 31);
             this.numSoLuongTra.TabIndex = 5;
-            this.numSoLuongTra.Value = new decimal(new int[] {1,0,0, 0});
-            this.numSoLuongTra.KeyDown +=new System.Windows.Forms.KeyEventHandler(this.numSoLuongTra_KeyDown);
+            this.numSoLuongTra.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numSoLuongTra.KeyDown += new System.Windows.Forms.KeyEventHandler(this.numSoLuongTra_KeyDown);
             // 
             // btnCapNhatSoLuong
             // 
             this.btnCapNhatSoLuong.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnCapNhatSoLuong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCapNhatSoLuong.Location = new System.Drawing.Point(645, 13);
+            this.btnCapNhatSoLuong.Location = new System.Drawing.Point(544, 13);
             this.btnCapNhatSoLuong.Name = "btnCapNhatSoLuong";
             this.btnCapNhatSoLuong.Size = new System.Drawing.Size(200, 36);
             this.btnCapNhatSoLuong.TabIndex = 6;
             this.btnCapNhatSoLuong.Text = "Cập nhật số lượng trả";
             this.btnCapNhatSoLuong.UseVisualStyleBackColor = false;
-            this.btnCapNhatSoLuong.Click +=  new System.EventHandler(this.BtnCapNhatSoLuongTra_Click);
+            this.btnCapNhatSoLuong.Click += new System.EventHandler(this.BtnCapNhatSoLuongTra_Click);
             // 
             // TraHangForm
             // 

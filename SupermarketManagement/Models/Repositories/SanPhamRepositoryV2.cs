@@ -51,21 +51,44 @@ namespace SupermarketManagement.Models.Repositories
             return (s ?? "").Replace("'", "''");
         }
 
-        // Lấy danh sách sản phẩm theo lô hạn sử dụng
+        // Lấy danh sách sản phẩm - mỗi sản phẩm chỉ xuất hiện một lần
         public DataTable GetListSanPham()
         {
-            string sql = SelectSanPhamByHSD + " WHERE sp.TrangThai = 1 " + GroupByHSD;
+            string sql = @"
+        SELECT
+            sp.MaSP,
+            sp.TenSanPham,
+            sp.SoLuongTong AS SoLuong,
+            sp.UrlImage,
+            sp.MoTa,
+            sp.MaDM,
+            sp.MaKM,
+            sp.MaNV,
+            sp.MaNCC,
+            sp.TrangThai,
+            u.MaDVT,
+            u.TenDV,
+            u.DonGiaNhapLe AS DonGiaNhap,
+            u.DonGiaBanLe AS DonGiaBan
+        FROM SanPham sp
+        " + BaseUnitApply + @"
+        WHERE sp.TrangThai = 1";
+
             return _db.GetListData(sql);
         }
-
-        // Lấy danh sách sản phẩm thu gọn theo lô hạn sử dụng
+        // Lấy danh sách sản phẩm thu gọn - không bị trùng mã
         public DataTable GetListSanPhamV2()
         {
-            string sql = @"SELECT sp.MaSP, sp.TenSanPham, ISNULL(SUM(ct.SoLuongNhap), sp.SoLuongTong) AS SoLuong, 
-                                  ct.NgaySanXuat, ct.NgayHetHan, u.DonGiaBanLe AS DonGiaBan
-                           FROM SanPham sp
-                           LEFT JOIN ChiTietPhieuNhapHang ct ON ct.MaSP = sp.MaSP" + BaseUnitApply +
-                         " WHERE sp.TrangThai = 1 " + GroupByHSD;
+            string sql = @"
+        SELECT
+            sp.MaSP,
+            sp.TenSanPham,
+            sp.SoLuongTong AS SoLuong,
+            u.DonGiaBanLe AS DonGiaBan
+        FROM SanPham sp
+        " + BaseUnitApply + @"
+        WHERE sp.TrangThai = 1";
+
             return _db.GetListData(sql);
         }
 
@@ -346,6 +369,27 @@ namespace SupermarketManagement.Models.Repositories
             {
         new SqlParameter("@MaSP", maSP)
             });
+        }
+        // Lấy NSX và HSD của lô hàng có hạn sử dụng gần nhất
+        public DataRow GetNgaySanXuatVaHetHanGanNhat(string maSP)
+        {
+            string sql = $@"
+        SELECT TOP 1
+            NgaySanXuat,
+            NgayHetHan
+        FROM ChiTietPhieuNhapHang
+        WHERE MaSP = '{Esc(maSP)}'
+        ORDER BY
+            CASE WHEN NgayHetHan IS NULL THEN 1 ELSE 0 END,
+            NgayHetHan ASC,
+            NgaySanXuat DESC";
+
+            DataTable dt = _db.GetListData(sql);
+
+            if (dt != null && dt.Rows.Count > 0)
+                return dt.Rows[0];
+
+            return null;
         }
     }
 }
