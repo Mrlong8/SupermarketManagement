@@ -1,5 +1,6 @@
 ﻿using SupermarketManagement.Models.Repositories;
 using SupermarketManagement.Utils;
+using SupermarketManagement.Views.Admin.LichSuTraHang;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -282,6 +283,13 @@ namespace SupermarketManagement.Views.Cashier
                 (int)numSoLuongTra.Minimum,
                 Math.Min(soLuongHienTai, (int)numSoLuongTra.Maximum)
             );
+        }
+        private void btnLichSuTraHang_Click(object sender, EventArgs e)
+        {
+            using (IndexLichSuTraHang form = new IndexLichSuTraHang())
+            {
+                form.ShowDialog(this);
+            }
         }
     }
 }
