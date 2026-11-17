@@ -124,7 +124,7 @@ namespace SupermarketManagement.Views.Admin
             this.button1.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.button1.Size = new System.Drawing.Size(290, 55);
             this.button1.TabIndex = 10;
-            this.button1.Text = "Nhập Hàng";
+            this.button1.Text = "   Nhập Hàng";
             this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);

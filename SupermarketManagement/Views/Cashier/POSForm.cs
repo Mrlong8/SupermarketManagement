@@ -30,6 +30,7 @@ namespace SupermarketManagement
         private DataTable dtDonViTinh; // các đơn vị tính của sản phẩm đang chọn
         private bool dangTaiDonViTinh;
 
+        // Khởi tạo giao diện và đăng ký sự kiện cho POSForm
         public POSForm()
         {
             InitializeComponent();
@@ -39,6 +40,7 @@ namespace SupermarketManagement
             CauHinhCotDonViTinh();
             dgvDSSP.SelectionChanged += dgvDSSP_SelectionChanged;
             dgvDSSP.CellClick += dgvDSSP_CellClick;
+            dgvDSSP.CellFormatting += dgvDSSP_CellFormatting;
             cboDonViTinh.SelectedIndexChanged += cboDonViTinh_SelectedIndexChanged;
 
             TaiDanhSachSanPham();
@@ -143,6 +145,7 @@ namespace SupermarketManagement
 
         // Cấu hình các cột động bao gồm đơn vị tính, hệ số quy đổi, ngày sản xuất và hạn sử dụng cho hóa đơn
         // Cấu hình các cột động bao gồm đơn vị tính, hệ số quy đổi, NSX và NHH cho hóa đơn
+        // Cấu hình các cột động cho bảng Chi Tiết Hóa Đơn và Danh Sách Sản Phẩm
         private void CauHinhCotDonViTinh()
         {
             if (!dgvChiTietHoaDon.Columns.Contains("colMaDVT"))
@@ -167,7 +170,6 @@ namespace SupermarketManagement
                 dgvChiTietHoaDon.Columns.Add(col);
             }
 
-            // Cột NSX tự co gọn theo độ rộng nội dung
             if (!dgvChiTietHoaDon.Columns.Contains("colNgaySanXuat"))
             {
                 var col = new DataGridViewTextBoxColumn
@@ -179,7 +181,6 @@ namespace SupermarketManagement
                 dgvChiTietHoaDon.Columns.Add(col);
             }
 
-            // Cột NHH tự co gọn theo độ rộng nội dung
             if (!dgvChiTietHoaDon.Columns.Contains("colNgayHetHan"))
             {
                 var col = new DataGridViewTextBoxColumn
@@ -189,6 +190,31 @@ namespace SupermarketManagement
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 };
                 dgvChiTietHoaDon.Columns.Add(col);
+            }
+
+            // Bổ sung cột NSX và NHH cho bảng Danh Sách Sản Phẩm (dgvDSSP)
+            if (!dgvDSSP.Columns.Contains("colNgaySanXuat_DSSP"))
+            {
+                var col = new DataGridViewTextBoxColumn
+                {
+                    Name = "colNgaySanXuat_DSSP",
+                    HeaderText = "NSX",
+                    DataPropertyName = "NgaySanXuat",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                };
+                dgvDSSP.Columns.Add(col);
+            }
+
+            if (!dgvDSSP.Columns.Contains("colNgayHetHan_DSSP"))
+            {
+                var col = new DataGridViewTextBoxColumn
+                {
+                    Name = "colNgayHetHan_DSSP",
+                    HeaderText = "NHH",
+                    DataPropertyName = "NgayHetHan",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                };
+                dgvDSSP.Columns.Add(col);
             }
 
             colDonViTinh_DSSP.DataPropertyName = "TenDV";
