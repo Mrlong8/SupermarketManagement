@@ -107,7 +107,7 @@ namespace SupermarketManagement.Views.Admin.ThongKe
 
                     int idx = s.Points.AddXY(row["Ngay"].ToString(), (double)giaTri);
                     if (giaTri == 0)
-                        s.Points[idx].IsValueShownAsLabel = false;   // ngày không có tiền thì không hiện số 0
+                        s.Points[idx].IsValueShownAsLabel = false;   
 
                     max = Math.Max(max, (double)giaTri);
                 }
@@ -134,7 +134,7 @@ namespace SupermarketManagement.Views.Admin.ThongKe
             area.AxisY.LineColor = Color.Gray;
             area.AxisY.Minimum = 0;
 
-            // Chừa chỗ phía trên để số tiền không bị cắt
+            
             area.AxisY.Maximum = max > 0 ? max * 1.4 : double.NaN;
 
             return tong;

@@ -52,27 +52,39 @@ namespace SupermarketManagement.Models.Repositories
         }
 
         // Lấy danh sách sản phẩm - mỗi sản phẩm chỉ xuất hiện một lần
+        // Lấy danh sách sản phẩm hiển thị POS kèm thông tin Ngày sản xuất và Hạn sử dụng lô gần nhất
         public DataTable GetListSanPham()
         {
             string sql = @"
-        SELECT
-            sp.MaSP,
-            sp.TenSanPham,
-            sp.SoLuongTong AS SoLuong,
-            sp.UrlImage,
-            sp.MoTa,
-            sp.MaDM,
-            sp.MaKM,
-            sp.MaNV,
-            sp.MaNCC,
-            sp.TrangThai,
-            u.MaDVT,
-            u.TenDV,
-            u.DonGiaNhapLe AS DonGiaNhap,
-            u.DonGiaBanLe AS DonGiaBan
-        FROM SanPham sp
-        " + BaseUnitApply + @"
-        WHERE sp.TrangThai = 1";
+                SELECT
+                    sp.MaSP,
+                    sp.TenSanPham,
+                    sp.SoLuongTong AS SoLuong,
+                    sp.UrlImage,
+                    sp.MoTa,
+                    sp.MaDM,
+                    sp.MaKM,
+                    sp.MaNV,
+                    sp.MaNCC,
+                    sp.TrangThai,
+                    u.MaDVT,
+                    u.TenDV,
+                    u.DonGiaNhapLe AS DonGiaNhap,
+                    u.DonGiaBanLe AS DonGiaBan,
+                    lo.NgaySanXuat,
+                    lo.NgayHetHan
+                FROM SanPham sp
+                " + BaseUnitApply + @"
+                OUTER APPLY (
+                    SELECT TOP 1 ct.NgaySanXuat, ct.NgayHetHan
+                    FROM ChiTietPhieuNhapHang ct
+                    WHERE ct.MaSP = sp.MaSP
+                    ORDER BY 
+                        CASE WHEN ct.NgayHetHan IS NULL THEN 1 ELSE 0 END,
+                        ct.NgayHetHan ASC,
+                        ct.NgaySanXuat DESC
+                ) lo
+                WHERE sp.TrangThai = 1";
 
             return _db.GetListData(sql);
         }

@@ -973,6 +973,7 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
 
         private void LoadDanhSachHangHoa()
         {
+           
             try
             {
                 dgvHangHoa.DataSource = _controller.LoadSanPham();
@@ -1330,6 +1331,8 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
             }
             dgvHangHoa.ClearSelection();
             dgvHangHoa.CurrentCell = null;
+            txtSoLuong.Text = "0";
+            txtSoLuong.Enabled = false;
         }
 
         private void btnThemDonVi_Click(object sender, EventArgs e)
@@ -1510,5 +1513,14 @@ namespace SupermarketManagement.Views.Admin.QuanLyKhoHang
         }
 
         #endregion
+
+        private void btnDangXuat_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Đăng xuất",
+               MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                UserSession.DangXuat(this);
+            }
+        }
     }
 }
